@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academic Institute Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              // New Modern Palette: Teal & Slate
+              'brand-primary': '#14b8a6', // Teal 500
+              'brand-secondary': '#0d9488', // Teal 600
+              'light-bg': '#f1f5f9',      // Slate 100
+              'light-card': '#ffffff',    // White
+              'light-border': '#e2e8f0', // Slate 200
+              'light-text': '#1e293b',    // Slate 800
+              'dark-bg': '#0f172a',       // Slate 900
+              'dark-card': '#1e293b',     // Slate 800
+              'dark-border': '#334155',   // Slate 700
+              'dark-text': '#e2e8f0',     // Slate 200
+              // Accent colors for calendar/charts
+              'accent-red': '#ef4444',
+              'accent-green': '#22c55e',
+              'accent-yellow': '#f59e0b',
+              'accent-blue': '#3b82f6',
+              'accent-purple': '#8b5cf6',
+            },
+            animation: {
+                'fade-in': 'fadeIn 0.5s ease-out forwards',
+                'slide-in-left': 'slideInLeft 0.3s ease-out forwards',
+                'slide-out-left': 'slideOutLeft 0.3s ease-in forwards',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: 0, transform: 'translateY(10px)' },
+                    '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                slideInLeft: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(0)' },
+                },
+                slideOutLeft: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-100%)' },
+                },
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.20.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
