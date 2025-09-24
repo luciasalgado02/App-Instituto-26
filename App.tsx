@@ -118,6 +118,24 @@ const ChatBubbleBottomCenterTextIcon: React.FC<React.SVGProps<SVGSVGElement>> = 
     </svg>
 );
 
+const MapPinIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+    </svg>
+);
+
+const EnvelopeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+    </svg>
+);
+
+const FacebookIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+    </svg>
+);
 
 
 type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites';
@@ -215,16 +233,25 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
                     <span>¿No tienes una cuenta? </span>
                     <a href="#" onClick={(e) => { e.preventDefault(); setRegisterModalOpen(true); }} className="font-medium text-brand-primary hover:text-brand-secondary">Regístrate</a>
                 </div>
-                <div className="pt-6 border-t border-light-border dark:border-dark-border text-center text-xs text-gray-500 dark:text-gray-400 space-y-2">
-                    <p><strong>HORARIOS DE ATENCIÓN:</strong> 18:20 a 22:20 hs.</p>
-                    <p><strong>DIRECCIÓN:</strong> Marquez 51</p>
-                    <p><strong>E-MAIL:</strong> consultasinstituto26@gmail.com</p>
-                    <p>
-                        <strong>FACEBOOK:</strong>{' '}
-                        <a href="https://www.facebook.com/isfdyt.dolores" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline break-all">
-                            https://www.facebook.com/isfdyt.dolores
+                <div className="pt-6 border-t border-light-border dark:border-dark-border text-xs text-gray-500 dark:text-gray-400 space-y-3">
+                    <div className="flex items-center justify-center gap-2">
+                        <ClockIcon className="w-4 h-4 flex-shrink-0" />
+                        <span>HORARIOS DE ATENCIÓN: 18:20 a 22:20 hs.</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                        <MapPinIcon className="w-4 h-4 flex-shrink-0" />
+                        <span>DIRECCIÓN: Marquez 51</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                        <EnvelopeIcon className="w-4 h-4 flex-shrink-0" />
+                        <a href="mailto:consultasinstituto26@gmail.com" className="hover:underline">consultasinstituto26@gmail.com</a>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                        <FacebookIcon className="w-4 h-4 flex-shrink-0" />
+                        <a href="https://www.facebook.com/isfdyt.dolores" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            /isfdyt.dolores
                         </a>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
