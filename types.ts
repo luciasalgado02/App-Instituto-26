@@ -109,6 +109,7 @@ export interface NewsItem {
 export interface FinalExamSubject {
     id: string;
     name: string;
+    date: string;
 }
 
 export interface ClassSchedule {

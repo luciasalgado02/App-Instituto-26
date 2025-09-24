@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_RECENT_ACTIVITY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_ALL_SUBJECTS, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR } from './constants';
@@ -384,9 +386,12 @@ const FinalsModal: React.FC<{ isOpen: boolean; onClose: () => void; subjects: Fi
             <ul className="space-y-3">
                 {subjects.map(subject => (
                     <li key={subject.id} className="flex justify-between items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
-                        <span className="font-medium">{subject.name}</span>
+                        <div>
+                            <span className="font-medium">{subject.name}</span>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Fecha: {subject.date}</p>
+                        </div>
                         <button onClick={() => handleEnroll(subject.id)}
-                            className={`px-3 py-1 text-sm rounded-full ${enrolled[subject.id] ? 'bg-accent-green text-white' : 'bg-brand-primary text-white hover:bg-brand-secondary'}`}>
+                            className={`px-3 py-1 text-sm rounded-full flex-shrink-0 ${enrolled[subject.id] ? 'bg-accent-green text-white' : 'bg-brand-primary text-white hover:bg-brand-secondary'}`}>
                             {enrolled[subject.id] ? 'Inscripto' : 'Inscribirse'}
                         </button>
                     </li>
@@ -394,27 +399,6 @@ const FinalsModal: React.FC<{ isOpen: boolean; onClose: () => void; subjects: Fi
             </ul>
              <button onClick={onClose} className="w-full mt-6 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Cerrar</button>
         </Modal>
-    );
-};
-
-const VirtualClassCard: React.FC<{ schedule: ClassSchedule[] }> = ({ schedule }) => {
-    const virtualClass = schedule.find(c => c.virtualLink);
-    if (!virtualClass) return null;
-
-    return (
-        <Card title="Clase Virtual de Hoy">
-            <div className="flex flex-col sm:flex-row justify-between items-center bg-light-bg dark:bg-dark-bg p-4 rounded-md">
-                <div>
-                    <p className="font-semibold text-lg">{virtualClass.subject}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Horario: {virtualClass.time}</p>
-                </div>
-                <a href={virtualClass.virtualLink} target="_blank" rel="noopener noreferrer"
-                   className="mt-3 sm:mt-0 flex items-center gap-2 px-4 py-2 bg-accent-green text-white font-semibold rounded-lg hover:bg-green-600 transition-colors">
-                    <VideoCameraIcon className="w-5 h-5" />
-                    Unirse a la clase en Meet
-                </a>
-            </div>
-        </Card>
     );
 };
 
@@ -465,9 +449,6 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
                 <div className="lg:col-span-2">
                     <AcademicSummaryCard />
                 </div>
-                 <div className="lg:col-span-2">
-                    <VirtualClassCard schedule={MOCK_TODAY_SCHEDULE} />
-                </div>
                 <Card title="Novedades Importantes">
                     <ul className="space-y-4">
                         {MOCK_NEWS.map(news => (
@@ -490,7 +471,15 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
                                         <p className="font-semibold">{cls.subject}</p>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">{cls.time}</p>
                                     </div>
-                                    <span className="font-mono text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Aula {cls.classroom}</span>
+                                    {cls.virtualLink ? (
+                                        <a href={cls.virtualLink} target="_blank" rel="noopener noreferrer"
+                                           className="flex items-center gap-2 px-3 py-1 bg-accent-green text-white font-semibold rounded-lg hover:bg-green-600 transition-colors text-sm">
+                                            <VideoCameraIcon className="w-4 h-4" />
+                                            Unirse
+                                        </a>
+                                    ) : (
+                                        <span className="font-mono text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Aula {cls.classroom}</span>
+                                    )}
                                 </li>
                             ))}
                         </ul>

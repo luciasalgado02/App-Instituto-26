@@ -216,10 +216,10 @@ export const MOCK_NEWS: NewsItem[] = [
 ];
 
 export const MOCK_FINALS_SUBJECTS: FinalExamSubject[] = [
-    { id: 'fs1', name: 'Programación I' },
-    { id: 'fs2', name: 'Bases de Datos' },
-    { id: 'fs3', name: 'Análisis Matemático' },
-    { id: 'fs4', name: 'Sistemas Operativos' }
+    { id: 'fs1', name: 'Programación I', date: '12/08/2024' },
+    { id: 'fs2', name: 'Bases de Datos', date: '14/08/2024' },
+    { id: 'fs3', name: 'Análisis Matemático', date: '16/08/2024' },
+    { id: 'fs4', name: 'Sistemas Operativos', date: '19/08/2024' }
 ];
 
 export const MOCK_TODAY_SCHEDULE: ClassSchedule[] = [
