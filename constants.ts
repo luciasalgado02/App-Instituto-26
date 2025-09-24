@@ -1,4 +1,4 @@
-import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, CalendarEvent, Notification, Assignment, NewsItem, FinalExamSubject, ClassSchedule, ChatMessage, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, ProcedureRequest } from './types';
+import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, CalendarEvent, Notification, Assignment, NewsItem, FinalExamSubject, ClassSchedule, ChatMessage, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, ProcedureRequest, Career } from './types';
 
 export const MOCK_USERS: Record<Role, User[]> = {
     alumno: [
@@ -229,19 +229,13 @@ export const MOCK_TODAY_SCHEDULE: ClassSchedule[] = [
 
 // --- TEACHER DATA ---
 export const MOCK_TEACHER_SCHEDULE: ClassSchedule[] = [
-    { id: 'tcs1', time: '10:00 - 12:00', subject: 'Programación I', classroom: 'Virtual' },
+    { id: 'tcs1', time: '10:00 - 12:00', subject: 'Programación I', classroom: 'Virtual', virtualLink: 'https://meet.google.com/xyz-abc-def' },
     { id: 'tcs2', time: '14:00 - 16:00', subject: 'Bases de Datos', classroom: '205' },
 ];
 
 export const MOCK_TEACHER_SUMMARY: TeacherSummary[] = [
     { id: 'ts1', subject: 'Programación I', commission: '2k1', studentCount: 35, pendingSubmissions: 8 },
     { id: 'ts2', subject: 'Bases de Datos', commission: '2k4', studentCount: 32, pendingSubmissions: 3 },
-];
-
-export const MOCK_RECENT_ACTIVITY: RecentActivity[] = [
-    { id: 'ra1', description: 'Ana Pérez ha entregado "TP N°1 - Algoritmos".', timestamp: 'hace 15 minutos' },
-    { id: 'ra2', description: 'Juan Rodriguez ha publicado en el foro de "Bases de Datos".', timestamp: 'hace 1 hora' },
-    { id: 'ra3', description: 'Maria Garcia ha entregado "TP N°1 - Algoritmos".', timestamp: 'hace 3 horas' },
 ];
 
 export const MOCK_PENDING_SUBMISSIONS: Record<string, PendingStudent[]> = {
@@ -295,11 +289,23 @@ export const MOCK_COURSE_ATTENDANCE: Record<string, StudentAttendanceRecord[]> =
 };
 
 // --- PRECEPTOR DATA ---
-export const MOCK_ALL_SUBJECTS: string[] = [
-    'Programación I',
-    'Bases de Datos',
-    'Análisis Matemático',
-    'Sistemas Operativos',
+
+export const MOCK_CAREERS: Career[] = [
+    {
+        name: 'Tecnicatura Superior en Desarrollo de Software',
+        years: {
+          '1er Año': ['Análisis Matemático', 'Sistemas Operativos'],
+          '2do Año': ['Programación I', 'Bases de Datos'],
+          '3er Año': ['Programación II', 'Redes de Datos']
+        }
+    },
+    {
+        name: 'Profesorado de Educación Primaria',
+        years: {
+          '1er Año': ['Didáctica General', 'Pedagogía'],
+          '2do Año': ['Psicología Educacional', 'Prácticas Docentes I']
+        }
+    }
 ];
 
 export const MOCK_PRECEPTOR_ATTENDANCE_DETAIL: Record<string, Record<string, StudentAttendanceRecord[]>> = {
@@ -317,11 +323,21 @@ export const MOCK_PRECEPTOR_ATTENDANCE_DETAIL: Record<string, Record<string, Stu
     'Programación I': [
       { id: 's1', name: 'Pérez, Ana', status: 'presente' },
       { id: 's6', name: 'Martinez, David', status: 'tarde' },
+      { id: 's10', name: 'García, Carlos', status: null },
+      { id: 's11', name: 'Rodriguez, Laura', status: null },
+      { id: 's12', name: 'Fernandez, Miguel', status: null },
+      { id: 's16', name: 'Sosa, Lucas', status: null },
+      { id: 's17', name: 'Rios, Martina', status: null },
     ],
     'Bases de Datos': [
       { id: 's7', name: 'Lopez, Sofia', status: 'presente' },
       { id: 's8', name: 'Gonzalez, Matias', status: 'ausente' },
       { id: 's9', name: 'Romero, Valentina', status: 'presente' },
+      { id: 's13', name: 'Alvarez, Julieta', status: null },
+      { id: 's14', name: 'Torres, Diego', status: null },
+      { id: 's15', name: 'Diaz, Camila', status: null },
+      { id: 's18', name: 'Acosta, Benjamin', status: null },
+      { id: 's19', name: 'Benitez, Victoria', status: null },
     ]
   }
 };

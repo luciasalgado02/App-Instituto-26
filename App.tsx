@@ -1,8 +1,8 @@
 
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
-import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_RECENT_ACTIVITY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_ALL_SUBJECTS, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR } from './constants';
+import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
+import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS } from './constants';
 
 // --- ICONS (as components for reusability) ---
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -1269,8 +1269,6 @@ const PendingSubmissionsModal: React.FC<{
 };
 
 const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; onShowPending: (summary: TeacherSummary) => void; forumPosts: ForumPost[]; materials: Material[]; }> = ({ user, navigate, onShowPending, forumPosts, materials }) => {
-    const recentPosts = forumPosts.slice(0, 3);
-    
     return (
         <div className="space-y-6">
             <div>
@@ -1300,7 +1298,15 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                                         <p className="font-semibold">{cls.subject}</p>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">{cls.time}</p>
                                     </div>
-                                    <span className="font-mono text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Aula {cls.classroom}</span>
+                                    {cls.virtualLink ? (
+                                        <a href={cls.virtualLink} target="_blank" rel="noopener noreferrer"
+                                           className="flex items-center gap-2 px-3 py-1 bg-accent-green text-white font-semibold rounded-lg hover:bg-green-600 transition-colors text-sm">
+                                            <VideoCameraIcon className="w-4 h-4" />
+                                            Unirse
+                                        </a>
+                                    ) : (
+                                        <span className="font-mono text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Aula {cls.classroom}</span>
+                                    )}
                                 </li>
                             ))}
                         </ul>
@@ -1345,36 +1351,6 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                 >
                     Gestionar Materiales
                 </button>
-            </Card>
-
-            <Card title="Actividad Reciente en Foros">
-                <ul className="space-y-4">
-                    {recentPosts.length > 0 ? recentPosts.map(post => (
-                        <li key={post.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
-                            <h4 className="font-semibold">{post.title}</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                en <span className="font-medium">{post.category}</span> por {post.author}
-                            </p>
-                        </li>
-                    )) : <p className="text-center text-gray-500 py-4">No hay actividad reciente en tus foros.</p>}
-                </ul>
-                <button 
-                    onClick={() => navigate('foros')} 
-                    className="w-full mt-4 px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors duration-300"
-                >
-                    Ir a los Foros
-                </button>
-            </Card>
-
-            <Card title="Actividad Reciente">
-                <ul className="divide-y dark:divide-dark-border">
-                    {MOCK_RECENT_ACTIVITY.map(activity => (
-                        <li key={activity.id} className="py-3">
-                            <p className="text-sm">{activity.description}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{activity.timestamp}</p>
-                        </li>
-                    ))}
-                </ul>
             </Card>
         </div>
     );
@@ -1675,16 +1651,44 @@ const CommunicationModal: React.FC<{
     onClose: () => void; 
     onSend: (subject: string, message: string, recipient: string) => void;
 }> = ({ isOpen, onClose, onSend }) => {
-    const [recipient, setRecipient] = useState('Todos');
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
+
+    const [recipientType, setRecipientType] = useState('all'); // 'all' or 'filtered'
+    const careers = useMemo(() => MOCK_CAREERS.map(c => c.name), []);
+    const [selectedCareer, setSelectedCareer] = useState<string>(careers[0] || '');
+
+    const availableYears = useMemo(() => {
+        const career = MOCK_CAREERS.find(c => c.name === selectedCareer);
+        return career ? Object.keys(career.years) : [];
+    }, [selectedCareer]);
+
+    const [selectedYear, setSelectedYear] = useState<string>(availableYears[0] || '');
+    
+    useEffect(() => {
+        if (availableYears.length > 0) {
+            setSelectedYear(availableYears[0]);
+        } else {
+            setSelectedYear('');
+        }
+    }, [selectedCareer, availableYears]);
 
     const handleSend = () => {
         if (!subject.trim() || !message.trim()) {
             alert('Por favor, complete el asunto y el mensaje.');
             return;
         }
-        onSend(subject, message, recipient);
+
+        let finalRecipient = 'Todos los Alumnos';
+        if (recipientType === 'filtered') {
+             if (!selectedCareer || !selectedYear) {
+                alert('Por favor, seleccione una carrera y un año.');
+                return;
+            }
+            finalRecipient = `Alumnos de ${selectedCareer} - ${selectedYear}`;
+        }
+        
+        onSend(subject, message, finalRecipient);
         onClose();
     };
 
@@ -1692,14 +1696,44 @@ const CommunicationModal: React.FC<{
         <Modal isOpen={isOpen} onClose={onClose} title="Enviar Comunicado General">
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="comm-recipient" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Destinatario</label>
-                    <select id="comm-recipient" value={recipient} onChange={e => setRecipient(e.target.value)} className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary">
-                        <option value="Todos">Todos los Alumnos</option>
-                        <option value="1er Año">Alumnos de 1er Año</option>
-                        <option value="2do Año">Alumnos de 2do Año</option>
-                        <option value="3er Año">Alumnos de 3er Año</option>
+                    <label htmlFor="comm-recipient-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Destinatario</label>
+                    <select 
+                        id="comm-recipient-type" 
+                        value={recipientType} 
+                        onChange={e => setRecipientType(e.target.value)} 
+                        className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                    >
+                        <option value="all">Todos los Alumnos</option>
+                        <option value="filtered">Filtrar por Carrera y Año</option>
                     </select>
                 </div>
+                {recipientType === 'filtered' && (
+                    <>
+                        <div>
+                            <label htmlFor="comm-career" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Carrera</label>
+                            <select 
+                                id="comm-career" 
+                                value={selectedCareer} 
+                                onChange={e => setSelectedCareer(e.target.value)} 
+                                className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                            >
+                                {careers.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="comm-year" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Año</label>
+                            <select 
+                                id="comm-year" 
+                                value={selectedYear} 
+                                onChange={e => setSelectedYear(e.target.value)} 
+                                className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                                disabled={availableYears.length === 0}
+                            >
+                                {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+                            </select>
+                        </div>
+                    </>
+                )}
                 <div>
                     <label htmlFor="comm-subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Asunto</label>
                     <input id="comm-subject" type="text" value={subject} onChange={e => setSubject(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
@@ -1760,15 +1794,51 @@ const ContactStudentModal: React.FC<{ isOpen: boolean; onClose: () => void; stud
 };
 
 const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
-    const years = useMemo(() => Object.keys(MOCK_PRECEPTOR_ATTENDANCE_DETAIL), []);
+    const careers = useMemo(() => MOCK_CAREERS.map(c => c.name), []);
+    const [selectedCareer, setSelectedCareer] = useState<string>(careers[0]);
+    const [isSaving, setIsSaving] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+    const availableYears = useMemo(() => {
+        const career = MOCK_CAREERS.find(c => c.name === selectedCareer);
+        return career ? Object.keys(career.years) : [];
+    }, [selectedCareer]);
+
+    const [selectedYear, setSelectedYear] = useState<string>(availableYears[0] || '');
+
+    const availableSubjects = useMemo(() => {
+        const career = MOCK_CAREERS.find(c => c.name === selectedCareer);
+        if (!career || !selectedYear) return [];
+        return career.years[selectedYear as keyof typeof career.years] || [];
+    }, [selectedCareer, selectedYear]);
+
+    const [selectedSubject, setSelectedSubject] = useState<string>(availableSubjects[0] || '');
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().substring(0, 10));
-    const [selectedYear, setSelectedYear] = useState<string>(years[0]);
-    const [selectedSubject, setSelectedSubject] = useState<string>(MOCK_ALL_SUBJECTS[0]);
     const [attendance, setAttendance] = useState<StudentAttendanceRecord[]>([]);
 
     useEffect(() => {
-        const students = MOCK_PRECEPTOR_ATTENDANCE_DETAIL[selectedYear]?.[selectedSubject] || [];
-        setAttendance(students);
+        if (availableYears.length > 0) {
+            setSelectedYear(availableYears[0]);
+        } else {
+            setSelectedYear('');
+        }
+    }, [selectedCareer, availableYears]);
+
+    useEffect(() => {
+        if (availableSubjects.length > 0) {
+            setSelectedSubject(availableSubjects[0]);
+        } else {
+            setSelectedSubject('');
+        }
+    }, [selectedYear, availableSubjects]);
+
+    useEffect(() => {
+        if (selectedYear && selectedSubject) {
+            const students = MOCK_PRECEPTOR_ATTENDANCE_DETAIL[selectedYear]?.[selectedSubject] || [];
+            setAttendance(students);
+        } else {
+            setAttendance([]);
+        }
     }, [selectedYear, selectedSubject]);
 
     const handleStatusChange = (studentId: string, status: 'P' | 'A' | 'T') => {
@@ -1779,31 +1849,49 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
     };
 
     const handleSaveChanges = () => {
-        alert(`Asistencia para "${selectedSubject}" de "${selectedYear}" del día ${selectedDate} guardada correctamente.`);
+        setIsSaving(true);
+        setShowSuccessMessage(false);
+
+        setTimeout(() => {
+            setIsSaving(false);
+            setShowSuccessMessage(true);
+            alert(`Asistencia para "${selectedSubject}" de "${selectedYear}" del día ${selectedDate} guardada correctamente.`);
+            
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 3000);
+        }, 1500); // Simulate network delay
     };
 
     return (
         <div>
             <PageHeader title="Asistencia General" onBack={onBack} />
             <Card>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-light-bg dark:bg-dark-bg rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-light-bg dark:bg-dark-bg rounded-lg">
                     <div>
                         <label htmlFor="att-date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Día</label>
                         <input id="att-date" type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
                             className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary" />
                     </div>
+                     <div>
+                        <label htmlFor="att-career" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Carrera</label>
+                        <select id="att-career" value={selectedCareer} onChange={e => setSelectedCareer(e.target.value)}
+                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                            {careers.map(career => <option key={career} value={career}>{career}</option>)}
+                        </select>
+                    </div>
                     <div>
                         <label htmlFor="att-year" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Año</label>
                         <select id="att-year" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}
-                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
-                            {years.map(year => <option key={year} value={year}>{year}</option>)}
+                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary" disabled={!selectedCareer}>
+                             {availableYears.map(year => <option key={year} value={year}>{year}</option>)}
                         </select>
                     </div>
                     <div>
                         <label htmlFor="att-subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Materia</label>
                         <select id="att-subject" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}
-                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
-                            {MOCK_ALL_SUBJECTS.map(subject => <option key={subject} value={subject}>{subject}</option>)}
+                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary" disabled={!selectedYear}>
+                           {availableSubjects.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                         </select>
                     </div>
                 </div>
@@ -1848,9 +1936,18 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
                     </table>
                 </div>
 
-                <div className="flex justify-end mt-6">
-                    <button onClick={handleSaveChanges} className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors">
-                        Guardar
+                <div className="flex justify-end mt-6 items-center gap-4">
+                    {showSuccessMessage && (
+                        <div className="flex items-center gap-2 text-green-600 dark:text-green-400 animate-fade-in">
+                            <CheckBadgeIcon className="w-5 h-5" />
+                            <span className="text-sm font-semibold">Guardado con éxito</span>
+                        </div>
+                    )}
+                    <button 
+                        onClick={handleSaveChanges} 
+                        disabled={isSaving || attendance.length === 0}
+                        className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                        {isSaving ? 'Guardando...' : 'Guardar'}
                     </button>
                 </div>
             </Card>
@@ -1939,8 +2036,6 @@ const PreceptorDashboard: React.FC<{
     forumPosts: ForumPost[];
 }> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate, pendingProcedures, onManageProcedure, forumPosts }) => {
     
-    const recentPosts = forumPosts.slice(0, 3);
-    
     return (
         <div className="space-y-6">
             <div>
@@ -2019,9 +2114,9 @@ const PreceptorDashboard: React.FC<{
                 </Card>
 
                 <Card title="Actividad Reciente en Foros">
-                    {recentPosts.length > 0 ? (
+                    {forumPosts.length > 0 ? (
                         <ul className="space-y-4 max-h-80 overflow-y-auto">
-                            {recentPosts.map(post => (
+                            {forumPosts.map(post => (
                                 <li key={post.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
                                     <h4 className="font-semibold">{post.title}</h4>
                                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">

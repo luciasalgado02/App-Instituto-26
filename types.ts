@@ -113,7 +113,7 @@ export interface FinalExamSubject {
 }
 
 export interface ClassSchedule {
-    id: string;
+    id:string;
     time: string;
     subject: string;
     classroom: string;
@@ -126,12 +126,6 @@ export interface TeacherSummary {
     commission: string;
     studentCount: number;
     pendingSubmissions: number;
-}
-
-export interface RecentActivity {
-    id: string;
-    description: string;
-    timestamp: string;
 }
 
 export interface PendingStudent {
@@ -174,4 +168,9 @@ export interface ProcedureRequest {
   type: 'Constancia de Aluno Regular' | 'Solicitud de Mesa Especial' | 'Baja de Materia' | 'Consulta de Legajo';
   date: string;
   status: 'pending' | 'approved' | 'rejected';
+}
+
+export interface Career {
+  name: string;
+  years: Record<string, string[]>;
 }
