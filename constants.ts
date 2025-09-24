@@ -1,4 +1,4 @@
-import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, CalendarEvent, Notification, Assignment, NewsItem, FinalExamSubject, ClassSchedule, ChatMessage, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent } from './types';
+import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, CalendarEvent, Notification, Assignment, NewsItem, FinalExamSubject, ClassSchedule, ChatMessage, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, ProcedureRequest } from './types';
 
 export const MOCK_USERS: Record<Role, User[]> = {
     alumno: [
@@ -22,6 +22,13 @@ export const MOCK_USERS: Record<Role, User[]> = {
     ]
 };
 
+export const MOCK_SUBJECTS_BY_YEAR: Record<string, string[]> = {
+  '1er Año': ['Análisis Matemático', 'Física I', 'Química General', 'Sistemas Operativos'],
+  '2do Año': ['Programación I', 'Bases de Datos'],
+  '3er Año': [],
+};
+
+
 interface StudentData {
     assignments: Assignment[];
     grades: Grade[];
@@ -35,26 +42,26 @@ export const MOCK_STUDENT_DATA: StudentData = {
         { id: 'a3', title: 'Informe de Laboratorio: Procesos', subject: 'Sistemas Operativos', dueDate: '20/08/2024' },
     ],
     grades: [
-        { id: 'g1', subject: 'Programación I', assignment: 'Parcial de Algoritmia', grade: 9, semester: 1 },
-        { id: 'g2', subject: 'Bases de Datos', assignment: 'Presentación: SQL vs NoSQL', grade: 10, semester: 1 },
-        { id: 'g3', subject: 'Sistemas Operativos', assignment: 'Examen de Comandos Linux', grade: 8, semester: 1 },
-        { id: 'g4', subject: 'Análisis Matemático', assignment: 'TP: Funciones y Límites', grade: 7, semester: 1 },
-        { id: 'g5', subject: 'Programación I', assignment: 'Entrega Final - Proyecto', grade: 8, semester: 2 },
-        { id: 'g6', subject: 'Bases de Datos', assignment: 'Parcial de Normalización', grade: 8, semester: 2 },
-        { id: 'g7', subject: 'Análisis Matemático', assignment: 'Parcial de Derivadas', grade: 6, semester: 2 },
-        { id: 'g8', subject: 'Física I', assignment: 'Parcial Cinemática', grade: 3, semester: 1 },
-        { id: 'g9', subject: 'Química General', assignment: 'Laboratorio 1', grade: 7, semester: 1 },
-        { id: 'g10', subject: 'Física I', assignment: 'Recuperatorio', grade: 2, semester: 2 },
+        { id: 'g1', subject: 'Programación I', assignment: 'Parcial de Algoritmia', grade: 9, semester: 1, year: '2do Año' },
+        { id: 'g2', subject: 'Bases de Datos', assignment: 'Presentación: SQL vs NoSQL', grade: 10, semester: 1, year: '2do Año' },
+        { id: 'g3', subject: 'Sistemas Operativos', assignment: 'Examen de Comandos Linux', grade: 8, semester: 1, year: '1er Año' },
+        { id: 'g4', subject: 'Análisis Matemático', assignment: 'TP: Funciones y Límites', grade: 7, semester: 1, year: '1er Año' },
+        { id: 'g5', subject: 'Programación I', assignment: 'Entrega Final - Proyecto', grade: 8, semester: 2, year: '2do Año' },
+        { id: 'g6', subject: 'Bases de Datos', assignment: 'Parcial de Normalización', grade: 8, semester: 2, year: '2do Año' },
+        { id: 'g7', subject: 'Análisis Matemático', assignment: 'Parcial de Derivadas', grade: 6, semester: 2, year: '1er Año' },
+        { id: 'g8', subject: 'Física I', assignment: 'Parcial Cinemática', grade: 3, semester: 1, year: '1er Año' },
+        { id: 'g9', subject: 'Química General', assignment: 'Laboratorio 1', grade: 7, semester: 1, year: '1er Año' },
+        { id: 'g10', subject: 'Física I', assignment: 'Recuperatorio', grade: 2, semester: 2, year: '1er Año' },
     ],
     attendance: [
-        { id: 'att1', date: '01/08/2024', subject: 'Programación I', status: 'presente' },
-        { id: 'att2', date: '01/08/2024', subject: 'Bases de Datos', status: 'presente' },
-        { id: 'att3', date: '02/08/2024', subject: 'Sistemas Operativos', status: 'ausente' },
-        { id: 'att4', date: '03/08/2024', subject: 'Análisis Matemático', status: 'presente' },
-        { id: 'att5', date: '03/08/2024', subject: 'Programación I', status: 'presente' },
-        { id: 'att6', date: '04/08/2024', subject: 'Programación I', status: 'presente' },
-        { id: 'att7', date: '05/08/2024', subject: 'Análisis Matemático', status: 'ausente' },
-        { id: 'att8', date: '05/08/2024', subject: 'Física I', status: 'presente' },
+        { id: 'att1', date: '01/08/2024', subject: 'Programación I', status: 'presente', year: '2do Año' },
+        { id: 'att2', date: '01/08/2024', subject: 'Bases de Datos', status: 'presente', year: '2do Año' },
+        { id: 'att3', date: '02/08/2024', subject: 'Sistemas Operativos', status: 'ausente', year: '1er Año' },
+        { id: 'att4', date: '03/08/2024', subject: 'Análisis Matemático', status: 'presente', year: '1er Año' },
+        { id: 'att5', date: '03/08/2024', subject: 'Programación I', status: 'presente', year: '2do Año' },
+        { id: 'att6', date: '04/08/2024', subject: 'Programación I', status: 'presente', year: '2do Año' },
+        { id: 'att7', date: '05/08/2024', subject: 'Análisis Matemático', status: 'ausente', year: '1er Año' },
+        { id: 'att8', date: '05/08/2024', subject: 'Física I', status: 'presente', year: '1er Año' },
     ]
 };
 
@@ -318,3 +325,8 @@ export const MOCK_PRECEPTOR_ATTENDANCE_DETAIL: Record<string, Record<string, Stu
     ]
   }
 };
+
+export const MOCK_PROCEDURE_REQUESTS: ProcedureRequest[] = [
+    { id: 'pr1', studentId: 's2', studentName: 'Juan Rodriguez', type: 'Constancia de Aluno Regular', date: '22/09/2024', status: 'pending' },
+    { id: 'pr2', studentId: 's7', studentName: 'Sofia Lopez', type: 'Solicitud de Mesa Especial', date: '21/09/2024', status: 'pending' },
+];

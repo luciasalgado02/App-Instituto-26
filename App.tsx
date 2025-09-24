@@ -1,8 +1,6 @@
-
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material } from './types';
-import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_RECENT_ACTIVITY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_ALL_SUBJECTS, MOCK_PRECEPTOR_ATTENDANCE_DETAIL } from './constants';
+import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, RecentActivity, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
+import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_RECENT_ACTIVITY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_ALL_SUBJECTS, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR } from './constants';
 
 // --- ICONS (as components for reusability) ---
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -108,9 +106,21 @@ const MegaphoneIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
     </svg>
 );
+const DocumentTextIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 9h6m-6 3h6m-6-3h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zM5.625 5.625A2.25 2.25 0 018.25 3.375h7.5c1.24 0 2.25.934 2.25 2.083v12.75c0 1.149-.933 2.084-2.25 2.084h-7.5a2.25 2.25 0 01-2.25-2.25V5.625z" />
+    </svg>
+);
+
+const ChatBubbleBottomCenterTextIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.76 9.76 0 01-2.53-.388m-5.34-4.433A12.032 12.032 0 013 11.25c0-2.791.64-5.468 1.75-7.733M21 12c0-4.556-4.03-8.25-9-8.25-1.95 0-3.763.49-5.34 1.333m13.68 12.803A11.953 11.953 0 0112 21c-2.791 0-5.468-.64-7.733-1.75" />
+    </svg>
+);
 
 
-type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general';
+
+type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites';
 
 // --- REUSABLE UI COMPONENTS ---
 const Card: React.FC<{ title?: string; children: React.ReactNode; className?: string; }> = ({ title, children, className = '' }) => (
@@ -140,12 +150,22 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; chi
 
 // --- LOGIN SCREEN ---
 const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [role, setRole] = useState<Role>('alumno');
+    const [email, setEmail] = useState('alumno@example.com');
+    const [password, setPassword] = useState('password');
     const [error, setError] = useState('');
     const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
     const [isForgotModalOpen, setForgotModalOpen] = useState(false);
+
+    useEffect(() => {
+        const credentials = {
+            alumno: { email: 'alumno@example.com', pass: 'password' },
+            profesor: { email: 'profesor@example.com', pass: 'password' },
+            preceptor: { email: 'preceptor@example.com', pass: 'password' }
+        };
+        setEmail(credentials[role].email);
+        setPassword(credentials[role].pass);
+    }, [role]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -153,29 +173,17 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
         if (user && password === 'password') { onLogin(user); } 
         else { setError('Credenciales inválidas. Inténtalo de nuevo.'); }
     };
-    
-    const exampleEmail = useMemo(() => {
-        if (role === 'alumno') return 'alumno@example.com';
-        if (role === 'profesor') return 'profesor@example.com';
-        return 'preceptor@example.com';
-    }, [role]);
-    
-    useEffect(() => {
-        setEmail(exampleEmail);
-        setPassword('password');
-        setError('');
-    }, [exampleEmail]);
 
     return (
         <>
-        <div className="flex items-center justify-center min-h-screen bg-light-bg dark:bg-dark-bg">
-            <div className="w-full max-w-md p-8 space-y-8 bg-light-card rounded-lg shadow-lg dark:bg-dark-card animate-fade-in">
+        <div className="flex items-center justify-center min-h-screen bg-light-bg dark:bg-dark-bg p-4">
+            <div className="w-full max-w-md p-6 sm:p-8 space-y-6 sm:space-y-8 bg-light-card rounded-lg shadow-lg dark:bg-dark-card animate-fade-in">
                 <div className="text-center">
                     <AcademicCapIcon className="w-16 h-16 mx-auto text-brand-primary"/>
-                    <h1 className="mt-4 text-3xl font-bold text-light-text dark:text-dark-text">Portal Académico</h1>
+                    <h1 className="mt-4 text-xl sm:text-2xl font-bold text-center text-light-text dark:text-dark-text">Instituto Superior de Formación Docente y Técnica N° 26</h1>
                     <p className="mt-2 text-gray-600 dark:text-gray-400">Inicia sesión para acceder a tu panel</p>
                 </div>
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                     <div>
                         <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Soy...</label>
@@ -193,17 +201,8 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
                     </div>
                     <div>
                         <label htmlFor="password"  className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
-                        <input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="pista: password"
+                        <input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••"
                             className="w-full px-3 py-2 mt-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"/>
-                    </div>
-                     <div className="mt-4 p-3 bg-gray-100 dark:bg-dark-bg rounded-md border border-dashed border-gray-300 dark:border-gray-600">
-                        <p className="text-sm font-semibold text-center text-gray-700 dark:text-gray-300">Credenciales de Prueba</p>
-                        <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-1">
-                            Email: <span className="font-mono">{exampleEmail}</span>
-                        </p>
-                        <p className="text-xs text-center text-gray-500 dark:text-gray-400">
-                            Contraseña: <span className="font-mono">password</span>
-                        </p>
                     </div>
                     <button type="submit" className="w-full px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors duration-300">
                         Ingresar
@@ -212,9 +211,20 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
                         <a href="#" onClick={(e) => { e.preventDefault(); setForgotModalOpen(true); }} className="font-medium text-brand-primary hover:text-brand-secondary">¿Olvidaste tu contraseña?</a>
                     </div>
                 </form>
-                 <div className="text-sm text-center mt-4 text-gray-600 dark:text-gray-400">
+                 <div className="text-sm text-center text-gray-600 dark:text-gray-400">
                     <span>¿No tienes una cuenta? </span>
                     <a href="#" onClick={(e) => { e.preventDefault(); setRegisterModalOpen(true); }} className="font-medium text-brand-primary hover:text-brand-secondary">Regístrate</a>
+                </div>
+                <div className="pt-6 border-t border-light-border dark:border-dark-border text-center text-xs text-gray-500 dark:text-gray-400 space-y-2">
+                    <p><strong>HORARIOS DE ATENCIÓN:</strong> 18:20 a 22:20 hs.</p>
+                    <p><strong>DIRECCIÓN:</strong> Marquez 51</p>
+                    <p><strong>E-MAIL:</strong> consultasinstituto26@gmail.com</p>
+                    <p>
+                        <strong>FACEBOOK:</strong>{' '}
+                        <a href="https://www.facebook.com/isfdyt.dolores" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline break-all">
+                            https://www.facebook.com/isfdyt.dolores
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -381,8 +391,44 @@ const VirtualClassCard: React.FC<{ schedule: ClassSchedule[] }> = ({ schedule })
     );
 };
 
+const MaterialsSection: React.FC<{ materials: Material[] }> = ({ materials }) => {
+    const [selectedSubject, setSelectedSubject] = useState('Todas');
+    const subjects = useMemo(() => ['Todas', ...Array.from(new Set(materials.map(m => m.subject)))], [materials]);
 
-const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: ForumPost[] }> = ({ navigate, forumPosts }) => {
+    const filteredMaterials = useMemo(() => {
+        if (selectedSubject === 'Todas') return materials;
+        return materials.filter(m => m.subject === selectedSubject);
+    }, [materials, selectedSubject]);
+
+    return (
+        <Card title="Biblioteca de Materiales">
+            <div className="mb-4">
+                <label htmlFor="subject-filter-panel" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar por materia</label>
+                <select id="subject-filter-panel" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} className="w-full max-w-sm p-2 mt-1 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                    {subjects.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+            </div>
+            
+            <ul className="space-y-4 max-h-96 overflow-y-auto">
+                {filteredMaterials.map(m => (
+                    <li key={m.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <p className="font-semibold">{m.title}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">{m.subject} - {m.year}</p>
+                        </div>
+                        <a href="#" className="text-sm px-3 py-1 border rounded-md dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0">Descargar {m.fileType}</a>
+                    </li>
+                ))}
+                {filteredMaterials.length === 0 && (
+                    <p className="text-center text-gray-500 py-6">No hay materiales para la materia seleccionada.</p>
+                )}
+            </ul>
+        </Card>
+    );
+};
+
+
+const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: ForumPost[]; materials: Material[]; }> = ({ navigate, forumPosts, materials }) => {
     const [isFinalsModalOpen, setFinalsModalOpen] = useState(false);
     const recentPosts = forumPosts.slice(0, 3);
 
@@ -443,6 +489,9 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
                         </button>
                     </Card>
                 </div>
+                 <div className="lg:col-span-2">
+                    <MaterialsSection materials={materials} />
+                </div>
             </div>
             <FinalsModal isOpen={isFinalsModalOpen} onClose={() => setFinalsModalOpen(false)} subjects={MOCK_FINALS_SUBJECTS} />
         </>
@@ -450,8 +499,14 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
 };
 
 const GradesPage: React.FC = () => {
+    const [selectedYear, setSelectedYear] = useState('1er Año');
+    const years = ['1er Año', '2do Año', '3er Año'];
+
     const gradesBySubject = useMemo(() => {
-        const grouped = MOCK_STUDENT_DATA.grades.reduce((acc, grade) => {
+        const subjectsForYear = MOCK_SUBJECTS_BY_YEAR[selectedYear as keyof typeof MOCK_SUBJECTS_BY_YEAR] || [];
+        const filteredGrades = MOCK_STUDENT_DATA.grades.filter(grade => subjectsForYear.includes(grade.subject));
+
+        const grouped = filteredGrades.reduce((acc, grade) => {
             if (!acc[grade.subject]) {
                 acc[grade.subject] = [];
             }
@@ -464,7 +519,7 @@ const GradesPage: React.FC = () => {
             const finalGrade = numericGrades.length > 0 ? (numericGrades.reduce((sum, g) => sum + g, 0) / numericGrades.length).toFixed(2) : 'N/A';
             return { subject, finalGrade, grades };
         });
-    }, []);
+    }, [selectedYear]);
 
     const renderSemesterTable = (grades: Grade[], semester: number) => (
         <div className="overflow-x-auto mt-4">
@@ -490,7 +545,14 @@ const GradesPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {gradesBySubject.map(({ subject, finalGrade, grades }) => (
+             <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow-md">
+                <label htmlFor="year-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Seleccionar Año</label>
+                <select id="year-filter" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}
+                    className="w-full max-w-xs mt-1 p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                    {years.map(year => <option key={year} value={year}>{year}</option>)}
+                </select>
+            </div>
+            {gradesBySubject.length > 0 ? gradesBySubject.map(({ subject, finalGrade, grades }) => (
                 <Card title={subject} key={subject}>
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-gray-600 dark:text-gray-400">Promedio Anual:</span>
@@ -499,7 +561,11 @@ const GradesPage: React.FC = () => {
                     {renderSemesterTable(grades, 1)}
                     {renderSemesterTable(grades, 2)}
                 </Card>
-            ))}
+            )) : (
+                <Card>
+                    <p className="text-center text-gray-500 py-6">No hay notas cargadas para el año seleccionado.</p>
+                </Card>
+            )}
         </div>
     );
 };
@@ -546,7 +612,9 @@ const JustificationModal: React.FC<{ isOpen: boolean; onClose: () => void; absen
 }
 
 const AttendancePage: React.FC = () => {
-    const [attendance, setAttendance] = useState(MOCK_STUDENT_DATA.attendance);
+    // Assuming student is in 2nd year for this mock
+    const currentYearSubjects = useMemo(() => MOCK_SUBJECTS_BY_YEAR['2do Año'] || [], []);
+    const [selectedSubject, setSelectedSubject] = useState('Todas');
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedAbsence, setSelectedAbsence] = useState<Attendance | null>(null);
 
@@ -554,6 +622,22 @@ const AttendancePage: React.FC = () => {
         setSelectedAbsence(absence);
         setModalOpen(true);
     };
+
+    const displayedAttendance = useMemo(() => {
+        const parseDate = (dateString: string) => {
+            const [day, month, year] = dateString.split('/');
+            return new Date(`${year}-${month}-${day}`);
+        };
+
+        const filtered = MOCK_STUDENT_DATA.attendance.filter(a => {
+            if (selectedSubject === 'Todas') {
+                return currentYearSubjects.includes(a.subject);
+            }
+            return a.subject === selectedSubject;
+        });
+        
+        return filtered.sort((a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime());
+    }, [selectedSubject, currentYearSubjects]);
     
     const getStatusChip = (status: Attendance['status']) => {
         const styles: Record<typeof status, string> = {
@@ -568,8 +652,19 @@ const AttendancePage: React.FC = () => {
     return (
         <>
             <Card title="Mi Asistencia">
+                 <div className="mb-4">
+                    <label htmlFor="subject-filter-attendance" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar por materia del año en curso</label>
+                    <select 
+                        id="subject-filter-attendance" 
+                        value={selectedSubject} 
+                        onChange={e => setSelectedSubject(e.target.value)}
+                        className="w-full max-w-xs mt-1 p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                        <option value="Todas">Todas las materias</option>
+                        {currentYearSubjects.map(subject => <option key={subject} value={subject}>{subject}</option>)}
+                    </select>
+                </div>
                 <div className="divide-y dark:divide-dark-border">
-                    {attendance.map(a => (
+                    {displayedAttendance.length > 0 ? displayedAttendance.map(a => (
                         <div key={a.id} className="flex flex-wrap justify-between items-center p-3">
                             <div>
                                 <p className="font-semibold">{a.date}</p>
@@ -582,7 +677,9 @@ const AttendancePage: React.FC = () => {
                                 )}
                             </div>
                         </div>
-                    ))}
+                    )) : (
+                        <p className="text-center text-gray-500 py-6">No hay registros de asistencia para la materia seleccionada.</p>
+                    )}
                 </div>
             </Card>
             <JustificationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} absence={selectedAbsence} />
@@ -1054,41 +1151,55 @@ const CalendarPage: React.FC<{ events: CalendarEvent[]; onAddEventClick: () => v
     );
 };
 
-const MaterialsPage: React.FC<{ materials: Material[] }> = ({ materials }) => {
-    const [selectedSubject, setSelectedSubject] = useState('Todas');
-    const subjects = useMemo(() => ['Todas', ...Array.from(new Set(materials.map(m => m.subject)))], [materials]);
-
-    const filteredMaterials = useMemo(() => {
-        if (selectedSubject === 'Todas') return materials;
-        return materials.filter(m => m.subject === selectedSubject);
-    }, [materials, selectedSubject]);
+const ProceduresPage: React.FC<{ onRequest: (type: ProcedureRequest['type']) => void, navigate: (page: Page) => void }> = ({ onRequest, navigate }) => {
+    
+    const procedures = [
+        { 
+            title: 'Constancia de Alumno Regular', 
+            description: 'Genera un certificado oficial que acredita tu condición de alumno regular en la institución.', 
+            icon: <DocumentTextIcon className="w-12 h-12 text-emerald-400" />,
+            type: 'Constancia de Aluno Regular' as ProcedureRequest['type']
+        },
+        { 
+            title: 'Solicitud de Mesa Especial', 
+            description: 'Pide una fecha de examen final extraordinaria si cumples con los requisitos académicos.', 
+            icon: <CalendarDaysIcon className="w-12 h-12 text-emerald-400" />,
+            type: 'Solicitud de Mesa Especial' as ProcedureRequest['type']
+        },
+        { 
+            title: 'Baja de Materia', 
+            description: 'Date de baja de una materia en la que te hayas inscripto durante el período habilitado.', 
+            icon: <PencilSquareIcon className="w-12 h-12 text-emerald-400" />,
+            type: 'Baja de Materia' as ProcedureRequest['type']
+        },
+        { 
+            title: 'Consulta de Legajo', 
+            description: 'Accede a tu legajo completo para revisar tu historial y documentación personal.', 
+            icon: <DocumentTextIcon className="w-12 h-12 text-emerald-400" />,
+            type: 'Consulta de Legajo' as ProcedureRequest['type']
+        },
+    ];
 
     return (
-        <div className="space-y-6">
-            <h1 className="text-2xl font-bold">Biblioteca de Materiales</h1>
-            <Card>
-                <div className="mb-4">
-                    <label htmlFor="subject-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar por materia</label>
-                    <select id="subject-filter" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} className="w-full max-w-sm p-2 mt-1 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
-                        {subjects.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                </div>
-                
-                <ul className="space-y-4">
-                    {filteredMaterials.map(m => (
-                        <li key={m.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md flex flex-wrap justify-between items-center gap-2">
-                            <div>
-                                <p className="font-semibold">{m.title}</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">{m.subject} - {m.year}</p>
-                            </div>
-                            <a href="#" className="text-sm px-3 py-1 border rounded-md dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0">Descargar {m.fileType}</a>
-                        </li>
-                    ))}
-                    {filteredMaterials.length === 0 && (
-                        <p className="text-center text-gray-500 py-6">No hay materiales para la materia seleccionada.</p>
-                    )}
-                </ul>
-            </Card>
+        <div className="relative">
+             <h1 className="text-2xl font-bold mb-6 text-light-text dark:text-dark-text">Trámites y Solicitudes</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {procedures.map(proc => (
+                    <div key={proc.title} className="bg-light-card dark:bg-slate-800 rounded-xl shadow-lg p-6 flex flex-col items-center text-center animate-fade-in">
+                        <div className="mb-4">
+                            {proc.icon}
+                        </div>
+                        <h3 className="text-lg font-semibold text-light-text dark:text-white mb-2">{proc.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-slate-300 mb-6 flex-grow">{proc.description}</p>
+                        <button 
+                            onClick={() => onRequest(proc.type)}
+                            className="w-full px-4 py-3 font-semibold text-slate-900 bg-emerald-400 rounded-lg hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400 focus:ring-offset-light-card dark:focus:ring-offset-slate-800 transition-colors duration-300"
+                        >
+                            Iniciar Trámite
+                        </button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
@@ -1141,7 +1252,7 @@ const PendingSubmissionsModal: React.FC<{
     );
 };
 
-const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; onShowPending: (summary: TeacherSummary) => void; forumPosts: ForumPost[]; }> = ({ user, navigate, onShowPending, forumPosts }) => {
+const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; onShowPending: (summary: TeacherSummary) => void; forumPosts: ForumPost[]; materials: Material[]; }> = ({ user, navigate, onShowPending, forumPosts, materials }) => {
     const recentPosts = forumPosts.slice(0, 3);
     
     return (
@@ -1198,6 +1309,27 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                     ))}
                 </div>
             </div>
+
+            <Card title="Material de Estudio">
+                <ul className="space-y-3 mb-4 max-h-48 overflow-y-auto">
+                    {materials.slice(0, 4).map(m => (
+                        <li key={m.id} className="p-2 bg-light-bg dark:bg-dark-bg rounded-md flex justify-between items-center">
+                            <div>
+                                <p className="font-semibold text-sm">{m.title}</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">{m.subject}</p>
+                            </div>
+                            <span className="text-xs font-mono px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded flex-shrink-0">{m.fileType}</span>
+                        </li>
+                    ))}
+                    {materials.length === 0 && <p className="text-center text-sm text-gray-500 py-4">No hay materiales subidos.</p>}
+                </ul>
+                <button
+                    onClick={() => navigate('materiales')}
+                    className="w-full px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary"
+                >
+                    Gestionar Materiales
+                </button>
+            </Card>
 
             <Card title="Actividad Reciente en Foros">
                 <ul className="space-y-4">
@@ -1710,6 +1842,74 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
     )
 };
 
+const PreceptorProceduresPage: React.FC<{
+    requests: ProcedureRequest[];
+    onManageProcedure: (id: string, action: 'approve' | 'reject') => void;
+    onBack: () => void;
+}> = ({ requests, onManageProcedure, onBack }) => {
+    const [filter, setFilter] = useState<'pending' | 'approved' | 'rejected' | 'all'>('pending');
+
+    const filteredRequests = useMemo(() => {
+        if (filter === 'all') return requests;
+        return requests.filter(req => req.status === filter);
+    }, [requests, filter]);
+
+    const getStatusChip = (status: ProcedureRequest['status']) => {
+        const styles: Record<typeof status, string> = {
+            pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
+            approved: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
+            rejected: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
+        };
+        return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[status]}`}>{status}</span>;
+    };
+
+    return (
+        <div>
+            <PageHeader title="Gestión de Trámites" onBack={onBack} />
+            <Card>
+                <div className="flex space-x-2 border-b dark:border-dark-border mb-4 pb-3">
+                    {(['pending', 'approved', 'rejected', 'all'] as const).map(tab => (
+                        <button
+                            key={tab}
+                            onClick={() => setFilter(tab)}
+                            className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize ${filter === tab ? 'bg-brand-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                        >
+                            {tab === 'all' ? 'Todos' : tab}
+                        </button>
+                    ))}
+                </div>
+
+                {filteredRequests.length > 0 ? (
+                    <ul className="space-y-3">
+                        {filteredRequests.map(req => (
+                            <li key={req.id} className="p-4 bg-light-bg dark:bg-dark-bg rounded-md">
+                                <div className="flex flex-wrap justify-between items-start gap-2">
+                                    <div>
+                                        <p className="font-semibold">{req.studentName}</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">{req.type}</p>
+                                        <p className="text-xs text-gray-500 mt-1">{req.date}</p>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        {getStatusChip(req.status)}
+                                        {req.status === 'pending' && (
+                                            <div className="flex gap-2">
+                                                <button onClick={() => onManageProcedure(req.id, 'approve')} className="px-2 py-1 text-xs rounded-full bg-accent-green text-white hover:bg-green-600">Aprobar</button>
+                                                <button onClick={() => onManageProcedure(req.id, 'reject')} className="px-2 py-1 text-xs rounded-full bg-accent-red text-white hover:bg-red-600">Rechazar</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="text-center text-gray-500 py-6">No hay solicitudes que coincidan con el filtro.</p>
+                )}
+            </Card>
+        </div>
+    );
+};
+
 
 const PreceptorDashboard: React.FC<{ 
     user: User; 
@@ -1718,7 +1918,12 @@ const PreceptorDashboard: React.FC<{
     onContactStudent: (student: UnderperformingStudent) => void;
     onShowCommunications: () => void;
     navigate: (page: Page) => void;
-}> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate }) => {
+    pendingProcedures: ProcedureRequest[];
+    onManageProcedure: (id: string, action: 'approve' | 'reject') => void;
+    forumPosts: ForumPost[];
+}> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate, pendingProcedures, onManageProcedure, forumPosts }) => {
+    
+    const recentPosts = forumPosts.slice(0, 3);
     
     return (
         <div className="space-y-6">
@@ -1728,6 +1933,21 @@ const PreceptorDashboard: React.FC<{
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="lg:col-span-2">
+                    <Card title="Acciones Rápidas">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                                <ClipboardDocumentCheckIcon className="w-8 h-8 mb-2 text-brand-primary" />
+                                <span className="font-semibold text-center">Ver Asistencia General</span>
+                            </button>
+                             <button onClick={onShowCommunications} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                                <MegaphoneIcon className="w-8 h-8 mb-2 text-accent-purple" />
+                                <span className="font-semibold text-center">Enviar Comunicado</span>
+                            </button>
+                        </div>
+                    </Card>
+                </div>
+                
                 <Card title="Justificaciones Pendientes">
                     {pendingJustifications.length > 0 ? (
                         <ul className="space-y-3 max-h-80 overflow-y-auto">
@@ -1744,6 +1964,23 @@ const PreceptorDashboard: React.FC<{
                             ))}
                         </ul>
                     ) : <p className="text-gray-500 text-center py-4">No hay justificaciones pendientes.</p>}
+                </Card>
+
+                <Card title="Solicitudes de Trámites">
+                    {pendingProcedures.length > 0 ? (
+                        <ul className="space-y-3 max-h-80 overflow-y-auto">
+                            {pendingProcedures.map(req => (
+                                <li key={req.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                    <p className="font-semibold">{req.studentName}</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">{req.type} - {req.date}</p>
+                                    <div className="flex gap-2 mt-3">
+                                        <button onClick={() => onManageProcedure(req.id, 'approve')} className="px-2 py-1 text-xs rounded-full bg-accent-green text-white hover:bg-green-600">Aprobar</button>
+                                        <button onClick={() => onManageProcedure(req.id, 'reject')} className="px-2 py-1 text-xs rounded-full bg-accent-red text-white hover:bg-red-600">Rechazar</button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : <p className="text-gray-500 text-center py-4">No hay solicitudes pendientes.</p>}
                 </Card>
 
                 <Card title="Alumnos en Observación">
@@ -1765,20 +2002,26 @@ const PreceptorDashboard: React.FC<{
                     </ul>
                 </Card>
 
-                <div className="lg:col-span-2">
-                    <Card title="Acciones Rápidas">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
-                                <ClipboardDocumentCheckIcon className="w-8 h-8 mb-2 text-brand-primary" />
-                                <span className="font-semibold text-center">Ver Asistencia General</span>
-                            </button>
-                             <button onClick={onShowCommunications} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
-                                <MegaphoneIcon className="w-8 h-8 mb-2 text-accent-purple" />
-                                <span className="font-semibold text-center">Enviar Comunicado</span>
-                            </button>
-                        </div>
-                    </Card>
-                </div>
+                <Card title="Actividad Reciente en Foros">
+                    {recentPosts.length > 0 ? (
+                        <ul className="space-y-4 max-h-80 overflow-y-auto">
+                            {recentPosts.map(post => (
+                                <li key={post.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                    <h4 className="font-semibold">{post.title}</h4>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                        en <span className="font-medium">{post.category}</span> por {post.author}
+                                    </p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : <p className="text-center text-gray-500 py-4">No hay actividad reciente en los foros.</p>}
+                    <button 
+                        onClick={() => navigate('foros')} 
+                        className="w-full mt-4 px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary"
+                    >
+                        Ir a los Foros
+                    </button>
+                </Card>
 
             </div>
         </div>
@@ -1790,17 +2033,33 @@ const PreceptorDashboard: React.FC<{
 const Header: React.FC<{ user: User; onLogout: () => void; theme: string; toggleTheme: () => void; navigate: (page: Page) => void; isSubPage: boolean; notifications: Notification[] }> = ({ user, onLogout, theme, toggleTheme, navigate, isSubPage, notifications }) => {
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
     
     return (
-        <header className={`sticky top-0 z-20 flex items-center justify-between p-4 bg-light-card dark:bg-dark-card shadow-md ${isSubPage ? 'md:hidden' : ''}`}>
-            <div className="flex items-center space-x-2">
+        <header className={`sticky top-0 z-20 flex items-center justify-between p-4 shadow-md transition-all duration-300 ${isSubPage ? 'md:hidden' : ''} ${isScrolled ? 'bg-light-card/80 dark:bg-dark-card/80 backdrop-blur-sm' : 'bg-light-card dark:bg-dark-card'}`}>
+            <div className="flex items-center space-x-4">
                 <AcademicCapIcon className="w-8 h-8 text-brand-primary"/>
                 <span className="text-xl font-bold hidden sm:inline">Portal del Instituto</span>
-            </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-                <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                 <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
                 </button>
+            </div>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+                {user.role !== 'preceptor' && (
+                    <button onClick={() => navigate('mensajes')} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="Mensajes">
+                        <InboxIcon className="w-6 h-6" />
+                    </button>
+                )}
                 <div className="relative">
                      <button onClick={() => setNotificationsOpen(o => !o)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <BellIcon className="w-6 h-6" />
@@ -1855,16 +2114,15 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
         { name: 'Panel Principal', page: 'panel', icon: <ChartBarIcon className="w-5 h-5"/> }, 
         { name: 'Calificaciones', page: 'calificaciones', icon: <AcademicCapIcon className="w-5 h-5"/> }, 
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5"/> },
-        { name: 'Biblioteca', page: 'materiales', icon: <BookOpenIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
         { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> }, 
+        { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-5 h-5"/> },
     ];
 
     const profesorLinks: NavLink[] = [
         { name: 'Panel Principal', page: 'panel', icon: <ChartBarIcon className="w-5 h-5"/> }, 
         { name: 'Calificaciones', page: 'calificaciones', icon: <PencilSquareIcon className="w-5 h-5"/> }, 
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5"/> },
-        { name: 'Materiales', page: 'materiales', icon: <BookOpenIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
         { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> }, 
         { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> }
@@ -1873,9 +2131,8 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
     const preceptorLinks: NavLink[] = [
         { name: 'Panel Principal', page: 'panel', icon: <ChartBarIcon className="w-5 h-5"/> },
         { name: 'Asistencia', page: 'asistencia-general', icon: <CheckBadgeIcon className="w-5 h-5"/> },
+        { name: 'Trámites', page: 'trámites', icon: <DocumentTextIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> },
-        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> }
     ];
 
     const links = user.role === 'alumno' ? alumnoLinks : user.role === 'profesor' ? profesorLinks : preceptorLinks;
@@ -1918,25 +2175,23 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
     const alumnoLinks: NavLink[] = [
         { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
         { name: 'Notas', page: 'calificaciones', icon: <AcademicCapIcon className="w-5 h-5" /> },
-        { name: 'Biblioteca', page: 'materiales', icon: <BookOpenIcon className="w-5 h-5" /> },
+        { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5" /> },
+        { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-5 h-5" /> },
     ];
 
     const profesorLinks: NavLink[] = [
         { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
         { name: 'Notas', page: 'calificaciones', icon: <PencilSquareIcon className="w-5 h-5" /> },
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
-        { name: 'Materiales', page: 'materiales', icon: <BookOpenIcon className="w-5 h-5" /> },
         { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5" /> },
     ];
 
     const preceptorLinks: NavLink[] = [
         { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5"/> },
         { name: 'Asistencia', page: 'asistencia-general', icon: <CheckBadgeIcon className="w-5 h-5"/> },
+        { name: 'Trámites', page: 'trámites', icon: <DocumentTextIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> },
-        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> }
     ];
     
     const links = user.role === 'alumno' ? alumnoLinks : user.role === 'profesor' ? profesorLinks : preceptorLinks;
@@ -2057,6 +2312,7 @@ const App: React.FC = () => {
     
     // Preceptor specific state
     const [pendingJustifications, setPendingJustifications] = useState<PendingJustification[]>(MOCK_PENDING_JUSTIFICATIONS);
+    const [procedureRequests, setProcedureRequests] = useState<ProcedureRequest[]>(MOCK_PROCEDURE_REQUESTS);
     const [isCommModalOpen, setCommModalOpen] = useState(false);
     const [isContactStudentModalOpen, setContactStudentModalOpen] = useState(false);
     const [selectedStudentToContact, setSelectedStudentToContact] = useState<UnderperformingStudent | null>(null);
@@ -2111,6 +2367,11 @@ const App: React.FC = () => {
         setPendingJustifications(prev => prev.filter(j => j.id !== id));
     };
 
+    const handleManageProcedure = (id: string, action: 'approve' | 'reject') => {
+        alert(`Solicitud ${action === 'approve' ? 'aprobada' : 'rechazada'}.`);
+        setProcedureRequests(prev => prev.map(req => req.id === id ? { ...req, status: action === 'approve' ? 'approved' : 'rejected' } : req));
+    };
+
     const handleContactStudent = (student: UnderperformingStudent) => {
         setSelectedStudentToContact(student);
         setContactStudentModalOpen(true);
@@ -2138,6 +2399,20 @@ const App: React.FC = () => {
         setCalendarEvents(prev => [...prev, newEvent].sort((a,b) => a.day - b.day));
 
         alert(`Comunicado sobre "${subject}" enviado a ${recipient}.`);
+    };
+
+     const handleRequestProcedure = (type: ProcedureRequest['type']) => {
+        if (!user) return;
+        const newRequest: ProcedureRequest = {
+            id: `pr-${Date.now()}`,
+            studentId: user.id,
+            studentName: user.name,
+            type,
+            date: new Date().toLocaleDateString('es-AR'),
+            status: 'pending',
+        };
+        setProcedureRequests(prev => [newRequest, ...prev]);
+        alert(`Tu solicitud de "${type}" ha sido enviada. Recibirás una notificación cuando sea procesada.`);
     };
 
     useEffect(() => {
@@ -2222,7 +2497,7 @@ const App: React.FC = () => {
     const renderCurrentPage = () => {
         if (user.role === 'profesor') {
             switch(currentPage) {
-                case 'panel': return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} />;
+                case 'panel': return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} />;
                 case 'calificaciones': return <TeacherGradesPage onBack={() => setCurrentPage('panel')} />;
                 case 'asistencia': return <TeacherAttendancePage onBack={() => setCurrentPage('panel')} />;
                 case 'materiales': return <TeacherMaterialsPage materials={materials} onUploadClick={() => setUploadModalOpen(true)} onBack={() => setCurrentPage('panel')} />;
@@ -2230,7 +2505,7 @@ const App: React.FC = () => {
                 case 'mensajes': return <MessagesPage currentUser={user} />;
                 case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
                 case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-                default: return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} />;
+                default: return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} />;
             }
         }
         if (user.role === 'preceptor') {
@@ -2242,10 +2517,13 @@ const App: React.FC = () => {
                                         onContactStudent={handleContactStudent}
                                         onShowCommunications={() => setCommModalOpen(true)}
                                         navigate={setCurrentPage}
+                                        pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
+                                        onManageProcedure={handleManageProcedure}
+                                        forumPosts={forumPostsForUser}
                                     />;
                 case 'asistencia-general': return <PreceptorAttendancePage onBack={() => setCurrentPage('panel')} />;
+                case 'trámites': return <PreceptorProceduresPage requests={procedureRequests} onManageProcedure={handleManageProcedure} onBack={() => setCurrentPage('panel')} />;
                 case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setTeacherAddEventModalOpen(true)} />;
-                case 'mensajes': return <MessagesPage currentUser={user} />;
                 case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
                 case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
                 default: return <PreceptorDashboard 
@@ -2255,25 +2533,28 @@ const App: React.FC = () => {
                                     onContactStudent={handleContactStudent}
                                     onShowCommunications={() => setCommModalOpen(true)}
                                     navigate={setCurrentPage}
+                                    pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
+                                    onManageProcedure={handleManageProcedure}
+                                    forumPosts={forumPostsForUser}
                                 />;
             }
         }
 
         // Alumno role pages
         switch (currentPage) {
-            case 'panel': return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} />;
+            case 'panel': return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} />;
             case 'calificaciones': return <GradesPage />;
             case 'asistencia': return <AttendancePage />;
             case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setAddEventModalOpen(true)} />;
-            case 'materiales': return <MaterialsPage materials={materials} />;
             case 'mensajes': return <MessagesPage currentUser={user} />;
             case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
+            case 'trámites': return <ProceduresPage onRequest={handleRequestProcedure} navigate={setCurrentPage} />;
             case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-            default: return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} />;
+            default: return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} />;
         }
     };
     
-    const isSubPage = (user.role === 'profesor' && (currentPage === 'calificaciones' || currentPage === 'asistencia' || currentPage === 'materiales')) || (user.role === 'preceptor' && currentPage === 'asistencia-general');
+    const isSubPage = (user.role === 'profesor' && (currentPage === 'calificaciones' || currentPage === 'asistencia' || currentPage === 'materiales')) || (user.role === 'preceptor' && (currentPage === 'asistencia-general' || currentPage === 'trámites'));
 
 
     if (currentPage === 'perfil' || isSubPage) {

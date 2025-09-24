@@ -31,6 +31,7 @@ export interface Grade {
     assignment: string;
     grade: number | string;
     semester: 1 | 2;
+    year: string;
 }
 
 export interface Attendance {
@@ -38,6 +39,7 @@ export interface Attendance {
     date: string;
     subject: string;
     status: 'presente' | 'ausente' | 'tarde' | 'justificado';
+    year: string;
 }
 
 export interface Material {
@@ -162,4 +164,13 @@ export interface UnderperformingStudent {
   name: string;
   reason: string; // e.g., 'Bajo Promedio', 'Inasistencias'
   value: string; // e.g., '5.5 Promedio', '5 Faltas'
+}
+
+export interface ProcedureRequest {
+  id: string;
+  studentId: string;
+  studentName: string;
+  type: 'Constancia de Aluno Regular' | 'Solicitud de Mesa Especial' | 'Baja de Materia' | 'Consulta de Legajo';
+  date: string;
+  status: 'pending' | 'approved' | 'rejected';
 }
