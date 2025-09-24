@@ -139,6 +139,12 @@ const FacebookIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
+const ArrowDownTrayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
+);
+
 
 type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites';
 
@@ -1360,9 +1366,12 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const subjects = Object.keys(MOCK_COURSE_GRADES);
     const [selectedSubject, setSelectedSubject] = useState<string>(subjects[0]);
     const [grades, setGrades] = useState<StudentGradeRecord[]>(MOCK_COURSE_GRADES[subjects[0]]);
+    const [isSaving, setIsSaving] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         setGrades(MOCK_COURSE_GRADES[selectedSubject]);
+        setShowSuccessMessage(false); // Reset success state when subject changes
     }, [selectedSubject]);
 
     const handleGradeChange = (studentId: string, semester: 'semester1' | 'semester2', value: string) => {
@@ -1378,7 +1387,17 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     };
     
     const handleSaveChanges = () => {
-        alert(`Notas para "${selectedSubject}" guardadas correctamente.`);
+        setIsSaving(true);
+        setShowSuccessMessage(false);
+
+        setTimeout(() => {
+            setIsSaving(false);
+            setShowSuccessMessage(true);
+            
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 5000);
+        }, 1500);
     };
 
     return (
@@ -1452,10 +1471,29 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     </div>
                 </div>
 
-                <div className="flex justify-end mt-6">
-                    <button onClick={handleSaveChanges} className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors">
-                        Guardar Cambios
-                    </button>
+                <div className="flex justify-end mt-6 items-center gap-4">
+                     {showSuccessMessage ? (
+                        <div className="flex items-center gap-4 animate-fade-in">
+                            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                                <CheckBadgeIcon className="w-5 h-5" />
+                                <span className="text-sm font-semibold">Guardado con éxito</span>
+                            </div>
+                            <button 
+                                onClick={() => alert('Descargando PDF de calificaciones...')}
+                                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition-colors text-sm"
+                            >
+                                <ArrowDownTrayIcon className="w-4 h-4" />
+                                Descargar PDF
+                            </button>
+                        </div>
+                    ) : (
+                        <button 
+                            onClick={handleSaveChanges} 
+                            disabled={isSaving}
+                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                            {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                        </button>
+                    )}
                 </div>
             </Card>
         </div>
@@ -1466,9 +1504,12 @@ const TeacherAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => 
     const subjects = Object.keys(MOCK_COURSE_ATTENDANCE);
     const [selectedSubject, setSelectedSubject] = useState<string>(subjects[0]);
     const [attendance, setAttendance] = useState<StudentAttendanceRecord[]>(MOCK_COURSE_ATTENDANCE[subjects[0]]);
+    const [isSaving, setIsSaving] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         setAttendance(MOCK_COURSE_ATTENDANCE[selectedSubject]);
+        setShowSuccessMessage(false);
     }, [selectedSubject]);
     
     const handleStatusChange = (studentId: string, status: StudentAttendanceRecord['status']) => {
@@ -1478,7 +1519,17 @@ const TeacherAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => 
     };
 
     const handleSaveChanges = () => {
-        alert(`Asistencia para "${selectedSubject}" guardada correctamente.`);
+        setIsSaving(true);
+        setShowSuccessMessage(false);
+
+        setTimeout(() => {
+            setIsSaving(false);
+            setShowSuccessMessage(true);
+            
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 5000);
+        }, 1500);
     };
     
     const statusClasses = {
@@ -1527,10 +1578,29 @@ const TeacherAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                     </div>
                 </div>
 
-                <div className="flex justify-end mt-6">
-                    <button onClick={handleSaveChanges} className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors">
-                        Guardar Cambios
-                    </button>
+                <div className="flex justify-end mt-6 items-center gap-4">
+                    {showSuccessMessage ? (
+                        <div className="flex items-center gap-4 animate-fade-in">
+                            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                                <CheckBadgeIcon className="w-5 h-5" />
+                                <span className="text-sm font-semibold">Guardado con éxito</span>
+                            </div>
+                            <button 
+                                onClick={() => alert('Descargando PDF de asistencia...')}
+                                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition-colors text-sm"
+                            >
+                                <ArrowDownTrayIcon className="w-4 h-4" />
+                                Descargar PDF
+                            </button>
+                        </div>
+                    ) : (
+                        <button 
+                            onClick={handleSaveChanges} 
+                            disabled={isSaving}
+                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                            {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                        </button>
+                    )}
                 </div>
 
             </Card>
@@ -1855,12 +1925,11 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
         setTimeout(() => {
             setIsSaving(false);
             setShowSuccessMessage(true);
-            alert(`Asistencia para "${selectedSubject}" de "${selectedYear}" del día ${selectedDate} guardada correctamente.`);
             
             setTimeout(() => {
                 setShowSuccessMessage(false);
-            }, 3000);
-        }, 1500); // Simulate network delay
+            }, 5000);
+        }, 1500);
     };
 
     return (
@@ -1937,18 +2006,28 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
                 </div>
 
                 <div className="flex justify-end mt-6 items-center gap-4">
-                    {showSuccessMessage && (
-                        <div className="flex items-center gap-2 text-green-600 dark:text-green-400 animate-fade-in">
-                            <CheckBadgeIcon className="w-5 h-5" />
-                            <span className="text-sm font-semibold">Guardado con éxito</span>
+                     {showSuccessMessage ? (
+                        <div className="flex items-center gap-4 animate-fade-in">
+                            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                                <CheckBadgeIcon className="w-5 h-5" />
+                                <span className="text-sm font-semibold">Guardado con éxito</span>
+                            </div>
+                            <button 
+                                onClick={() => alert('Descargando PDF de asistencia...')}
+                                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition-colors text-sm"
+                            >
+                                <ArrowDownTrayIcon className="w-4 h-4" />
+                                Descargar PDF
+                            </button>
                         </div>
+                    ) : (
+                        <button 
+                            onClick={handleSaveChanges} 
+                            disabled={isSaving || attendance.length === 0}
+                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                            {isSaving ? 'Guardando...' : 'Guardar'}
+                        </button>
                     )}
-                    <button 
-                        onClick={handleSaveChanges} 
-                        disabled={isSaving || attendance.length === 0}
-                        className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
-                        {isSaving ? 'Guardando...' : 'Guardar'}
-                    </button>
                 </div>
             </Card>
         </div>
