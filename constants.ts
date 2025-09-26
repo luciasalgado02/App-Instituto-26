@@ -62,6 +62,8 @@ export const MOCK_STUDENT_DATA: StudentData = {
         { id: 'att6', date: '04/08/2024', subject: 'Programación I', status: 'presente', year: '2do Año' },
         { id: 'att7', date: '05/08/2024', subject: 'Análisis Matemático', status: 'ausente', year: '1er Año' },
         { id: 'att8', date: '05/08/2024', subject: 'Física I', status: 'presente', year: '1er Año' },
+        { id: 'att9', date: '06/08/2024', subject: 'Programación I', status: 'ausente', year: '2do Año' },
+        { id: 'att10', date: '07/08/2024', subject: 'Bases de Datos', status: 'ausente', year: '2do Año' },
     ]
 };
 
