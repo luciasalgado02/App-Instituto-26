@@ -2140,7 +2140,7 @@ const PreceptorDashboard: React.FC<{
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="lg:col-span-2">
                     <Card title="Acciones Rápidas">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
                                 <ClipboardDocumentCheckIcon className="w-8 h-8 mb-2 text-brand-primary" />
                                 <span className="font-semibold text-center">Ver Asistencia General</span>
@@ -2148,6 +2148,10 @@ const PreceptorDashboard: React.FC<{
                              <button onClick={onShowCommunications} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
                                 <MegaphoneIcon className="w-8 h-8 mb-2 text-accent-purple" />
                                 <span className="font-semibold text-center">Enviar Comunicado</span>
+                            </button>
+                            <button onClick={() => navigate('agenda')} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                                <CalendarDaysIcon className="w-8 h-8 mb-2 text-accent-blue" />
+                                <span className="font-semibold text-center">Ver Agenda</span>
                             </button>
                         </div>
                     </Card>
