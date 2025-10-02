@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
-import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS } from './constants';
+import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
 
 // --- ICONS (as components for reusability) ---
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -42,12 +42,17 @@ const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 const ChartBarIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125-1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
     </svg>
 );
 const CheckBadgeIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
+const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 );
 const InboxIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -146,7 +151,7 @@ const ArrowDownTrayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 
 
-type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites';
+type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites' | 'alumno-perfil';
 
 // --- REUSABLE UI COMPONENTS ---
 const Card: React.FC<{ title?: string; children: React.ReactNode; className?: string; }> = ({ title, children, className = '' }) => (
@@ -1863,7 +1868,8 @@ const ContactStudentModal: React.FC<{ isOpen: boolean; onClose: () => void; stud
     );
 };
 
-const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (studentId: string) => void }> = ({ onBack, onViewProfile }) => {
+    const allStudents = useMemo(() => MOCK_USERS.alumno, []);
     const careers = useMemo(() => MOCK_CAREERS.map(c => c.name), []);
     const [selectedCareer, setSelectedCareer] = useState<string>(careers[0]);
     const [isSaving, setIsSaving] = useState(false);
@@ -1911,8 +1917,8 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
         }
     }, [selectedYear, selectedSubject]);
 
-    const handleStatusChange = (studentId: string, status: 'P' | 'A' | 'T') => {
-        const statusMap = { 'P': 'presente', 'A': 'ausente', 'T': 'tarde' } as const;
+    const handleStatusChange = (studentId: string, status: 'P' | 'A' | 'T' | 'J') => {
+        const statusMap = { 'P': 'presente', 'A': 'ausente', 'T': 'tarde', 'J': 'justificado' } as const;
         setAttendance(prev => 
             prev.map(student => student.id === studentId ? {...student, status: statusMap[status]} : student)
         );
@@ -1974,19 +1980,28 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
                             </tr>
                         </thead>
                         <tbody className="divide-y dark:divide-dark-border">
-                            {attendance.length > 0 ? attendance.map(student => (
+                            {attendance.length > 0 ? attendance.map(student => {
+                                const studentData = allStudents.find(s => s.id === student.id);
+                                return (
                                 <tr key={student.id}>
-                                    <td className="p-3 font-medium">{student.name}</td>
+                                    <td className="p-3">
+                                        <button onClick={() => onViewProfile(student.id)} className="font-medium text-left text-brand-primary hover:underline">
+                                            {student.name}
+                                        </button>
+                                        <span className="block text-xs text-gray-500 dark:text-gray-400">
+                                            Legajo: {studentData?.legajo || 'N/A'}
+                                        </span>
+                                    </td>
                                     <td className="p-3">
                                         <div className="flex justify-end items-center gap-4">
-                                            {['P', 'A', 'T'].map(status => {
-                                                const statusMap = { 'P': 'presente', 'A': 'ausente', 'T': 'tarde' };
-                                                const isSelected = student.status === statusMap[status as 'P' | 'A' | 'T'];
+                                            {['P', 'A', 'T', 'J'].map(status => {
+                                                const statusMap = { 'P': 'presente', 'A': 'ausente', 'T': 'tarde', 'J': 'justificado' };
+                                                const isSelected = student.status === statusMap[status as 'P' | 'A' | 'T' | 'J'];
                                                 return (
                                                     <label key={status} className="flex items-center gap-2 cursor-pointer">
                                                         <input type="radio" name={`attendance-${student.id}`} 
                                                             checked={isSelected}
-                                                            onChange={() => handleStatusChange(student.id, status as 'P' | 'A' | 'T')}
+                                                            onChange={() => handleStatusChange(student.id, status as 'P' | 'A' | 'T' | 'J')}
                                                             className="h-4 w-4 accent-brand-primary"
                                                         />
                                                         {status}
@@ -1996,7 +2011,7 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) =
                                         </div>
                                     </td>
                                 </tr>
-                            )) : (
+                            )}) : (
                                 <tr>
                                     <td colSpan={2} className="p-4 text-center text-gray-500">No hay alumnos para la selección actual.</td>
                                 </tr>
@@ -2217,6 +2232,91 @@ const PreceptorDashboard: React.FC<{
         </div>
     );
 };
+
+const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () => void; }> = ({ studentId, onBack }) => {
+    const profileData = MOCK_STUDENT_PROFILE_DATA[studentId] || MOCK_STUDENT_PROFILE_DATA['default'];
+
+    const ProgressBar: React.FC<{ value: number }> = ({ value }) => (
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+            <div className="bg-brand-primary h-2.5 rounded-full" style={{ width: `${value}%` }}></div>
+        </div>
+    );
+    
+    return (
+        <div>
+            <PageHeader title="Perfil del Alumno" onBack={onBack} />
+            <div className="space-y-6">
+                <Card>
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                        <img src={profileData.avatarUrl} alt={profileData.name} className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"/>
+                        <div className="text-center sm:text-left">
+                            <h2 className="text-2xl sm:text-3xl font-bold">{profileData.name}</h2>
+                            <p className="text-md text-gray-500 dark:text-gray-400">Legajo: {profileData.legajo}</p>
+                        </div>
+                    </div>
+                </Card>
+                <Card title="Asistencia por Materia">
+                    <ul className="space-y-4">
+                        {profileData.attendanceBySubject.map((item: any) => (
+                            <li key={item.subject}>
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="font-medium">{item.subject}</span>
+                                    <span className="text-sm font-semibold text-brand-primary">{item.percentage}%</span>
+                                </div>
+                                <ProgressBar value={item.percentage} />
+                            </li>
+                        ))}
+                    </ul>
+                </Card>
+                <Card title="Notas de Parciales">
+                    <ul className="space-y-3">
+                        {profileData.partialGrades.map((grade: any) => (
+                             <li key={grade.id} className="flex justify-between items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                <div>
+                                    <p className="font-semibold">{grade.title}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{grade.date}</p>
+                                </div>
+                                <span className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold text-white ${grade.grade >= 7 ? 'bg-accent-green' : 'bg-accent-yellow'}`}>
+                                    {grade.grade}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </Card>
+                <Card title="Inscripción a Finales">
+                    <ul className="space-y-3">
+                        {profileData.finalExams.map((exam: any) => (
+                             <li key={exam.subject} className="flex justify-between items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                <span className="font-medium">{exam.subject}</span>
+                                {exam.enrolled ? (
+                                    <span className="flex items-center gap-2 text-sm text-accent-green">
+                                        <CheckBadgeIcon className="w-5 h-5"/> Inscripto
+                                    </span>
+                                ) : (
+                                    <span className="flex items-center gap-2 text-sm text-accent-red">
+                                        <XCircleIcon className="w-5 h-5"/> No Inscripto
+                                    </span>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </Card>
+                <Card title="Historial de Justificaciones">
+                     {profileData.justifications.length > 0 ? (
+                        <ul className="space-y-2">
+                             {profileData.justifications.map((just: any) => <li key={just.id}>{just.reason}</li>)}
+                        </ul>
+                    ) : (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">El alumno no ha enviado justificaciones.</p>
+                    )}
+                </Card>
+                <Card title="Historial de Mensajes">
+                     <p className="text-sm text-gray-500 dark:text-gray-400">El historial de mensajes no está disponible.</p>
+                </Card>
+            </div>
+        </div>
+    )
+}
 
 
 // --- LAYOUT COMPONENTS ---
@@ -2499,6 +2599,7 @@ const App: React.FC = () => {
     const [isPendingModalOpen, setPendingModalOpen] = useState(false);
     const [isUploadModalOpen, setUploadModalOpen] = useState(false);
     const [selectedCourseSummary, setSelectedCourseSummary] = useState<TeacherSummary | null>(null);
+    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
     
     // Preceptor specific state
     const [pendingJustifications, setPendingJustifications] = useState<PendingJustification[]>(MOCK_PENDING_JUSTIFICATIONS);
@@ -2711,11 +2812,12 @@ const App: React.FC = () => {
                                         onManageProcedure={handleManageProcedure}
                                         forumPosts={forumPostsForUser}
                                     />;
-                case 'asistencia-general': return <PreceptorAttendancePage onBack={() => setCurrentPage('panel')} />;
+                case 'asistencia-general': return <PreceptorAttendancePage onBack={() => setCurrentPage('panel')} onViewProfile={(studentId) => { setSelectedStudentId(studentId); setCurrentPage('alumno-perfil'); }} />;
                 case 'trámites': return <PreceptorProceduresPage requests={procedureRequests} onManageProcedure={handleManageProcedure} onBack={() => setCurrentPage('panel')} />;
                 case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setTeacherAddEventModalOpen(true)} />;
                 case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
                 case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
+                case 'alumno-perfil': return selectedStudentId ? <StudentProfilePageForPreceptor studentId={selectedStudentId} onBack={() => { setCurrentPage('asistencia-general'); setSelectedStudentId(null); }} /> : <p>Error: No se ha seleccionado un alumno.</p>;
                 default: return <PreceptorDashboard 
                                     user={user} 
                                     pendingJustifications={pendingJustifications}
@@ -2744,7 +2846,7 @@ const App: React.FC = () => {
         }
     };
     
-    const isSubPage = (user.role === 'profesor' && (currentPage === 'calificaciones' || currentPage === 'asistencia' || currentPage === 'materiales')) || (user.role === 'preceptor' && (currentPage === 'asistencia-general' || currentPage === 'trámites'));
+    const isSubPage = (user.role === 'profesor' && (currentPage === 'calificaciones' || currentPage === 'asistencia' || currentPage === 'materiales')) || (user.role === 'preceptor' && (currentPage === 'asistencia-general' || currentPage === 'trámites' || currentPage === 'alumno-perfil'));
 
 
     if (currentPage === 'perfil' || isSubPage) {

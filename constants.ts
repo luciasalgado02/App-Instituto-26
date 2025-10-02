@@ -2,24 +2,77 @@ import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, 
 
 export const MOCK_USERS: Record<Role, User[]> = {
     alumno: [
-        { id: 's1', name: 'Ana Pérez', email: 'alumno@example.com', role: 'alumno', dni: '12.345.678', about: 'Estudiante de segundo año apasionada por el desarrollo de software y las bases de datos.', career: 'Tecnicatura Superior en Desarrollo de Software' },
-        { id: 's2', name: 'Juan Rodriguez', email: 'juan.r@example.com', role: 'alumno' },
-        { id: 's3', name: 'Maria Garcia', email: 'maria.g@example.com', role: 'alumno' },
-        { id: 's4', name: 'Pedro Sanchez', email: 'pedro.s@example.com', role: 'alumno' },
-        { id: 's5', name: 'Lucia Fernandez', email: 'lucia.f@example.com', role: 'alumno' },
-        { id: 's6', name: 'David Martinez', email: 'david.m@example.com', role: 'alumno' },
-        { id: 's7', name: 'Sofia Lopez', email: 'sofia.l@example.com', role: 'alumno' },
-        { id: 's8', name: 'Matias Gonzalez', email: 'matias.g@example.com', role: 'alumno' },
-        { id: 's9', name: 'Valentina Romero', email: 'valentina.r@example.com', role: 'alumno' },
+        { id: 's1', name: 'Ana Pérez', email: 'alumno@example.com', role: 'alumno', legajo: '22344', dni: '12.345.678', about: 'Estudiante de segundo año apasionada por el desarrollo de software y las bases de datos.', career: 'Tecnicatura Superior en Desarrollo de Software' },
+        { id: 's2', name: 'Juan Rodriguez', email: 'juan.r@example.com', role: 'alumno', legajo: '22346' },
+        { id: 's3', name: 'Maria Garcia', email: 'maria.g@example.com', role: 'alumno', legajo: '22347' },
+        { id: 's4', name: 'Pedro Sanchez', email: 'pedro.s@example.com', role: 'alumno', legajo: '22348' },
+        { id: 's5', name: 'Lucia Fernandez', email: 'lucia.f@example.com', role: 'alumno', legajo: '22349' },
+        { id: 's6', name: 'David Martinez', email: 'david.m@example.com', role: 'alumno', legajo: '22350' },
+        { id: 's7', name: 'Sofia Lopez', email: 'sofia.l@example.com', role: 'alumno', legajo: '22351' },
+        { id: 's8', name: 'Matias Gonzalez', email: 'matias.g@example.com', role: 'alumno', legajo: '22352' },
+        { id: 's9', name: 'Valentina Romero', email: 'valentina.r@example.com', role: 'alumno', legajo: '22353' },
+        { id: 's10', name: 'Carlos García', email: 'carlos.g@example.com', role: 'alumno', legajo: '22354' },
+        { id: 's11', name: 'Laura Rodriguez', email: 'laura.r@example.com', role: 'alumno', legajo: '22355' },
+        { id: 's12', name: 'Miguel Fernandez', email: 'miguel.f@example.com', role: 'alumno', legajo: '22356' },
+        { id: 's13', name: 'Julieta Alvarez', email: 'julieta.a@example.com', role: 'alumno', legajo: '22357' },
+        { id: 's14', name: 'Diego Torres', email: 'diego.t@example.com', role: 'alumno', legajo: '22358' },
+        { id: 's15', name: 'Camila Diaz', email: 'camila.d@example.com', role: 'alumno', legajo: '22359' },
+        { id: 's16', name: 'Lucas Sosa', email: 'lucas.s@example.com', role: 'alumno', legajo: '22360' },
+        { id: 's17', name: 'Martina Rios', email: 'martina.r@example.com', role: 'alumno', legajo: '22361' },
+        { id: 's18', name: 'Benjamin Acosta', email: 'benjamin.a@example.com', role: 'alumno', legajo: '22362' },
+        { id: 's19', name: 'Victoria Benitez', email: 'victoria.b@example.com', role: 'alumno', legajo: '22363' },
+        { id: 's20', name: 'Valentina Sanchez', email: 'valentina.s@example.com', role: 'alumno', legajo: '22345', avatarUrl: 'https://i.pravatar.cc/150?u=valentina' },
     ],
     profesor: [
-        { id: 't1', name: 'Carlos Gómez', email: 'profesor@example.com', role: 'profesor' },
-        { id: 't2', name: 'Ricardo Diaz', email: 'profesor.diaz@example.com', role: 'profesor' },
-        { id: 't3', name: 'Profesor Particular', email: 'tutor@example.com', role: 'profesor' }
+        { id: 't1', name: 'Carlos Gómez', email: 'profesor@example.com', role: 'profesor', legajo: 'P001' },
+        { id: 't2', name: 'Ricardo Diaz', email: 'profesor.diaz@example.com', role: 'profesor', legajo: 'P002' },
+        { id: 't3', name: 'Profesor Particular', email: 'tutor@example.com', role: 'profesor', legajo: 'P003' }
     ],
     preceptor: [
-        { id: 'p1', name: 'Laura Martinez', email: 'preceptor@example.com', role: 'preceptor' }
+        { id: 'p1', name: 'Laura Martinez', email: 'preceptor@example.com', role: 'preceptor', legajo: 'PREC01' }
     ]
+};
+
+export const MOCK_STUDENT_PROFILE_DATA: Record<string, any> = {
+    's20': { // Valentina Sanchez
+        id: 's20',
+        name: 'Valentina Sanchez',
+        legajo: '22345',
+        avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        attendanceBySubject: [
+            { subject: 'Física', percentage: 100 },
+            { subject: 'Química', percentage: 100 },
+        ],
+        partialGrades: [
+            { id: 'pg1', title: 'Parcial 1 - Física', date: '17 de octubre', grade: 9 },
+            { id: 'pg2', title: 'Parcial 1 - Química', date: '14 de octubre', grade: 8 },
+        ],
+        finalExams: [
+            { subject: 'Física', enrolled: true },
+            { subject: 'Química', enrolled: false },
+        ],
+        justifications: [],
+        messages: [],
+    },
+     // Add more student profiles here if needed for navigation
+    'default': {
+        id: 'default',
+        name: 'Estudiante',
+        legajo: '00000',
+        avatarUrl: 'https://ui-avatars.com/api/?name=Estudiante&background=4f46e5&color=fff&size=128',
+        attendanceBySubject: [
+            { subject: 'Materia 1', percentage: 85 },
+            { subject: 'Materia 2', percentage: 92 },
+        ],
+        partialGrades: [
+            { id: 'pg1', title: 'Parcial 1', date: 'N/A', grade: 7 },
+        ],
+        finalExams: [
+            { subject: 'Materia 1', enrolled: true },
+        ],
+        justifications: [{id: 'just1', reason: 'Cita médica.'}],
+        messages: [],
+    }
 };
 
 export const MOCK_SUBJECTS_BY_YEAR: Record<string, string[]> = {
@@ -340,6 +393,7 @@ export const MOCK_PRECEPTOR_ATTENDANCE_DETAIL: Record<string, Record<string, Stu
       { id: 's15', name: 'Diaz, Camila', status: null },
       { id: 's18', name: 'Acosta, Benjamin', status: null },
       { id: 's19', name: 'Benitez, Victoria', status: null },
+      { id: 's20', name: 'Sanchez, Valentina', status: null },
     ]
   }
 };

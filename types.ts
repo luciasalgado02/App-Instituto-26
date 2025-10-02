@@ -9,6 +9,7 @@ export interface User {
   dni?: string;
   about?: string;
   career?: string;
+  legajo?: string;
 }
 
 export interface Subject {
@@ -143,7 +144,7 @@ export interface StudentGradeRecord {
 export interface StudentAttendanceRecord {
     id: string;
     name: string;
-    status: 'presente' | 'ausente' | 'tarde' | null;
+    status: 'presente' | 'ausente' | 'tarde' | 'justificado' | null;
 }
 
 export interface PendingJustification {
