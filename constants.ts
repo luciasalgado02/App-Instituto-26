@@ -127,8 +127,8 @@ export const MOCK_MATERIALS: Material[] = [
 ];
 
 export const MOCK_CONVERSATIONS: Conversation[] = [
-    { 
-        id: 'convo1', 
+    {
+        id: 'convo1',
         participants: { 's1': 'Ana Pérez', 't1': 'Carlos Gómez' },
         messages: [
             { id: 'msg1-1', senderId: 't1', text: 'Hola Ana, quería recordarte que la fecha límite para la entrega del TP N°1 es esta semana. Si tienes alguna duda o necesitas ayuda con algún punto, no dudes en consultarme en el foro o por este medio. Saludos, Prof. Gómez.', timestamp: '10:30' },
@@ -136,17 +136,29 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
             { id: 'msg1-3', senderId: 't1', text: 'Por supuesto, Ana. Lo vemos mañana sin falta.', timestamp: '10:35' },
         ],
         lastMessageSnippet: 'Por supuesto, Ana. Lo vemos...',
-        isRead: false 
+        isRead: false
     },
-    { 
-        id: 'convo2', 
+    {
+        id: 'convo2',
         participants: { 's1': 'Ana Pérez', 'p1': 'Laura Martinez' },
         messages: [
-            { id: 'msg2-1', senderId: 'p1', text: 'Estimados alumnos, les recordamos que deben entregar la documentación pendiente en la oficina de Preceptoría antes de fin de mes para completar su legajo. Muchas gracias.', timestamp: 'Ayer' }
+            { id: 'msg2-1', senderId: 'p1', text: 'Hola Ana, ¿cómo estás? Te escribo para recordarte que tenés pendiente la entrega de la foto 4x4 para tu legajo. Tenés tiempo hasta fin de mes para acercarla a preceptoría. ¡Saludos!', timestamp: 'Ayer' },
+            { id: 'msg2-2', senderId: 's1', text: 'Hola Laura! Muchas gracias por recordarme, esta semana la llevo sin falta. Saludos!', timestamp: 'Hoy' }
         ],
-        lastMessageSnippet: 'Estimados alumnos, les recordamos...',
-        isRead: true 
+        lastMessageSnippet: 'Hola Laura! Muchas gracias por...',
+        isRead: false
     },
+    {
+        id: 'convo3',
+        participants: { 't1': 'Carlos Gómez', 'p1': 'Laura Martinez' },
+        messages: [
+            { id: 'msg3-1', senderId: 't1', text: 'Hola Laura, ¿cómo estás? Necesitaría por favor el listado de alumnos de la comisión 2k1 de Programación I para verificar las entregas pendientes. Gracias.', timestamp: '09:15' },
+            { id: 'msg3-2', senderId: 'p1', text: '¡Hola Carlos! Enseguida te lo envío por correo. ¿Necesitas algún dato más además de nombre y legajo?', timestamp: '09:18' },
+            { id: 'msg3-3', senderId: 't1', text: 'Con eso es suficiente. ¡Muchas gracias por la rapidez!', timestamp: '09:20' },
+        ],
+        lastMessageSnippet: 'Con eso es suficiente. ¡Muchas...',
+        isRead: true
+    }
 ];
 
 export const MOCK_FORUM_POSTS: ForumPost[] = [

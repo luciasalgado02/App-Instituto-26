@@ -40,6 +40,18 @@ const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25c0 5.385 4.365 9.75 9.75 9.75 2.572 0 4.92-.99 6.697-2.648z" />
     </svg>
 );
+const PaletteIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402a3.75 3.75 0 00-.615-6.218L15 7.5l-6.402 6.402a3.75 3.75 0 000 5.304z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 7.5l-6.402 6.402a3.75 3.75 0 000 5.304l6.401-6.402a3.75 3.75 0 00-.615-6.218L15 7.5z" />
+    </svg>
+);
+const DevicePhoneMobileIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+  </svg>
+);
+
 const ChartBarIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125-1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
@@ -59,7 +71,7 @@ const InboxIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.12-1.588H6.88a2.25 2.25 0 00-2.12 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" /></svg>
 );
 const ChatBubbleLeftRightIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.72 3.72a1.125 1.125 0 01-1.59 0L13.5 18.5h-1.5a2.25 2.25 0 00-2.25 2.25v-1.5m3.75-12.75-3.75 3.75m3.75-3.75L16.5 11.25m-6-6L4.5 11.25m3.75-3.75-3.75 3.75m6.75 4.5l-3.75 3.75m3.75-3.75l-3.75-3.75m3.75 3.75L13.5 15m-3.75-3.75L6 15m12-9.75L10.5 12" /></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.72 3.72a1.125 1.125 0 01-1.59 0L13.5 18.5h-1.5a2.25 2.25 0 00-2.25 2.25v-1.5m3.75-12.75-3.75 3.75m3.75-3.75L16.5 11.25m-6-6L4.5 11.25m3.75-3.75-3.75 3.75m6.75 4.5l-3.75 3.75m3.75-3.75-3.75-3.75m3.75 3.75L13.5 15m-3.75-3.75L6 15m12-9.75L10.5 12" /></svg>
 );
 const UserCircleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -155,8 +167,8 @@ type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 
 
 // --- REUSABLE UI COMPONENTS ---
 const Card: React.FC<{ title?: string; children: React.ReactNode; className?: string; }> = ({ title, children, className = '' }) => (
-    <div className={`bg-light-card dark:bg-dark-card rounded-lg shadow-md p-4 sm:p-6 animate-fade-in ${className}`}>
-        {title && <h3 className="text-lg font-semibold text-light-text dark:text-dark-text mb-4">{title}</h3>}
+    <div className={`bg-card-bg rounded-lg shadow-md p-4 sm:p-6 animate-fade-in ${className}`}>
+        {title && <h3 className="text-lg font-semibold text-text-primary mb-4">{title}</h3>}
         {children}
     </div>
 );
@@ -165,10 +177,10 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; chi
     if (!isOpen) return null;
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" aria-modal="true">
-            <div className="bg-light-card dark:bg-dark-card rounded-lg shadow-xl w-full max-w-md m-4 animate-fade-in">
-                <div className="flex items-center justify-between p-4 border-b border-light-border dark:border-dark-border">
+            <div className="bg-card-bg rounded-lg shadow-xl w-full max-w-md m-4 animate-fade-in">
+                <div className="flex items-center justify-between p-4 border-b border-app-border">
                     <h3 className="text-lg font-semibold">{title}</h3>
-                    <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
+                    <button onClick={onClose} className="p-1 rounded-full hover:bg-bg-tertiary">
                         <CloseIcon className="w-5 h-5" />
                     </button>
                 </div>
@@ -207,33 +219,33 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
 
     return (
         <>
-        <div className="flex items-center justify-center min-h-screen bg-light-bg dark:bg-dark-bg p-4">
-            <div className="w-full max-w-md p-6 sm:p-8 space-y-6 sm:space-y-8 bg-light-card rounded-lg shadow-lg dark:bg-dark-card animate-fade-in">
+        <div className="flex items-center justify-center min-h-screen bg-bg-primary p-4">
+            <div className="w-full max-w-md p-6 sm:p-8 space-y-6 sm:space-y-8 bg-card-bg rounded-lg shadow-lg animate-fade-in">
                 <div className="text-center">
                     <AcademicCapIcon className="w-16 h-16 mx-auto text-brand-primary"/>
-                    <h1 className="mt-4 text-xl sm:text-2xl font-bold text-center text-light-text dark:text-dark-text">Instituto Superior de Formación Docente y Técnica N° 26</h1>
-                    <p className="mt-2 text-gray-600 dark:text-gray-400">Inicia sesión para acceder a tu panel</p>
+                    <h1 className="mt-4 text-xl sm:text-2xl font-bold text-center text-text-primary">Instituto Superior de Formación Docente y Técnica N° 26</h1>
+                    <p className="mt-2 text-text-secondary">Inicia sesión para acceder a tu panel</p>
                 </div>
                 <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                     <div>
-                        <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Soy...</label>
+                        <label htmlFor="role" className="block text-sm font-medium text-text-primary">Soy...</label>
                         <select id="role" value={role} onChange={e => setRole(e.target.value as Role)}
-                            className="w-full px-3 py-2 mt-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            className="w-full px-3 py-2 mt-1 bg-bg-secondary border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary text-text-primary">
                             <option value="alumno">Alumno</option>
                             <option value="profesor">Profesor</option>
                             <option value="preceptor">Preceptor</option>
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Dirección de correo</label>
+                        <label htmlFor="email" className="block text-sm font-medium text-text-primary">Dirección de correo</label>
                         <input id="email" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder={`ej: ${role}@example.com`}
-                            className="w-full px-3 py-2 mt-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"/>
+                            className="w-full px-3 py-2 mt-1 bg-bg-secondary border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary text-text-primary"/>
                     </div>
                     <div>
-                        <label htmlFor="password"  className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
+                        <label htmlFor="password"  className="block text-sm font-medium text-text-primary">Contraseña</label>
                         <input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••"
-                            className="w-full px-3 py-2 mt-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"/>
+                            className="w-full px-3 py-2 mt-1 bg-bg-secondary border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary text-text-primary"/>
                     </div>
                     <button type="submit" className="w-full px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors duration-300">
                         Ingresar
@@ -242,11 +254,11 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
                         <a href="#" onClick={(e) => { e.preventDefault(); setForgotModalOpen(true); }} className="font-medium text-brand-primary hover:text-brand-secondary">¿Olvidaste tu contraseña?</a>
                     </div>
                 </form>
-                 <div className="text-sm text-center text-gray-600 dark:text-gray-400">
+                 <div className="text-sm text-center text-text-secondary">
                     <span>¿No tienes una cuenta? </span>
                     <a href="#" onClick={(e) => { e.preventDefault(); setRegisterModalOpen(true); }} className="font-medium text-brand-primary hover:text-brand-secondary">Regístrate</a>
                 </div>
-                <div className="pt-6 border-t border-light-border dark:border-dark-border text-xs text-gray-500 dark:text-gray-400 space-y-3">
+                <div className="pt-6 border-t border-app-border text-xs text-text-secondary space-y-3">
                     <div className="flex items-center justify-center gap-2">
                         <ClockIcon className="w-4 h-4 flex-shrink-0" />
                         <span>HORARIOS DE ATENCIÓN: 18:20 a 22:20 hs.</span>
@@ -272,20 +284,20 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
         <Modal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} title="Crear una Cuenta">
             <div className="space-y-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre Completo</label>
-                    <input type="text" className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                    <label className="block text-sm font-medium text-text-primary">Nombre Completo</label>
+                    <input type="text" className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo Electrónico</label>
-                    <input type="email" className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                    <label className="block text-sm font-medium text-text-primary">Correo Electrónico</label>
+                    <input type="email" className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
-                    <input type="password" className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                    <label className="block text-sm font-medium text-text-primary">Contraseña</label>
+                    <input type="password" className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Rol</label>
-                    <select className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border">
+                    <label className="block text-sm font-medium text-text-primary">Rol</label>
+                    <select className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border">
                         <option>Alumno</option>
                         <option>Profesor</option>
                         <option>Preceptor</option>
@@ -298,10 +310,10 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
         <Modal isOpen={isForgotModalOpen} onClose={() => setForgotModalOpen(false)} title="Recuperar Contraseña">
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="recover-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo Electrónico</label>
-                    <input id="recover-email" type="email" className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                    <label htmlFor="recover-email" className="block text-sm font-medium text-text-primary">Correo Electrónico</label>
+                    <input id="recover-email" type="email" className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Se enviará un enlace de recuperación a tu correo electrónico para que puedas crear una nueva contraseña.</p>
+                <p className="text-xs text-text-secondary">Se enviará un enlace de recuperación a tu correo electrónico para que puedas crear una nueva contraseña.</p>
                 <button onClick={() => { alert('Si existe una cuenta con ese correo, se ha enviado un enlace de recuperación.'); setForgotModalOpen(false); }} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Enviar Enlace</button>
             </div>
         </Modal>
@@ -320,7 +332,7 @@ const CircularProgress: React.FC<{ value: number; text: string; color: string; m
             <svg className="w-full h-full" viewBox="0 0 36 36">
                 <path
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    className="text-gray-200 dark:text-gray-700" fill="none" stroke="currentColor" strokeWidth="3"
+                    className="text-bg-tertiary" fill="none" stroke="currentColor" strokeWidth="3"
                 />
                 <path
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -367,7 +379,7 @@ const AcademicSummaryCard: React.FC = () => {
         <Card>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center text-center">
                 <div className="col-span-2 md:col-span-2 text-left mb-4 md:mb-0">
-                    <h3 className="text-lg font-semibold text-light-text dark:text-dark-text">Resumen Académico</h3>
+                    <h3 className="text-lg font-semibold text-text-primary">Resumen Académico</h3>
                     <p className="text-sm">Estado: <span className="font-semibold text-accent-green">{summary.status}</span></p>
                     <p className="text-sm mt-2">Avance de Carrera</p>
                     <p className="text-2xl font-bold">{summary.careerProgress} <span className="text-base font-normal">materias</span></p>
@@ -396,10 +408,10 @@ const FinalsModal: React.FC<{ isOpen: boolean; onClose: () => void; subjects: Fi
         <Modal isOpen={isOpen} onClose={onClose} title="Inscripción a Mesas de Finales">
             <ul className="space-y-3">
                 {subjects.map(subject => (
-                    <li key={subject.id} className="flex justify-between items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                    <li key={subject.id} className="flex justify-between items-center p-3 bg-bg-primary rounded-md">
                         <div>
                             <span className="font-medium">{subject.name}</span>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Fecha: {subject.date}</p>
+                            <p className="text-sm text-text-secondary">{subject.date}</p>
                         </div>
                         <button onClick={() => handleEnroll(subject.id)}
                             className={`px-3 py-1 text-sm rounded-full flex-shrink-0 ${enrolled[subject.id] ? 'bg-accent-green text-white' : 'bg-brand-primary text-white hover:bg-brand-secondary'}`}>
@@ -425,24 +437,24 @@ const MaterialsSection: React.FC<{ materials: Material[] }> = ({ materials }) =>
     return (
         <Card title="Biblioteca de Materiales">
             <div className="mb-4">
-                <label htmlFor="subject-filter-panel" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar por materia</label>
-                <select id="subject-filter-panel" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} className="w-full max-w-sm p-2 mt-1 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                <label htmlFor="subject-filter-panel" className="block text-sm font-medium text-text-primary">Filtrar por materia</label>
+                <select id="subject-filter-panel" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} className="w-full max-w-sm p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                     {subjects.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
             </div>
             
             <ul className="space-y-4 max-h-96 overflow-y-auto">
                 {filteredMaterials.map(m => (
-                    <li key={m.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md flex flex-wrap justify-between items-center gap-2">
+                    <li key={m.id} className="p-3 bg-bg-primary rounded-md flex flex-wrap justify-between items-center gap-2">
                         <div>
                             <p className="font-semibold">{m.title}</p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">{m.subject} - {m.year}</p>
+                            <p className="text-sm text-text-secondary">{m.subject} - {m.year}</p>
                         </div>
-                        <a href="#" className="text-sm px-3 py-1 border rounded-md dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0">Descargar {m.fileType}</a>
+                        <a href="#" className="text-sm px-3 py-1 border rounded-md border-app-border hover:bg-bg-tertiary flex-shrink-0">Descargar {m.fileType}</a>
                     </li>
                 ))}
                 {filteredMaterials.length === 0 && (
-                    <p className="text-center text-gray-500 py-6">No hay materiales para la materia seleccionada.</p>
+                    <p className="text-center text-text-secondary py-6">No hay materiales para la materia seleccionada.</p>
                 )}
             </ul>
         </Card>
@@ -463,9 +475,9 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
                 <Card title="Novedades Importantes">
                     <ul className="space-y-4">
                         {MOCK_NEWS.map(news => (
-                             <li key={news.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                             <li key={news.id} className="p-3 bg-bg-primary rounded-md">
                                 <h4 className="font-semibold">{news.title}</h4>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{news.summary}</p>
+                                <p className="text-sm text-text-secondary mt-1">{news.summary}</p>
                                 {news.actionText && (
                                     <button onClick={() => setFinalsModalOpen(true)} className="text-sm font-semibold text-brand-primary hover:underline mt-2">{news.actionText}</button>
                                 )}
@@ -477,10 +489,10 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
                     {MOCK_TODAY_SCHEDULE.length > 0 ? (
                         <ul className="space-y-3">
                             {MOCK_TODAY_SCHEDULE.map(cls => (
-                                <li key={cls.id} className="flex justify-between items-center p-2 rounded-md bg-light-bg dark:bg-dark-bg">
+                                <li key={cls.id} className="flex justify-between items-center p-2 rounded-md bg-bg-primary">
                                     <div>
                                         <p className="font-semibold">{cls.subject}</p>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">{cls.time}</p>
+                                        <p className="text-sm text-text-secondary">{cls.time}</p>
                                     </div>
                                     {cls.virtualLink ? (
                                         <a href={cls.virtualLink} target="_blank" rel="noopener noreferrer"
@@ -489,20 +501,20 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
                                             Unirse
                                         </a>
                                     ) : (
-                                        <span className="font-mono text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Aula {cls.classroom}</span>
+                                        <span className="font-mono text-sm px-2 py-1 bg-bg-tertiary rounded">Aula {cls.classroom}</span>
                                     )}
                                 </li>
                             ))}
                         </ul>
-                    ) : <p className="text-center text-gray-500 py-4">No tienes clases programadas para hoy.</p>}
+                    ) : <p className="text-center text-text-secondary py-4">No tienes clases programadas para hoy.</p>}
                 </Card>
                 <div className="lg:col-span-2">
                     <Card title="Actividad Reciente en Foros">
                         <ul className="space-y-4">
                             {recentPosts.map(post => (
-                                <li key={post.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                <li key={post.id} className="p-3 bg-bg-primary rounded-md">
                                     <h4 className="font-semibold">{post.title}</h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                    <p className="text-sm text-text-secondary mt-1">
                                         en <span className="font-medium">{post.category}</span> por {post.author}
                                     </p>
                                 </li>
@@ -552,7 +564,7 @@ const GradesPage: React.FC = () => {
         <div className="overflow-x-auto mt-4">
             <h4 className="font-semibold mb-2">{semester}° Cuatrimestre</h4>
             <table className="w-full text-left">
-                <thead className="border-b dark:border-dark-border bg-gray-50 dark:bg-gray-700/50">
+                <thead className="border-b border-app-border bg-bg-secondary">
                     <tr>
                         <th className="p-2 text-sm font-medium">Evaluación</th>
                         <th className="p-2 text-right text-sm font-medium">Nota</th>
@@ -560,7 +572,7 @@ const GradesPage: React.FC = () => {
                 </thead>
                 <tbody>
                     {grades.filter(g => g.semester === semester).map(g => (
-                        <tr key={g.id} className="border-b dark:border-dark-border last:border-b-0">
+                        <tr key={g.id} className="border-b border-app-border last:border-b-0">
                             <td className="p-3">{g.assignment}</td>
                             <td className={`p-3 text-right font-bold ${Number(g.grade) >= 7 ? 'text-accent-green' : 'text-accent-yellow'}`}>{g.grade}</td>
                         </tr>
@@ -572,17 +584,17 @@ const GradesPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
-             <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow-md">
-                <label htmlFor="year-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Seleccionar Año</label>
+             <div className="p-4 bg-card-bg rounded-lg shadow-md">
+                <label htmlFor="year-filter" className="block text-sm font-medium text-text-primary">Seleccionar Año</label>
                 <select id="year-filter" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}
-                    className="w-full max-w-xs mt-1 p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                    className="w-full max-w-xs mt-1 p-2 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                     {years.map(year => <option key={year} value={year}>{year}</option>)}
                 </select>
             </div>
             {gradesBySubject.length > 0 ? gradesBySubject.map(({ subject, finalGrade, grades }) => (
                 <Card title={subject} key={subject}>
                     <div className="flex justify-between items-center mb-4">
-                        <span className="text-gray-600 dark:text-gray-400">Promedio Anual:</span>
+                        <span className="text-text-secondary">Promedio Anual:</span>
                         <span className="text-2xl font-bold text-brand-primary">{finalGrade}</span>
                     </div>
                     {renderSemesterTable(grades, 1)}
@@ -590,7 +602,7 @@ const GradesPage: React.FC = () => {
                 </Card>
             )) : (
                 <Card>
-                    <p className="text-center text-gray-500 py-6">No hay notas cargadas para el año seleccionado.</p>
+                    <p className="text-center text-text-secondary py-6">No hay notas cargadas para el año seleccionado.</p>
                 </Card>
             )}
         </div>
@@ -608,26 +620,26 @@ const JustificationModal: React.FC<{ isOpen: boolean; onClose: () => void; absen
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Justificar Ausencia">
              {absence && <p className="text-center mb-4">Materia: <strong>{absence.subject}</strong> - Fecha: <strong>{absence.date}</strong></p>}
-             <div className="border-b border-gray-200 dark:border-gray-700 mb-4">
+             <div className="border-b border-app-border mb-4">
                 <nav className="flex space-x-2" aria-label="Tabs">
-                    <button onClick={() => setTab('text')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${tab === 'text' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
+                    <button onClick={() => setTab('text')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${tab === 'text' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-text-secondary hover:text-text-primary'}`}>
                         Explicación
                     </button>
-                    <button onClick={() => setTab('upload')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${tab === 'upload' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
+                    <button onClick={() => setTab('upload')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${tab === 'upload' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-text-secondary hover:text-text-primary'}`}>
                         Subir Certificado
                     </button>
                 </nav>
             </div>
             {tab === 'text' && (
-                <textarea className="w-full p-2 border rounded-md bg-transparent dark:border-dark-border" rows={5} placeholder="Escribe el motivo de tu ausencia..."></textarea>
+                <textarea className="w-full p-2 border rounded-md bg-transparent border-app-border" rows={5} placeholder="Escribe el motivo de tu ausencia..."></textarea>
             )}
             {tab === 'upload' && (
                 <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-bg-secondary hover:bg-bg-tertiary">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <UploadIcon className="w-8 h-8 mb-2 text-gray-500 dark:text-gray-400"/>
-                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click para subir</span> o arrastra</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">PDF, PNG, JPG (MAX. 5MB)</p>
+                            <UploadIcon className="w-8 h-8 mb-2 text-text-secondary"/>
+                            <p className="mb-2 text-sm text-text-secondary"><span className="font-semibold">Click para subir</span> o arrastra</p>
+                            <p className="text-xs text-text-secondary">PDF, PNG, JPG (MAX. 5MB)</p>
                         </div>
                         <input type="file" className="hidden" />
                     </label>
@@ -680,22 +692,22 @@ const AttendancePage: React.FC = () => {
         <>
             <Card title="Mi Asistencia">
                  <div className="mb-4">
-                    <label htmlFor="subject-filter-attendance" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar por materia del año en curso</label>
+                    <label htmlFor="subject-filter-attendance" className="block text-sm font-medium text-text-primary">Filtrar por materia del año en curso</label>
                     <select 
                         id="subject-filter-attendance" 
                         value={selectedSubject} 
                         onChange={e => setSelectedSubject(e.target.value)}
-                        className="w-full max-w-xs mt-1 p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                        className="w-full max-w-xs mt-1 p-2 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                         <option value="Todas">Todas las materias</option>
                         {currentYearSubjects.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                     </select>
                 </div>
-                <div className="divide-y dark:divide-dark-border">
+                <div className="divide-y border-app-border">
                     {displayedAttendance.length > 0 ? displayedAttendance.map(a => (
                         <div key={a.id} className="flex flex-wrap justify-between items-center p-3">
                             <div>
                                 <p className="font-semibold">{a.date}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{a.subject}</p>
+                                <p className="text-sm text-text-secondary">{a.subject}</p>
                             </div>
                             <div className="flex items-center gap-4 mt-2 sm:mt-0">
                                 {getStatusChip(a.status)}
@@ -705,7 +717,7 @@ const AttendancePage: React.FC = () => {
                             </div>
                         </div>
                     )) : (
-                        <p className="text-center text-gray-500 py-6">No hay registros de asistencia para la materia seleccionada.</p>
+                        <p className="text-center text-text-secondary py-6">No hay registros de asistencia para la materia seleccionada.</p>
                     )}
                 </div>
             </Card>
@@ -773,30 +785,30 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
             {/* Left Panel: Inbox/Contacts List */}
             <div className={`w-full md:w-1/3 lg:w-1/4 ${selectedConversationId ? 'hidden md:block' : 'block'}`}>
                 <Card className="h-full">
-                    <div className="border-b border-light-border dark:border-dark-border mb-2">
+                    <div className="border-b border-app-border mb-2">
                         <nav className="flex -mb-px">
-                            <button onClick={() => setActiveTab('inbox')} className={`w-1/2 py-3 text-sm font-medium text-center border-b-2 ${activeTab === 'inbox' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>Bandeja de Entrada</button>
-                            <button onClick={() => setActiveTab('contacts')} className={`w-1/2 py-3 text-sm font-medium text-center border-b-2 ${activeTab === 'contacts' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>Contactos</button>
+                            <button onClick={() => setActiveTab('inbox')} className={`w-1/2 py-3 text-sm font-medium text-center border-b-2 ${activeTab === 'inbox' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>Bandeja de Entrada</button>
+                            <button onClick={() => setActiveTab('contacts')} className={`w-1/2 py-3 text-sm font-medium text-center border-b-2 ${activeTab === 'contacts' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>Contactos</button>
                         </nav>
                     </div>
                     {activeTab === 'inbox' ? (
                         <ul className="space-y-2">
                             {conversations.map(convo => (
                                 <li key={convo.id} onClick={() => setSelectedConversationId(convo.id)}
-                                    className={`p-3 rounded-md cursor-pointer transition-colors ${selectedConversationId === convo.id ? 'bg-brand-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-dark-bg'}`}>
+                                    className={`p-3 rounded-md cursor-pointer transition-colors ${selectedConversationId === convo.id ? 'bg-brand-primary text-white' : 'hover:bg-bg-tertiary'}`}>
                                     <p className="font-semibold">{getParticipantNames(convo)}</p>
-                                    <p className={`text-sm truncate ${selectedConversationId === convo.id ? 'text-indigo-100' : 'text-gray-600 dark:text-gray-400'}`}>{convo.lastMessageSnippet}</p>
+                                    <p className={`text-sm truncate ${selectedConversationId === convo.id ? 'text-gray-200' : 'text-text-secondary'}`}>{convo.lastMessageSnippet}</p>
                                 </li>
                             ))}
                         </ul>
                     ) : (
                          <ul className="space-y-2">
                             {contacts.map(contact => (
-                                <li key={contact.id} className="p-3 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-bg flex items-center space-x-3">
+                                <li key={contact.id} className="p-3 rounded-md cursor-pointer hover:bg-bg-tertiary flex items-center space-x-3">
                                      <img src={contact.avatarUrl || `https://ui-avatars.com/api/?name=${contact.name.replace(' ', '+')}&background=4f46e5&color=fff&size=40`} alt={contact.name} className="w-10 h-10 rounded-full" />
                                     <div>
                                         <p className="font-semibold">{contact.name}</p>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{contact.role}</p>
+                                        <p className="text-sm text-text-secondary capitalize">{contact.role}</p>
                                     </div>
                                 </li>
                             ))}
@@ -810,8 +822,8 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                 <Card className="h-full flex flex-col">
                     {selectedConversation ? (
                         <>
-                            <div className="border-b dark:border-dark-border pb-3 mb-4 flex items-center gap-3">
-                                <button onClick={() => setSelectedConversationId(null)} className="md:hidden p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <div className="border-b border-app-border pb-3 mb-4 flex items-center gap-3">
+                                <button onClick={() => setSelectedConversationId(null)} className="md:hidden p-1 rounded-full hover:bg-bg-tertiary">
                                     <ArrowLeftIcon className="w-5 h-5" />
                                 </button>
                                <h3 className="font-semibold text-lg">{getParticipantNames(selectedConversation)}</h3>
@@ -822,22 +834,22 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                                         {msg.senderId !== currentUser.id && (
                                             <img src={allUsers.find(u => u.id === msg.senderId)?.avatarUrl || `https://ui-avatars.com/api/?name=${selectedConversation.participants[msg.senderId]?.replace(' ', '+')}&background=6366f1&color=fff&size=32`} alt="avatar" className="w-8 h-8 rounded-full"/>
                                         )}
-                                        <div className={`max-w-xs md:max-w-md p-3 rounded-xl ${msg.senderId === currentUser.id ? 'bg-brand-primary text-white rounded-br-none' : 'bg-gray-200 dark:bg-slate-700 text-light-text dark:text-dark-text rounded-bl-none'}`}>
+                                        <div className={`max-w-xs md:max-w-md p-3 rounded-xl ${msg.senderId === currentUser.id ? 'bg-brand-primary text-white rounded-br-none' : 'bg-bg-secondary text-text-primary rounded-bl-none'}`}>
                                             <p className="text-sm">{msg.text}</p>
-                                            <p className={`text-xs mt-1 ${msg.senderId === currentUser.id ? 'text-indigo-200' : 'text-gray-500'}`}>{msg.timestamp}</p>
+                                            <p className={`text-xs mt-1 ${msg.senderId === currentUser.id ? 'text-gray-200' : 'text-text-secondary'}`}>{msg.timestamp}</p>
                                         </div>
                                    </div>
                                ))}
                             </div>
                             <div className="mt-auto flex gap-2">
                                 <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                    className="flex-1 p-2 border rounded-md bg-transparent dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" placeholder="Escribe tu respuesta..." />
+                                    className="flex-1 p-2 border rounded-md bg-transparent border-app-border focus:ring-brand-primary focus:border-brand-primary" placeholder="Escribe tu respuesta..." />
                                 <button onClick={handleSendMessage} className="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Enviar</button>
                             </div>
                         </>
                     ) : (
                         <div className="hidden md:flex items-center justify-center h-full">
-                            <p className="text-gray-500">Selecciona una conversación o un contacto para empezar a chatear.</p>
+                            <p className="text-text-secondary">Selecciona una conversación o un contacto para empezar a chatear.</p>
                         </div>
                     )}
                 </Card>
@@ -872,21 +884,21 @@ const NewPostModal: React.FC<{
         <Modal isOpen={isOpen} onClose={onClose} title="Crear Nueva Publicación">
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="post-title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Título de la duda</label>
+                    <label htmlFor="post-title" className="block text-sm font-medium text-text-primary">Título de la duda</label>
                     <input id="post-title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
+                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" />
                 </div>
                  <div>
-                    <label htmlFor="post-category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Materia</label>
+                    <label htmlFor="post-category" className="block text-sm font-medium text-text-primary">Materia</label>
                     <select id="post-category" value={category} onChange={(e) => setCategory(e.target.value)}
-                        className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary">
-                        {categories.filter(c => c !== 'Todas').map(c => <option key={c} value={c} className="bg-light-card dark:bg-dark-card">{c}</option>)}
+                        className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary">
+                        {categories.filter(c => c !== 'Todas').map(c => <option key={c} value={c} className="bg-card-bg">{c}</option>)}
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="post-content" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+                    <label htmlFor="post-content" className="block text-sm font-medium text-text-primary">Descripción</label>
                      <textarea id="post-content" value={content} onChange={(e) => setContent(e.target.value)} rows={5}
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary"
                         placeholder="Describe tu duda o consulta..."></textarea>
                 </div>
                 <button onClick={handleSubmit} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Publicar</button>
@@ -944,23 +956,23 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
             <div className="w-full md:w-1/3 lg:w-1/4">
                  <Card>
                     <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold text-light-text dark:text-dark-text">Foros</h3>
-                        <button onClick={() => setNewPostModalOpen(true)} title="Crear Nueva Publicación" className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <h3 className="text-lg font-semibold text-text-primary">Foros</h3>
+                        <button onClick={() => setNewPostModalOpen(true)} title="Crear Nueva Publicación" className="p-2 rounded-full hover:bg-bg-tertiary">
                              <PencilSquareIcon className="w-5 h-5 text-brand-primary"/>
                         </button>
                     </div>
 
                     <div className="mb-4">
-                        <select onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory} className="w-full p-2 bg-gray-50 dark:bg-gray-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary">
-                            {categories.map(c => <option key={c} value={c} className="dark:bg-dark-card">{c}</option>)}
+                        <select onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory} className="w-full p-2 bg-bg-secondary border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary">
+                            {categories.map(c => <option key={c} value={c} className="bg-card-bg">{c}</option>)}
                         </select>
                     </div>
                     <ul className="space-y-2">
                         {filteredPosts.map(post => (
                             <li key={post.id} onClick={() => setSelectedPostId(post.id)}
-                                className={`p-3 rounded-md cursor-pointer transition-colors ${selectedPostId === post.id ? 'bg-brand-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-dark-bg'}`}>
+                                className={`p-3 rounded-md cursor-pointer transition-colors ${selectedPostId === post.id ? 'bg-brand-primary text-white' : 'hover:bg-bg-tertiary'}`}>
                                 <p className="font-semibold">{post.title}</p>
-                                <p className={`text-xs ${selectedPostId === post.id ? 'text-indigo-100' : 'text-gray-500 dark:text-gray-400'}`}>por {post.author} - {post.replies.length} respuestas</p>
+                                <p className={`text-xs ${selectedPostId === post.id ? 'text-gray-200' : 'text-text-secondary'}`}>por {post.author} - {post.replies.length} respuestas</p>
                             </li>
                         ))}
                     </ul>
@@ -970,27 +982,27 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
                  <Card title={selectedPost?.title || 'Selecciona un tema'} className="h-full flex flex-col">
                     {selectedPost ? (
                        <>
-                            <div className="border-b dark:border-dark-border pb-4 mb-4">
-                               <p className="text-sm text-gray-500 dark:text-gray-400">Publicado por: {selectedPost.author}</p>
+                            <div className="border-b border-app-border pb-4 mb-4">
+                               <p className="text-sm text-text-secondary">Publicado por: {selectedPost.author}</p>
                                <p className="mt-2 prose prose-sm dark:prose-invert max-w-none">{selectedPost.content}</p>
                             </div>
                             <div className="flex-grow overflow-y-auto mb-4 space-y-4">
                                 <h4 className="font-semibold">Respuestas</h4>
                                 {selectedPost.replies.length > 0 ? selectedPost.replies.map(reply => (
-                                    <div key={reply.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                    <div key={reply.id} className="p-3 bg-bg-primary rounded-md">
                                         <p className="font-semibold text-sm">{reply.author}</p>
-                                        <p className="text-gray-700 dark:text-gray-300">{reply.content}</p>
+                                        <p className="text-text-primary">{reply.content}</p>
                                     </div>
-                                )) : <p className="text-sm text-gray-500">No hay respuestas todavía.</p>}
+                                )) : <p className="text-sm text-text-secondary">No hay respuestas todavía.</p>}
                             </div>
                             <div>
-                                <textarea value={newReply} onChange={(e) => setNewReply(e.target.value)} className="w-full p-2 border rounded-md bg-transparent dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" rows={3} placeholder="Escribe tu respuesta..."></textarea>
+                                <textarea value={newReply} onChange={(e) => setNewReply(e.target.value)} className="w-full p-2 border rounded-md bg-transparent border-app-border focus:ring-brand-primary focus:border-brand-primary" rows={3} placeholder="Escribe tu respuesta..."></textarea>
                                 <button onClick={handleAddReply} className="mt-2 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Responder</button>
                             </div>
                        </>
                     ) : (
                         <div className="flex items-center justify-center h-full">
-                             <p className="text-gray-500">Selecciona un tema para participar.</p>
+                             <p className="text-text-secondary">Selecciona un tema para participar.</p>
                         </div>
                     )}
                 </Card>
@@ -1009,52 +1021,59 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
 const ProfilePage: React.FC<{user: User; onUpdate: (user: User) => void; onBack: () => void;}> = ({ user, onUpdate, onBack }) => {
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
-    const [dni, setDni] = useState(user.dni || '');
     const [about, setAbout] = useState(user.about || '');
 
     const handleSave = () => {
-        onUpdate({ ...user, name, email, dni, about });
+        onUpdate({ ...user, name, email, about });
         alert('Perfil actualizado!');
     };
+    
+    const ReadOnlyField: React.FC<{label: string; value: string | undefined}> = ({ label, value }) => (
+        <div>
+            <label className="block text-sm font-medium text-text-primary">{label}</label>
+            <div className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border text-text-secondary">
+                {value || 'No disponible'}
+            </div>
+        </div>
+    );
 
     return (
         <div className="max-w-4xl mx-auto">
             <div className="mb-6">
-                <button onClick={onBack} className="flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-brand-primary transition-colors">
+                <button onClick={onBack} className="flex items-center gap-2 text-sm font-semibold text-text-secondary hover:text-brand-primary transition-colors">
                     <ArrowLeftIcon className="w-5 h-5" />
                     Volver al Panel
                 </button>
             </div>
             <Card title="Mi Perfil">
-                <div className="flex flex-col items-center md:flex-row md:items-start gap-6">
-                    <div className="flex flex-col items-center">
-                        <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=128`} alt="Avatar" className="w-32 h-32 rounded-full mb-4" />
+                <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-10">
+                    <div className="flex flex-col items-center flex-shrink-0 w-full md:w-48">
+                        <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=128`} alt="Avatar" className="w-32 h-32 rounded-full mb-4 ring-4 ring-brand-primary/20" />
                         <button className="text-sm text-brand-primary hover:underline">Cambiar foto</button>
                     </div>
                     <div className="w-full flex-1 space-y-4">
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre Completo</label>
-                            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
+                            <label htmlFor="name" className="block text-sm font-medium text-text-primary">Nombre Completo</label>
+                            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" />
                         </div>
-                        {user.career && (
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Carrera</label>
-                                <p className="w-full p-2 mt-1 text-gray-500 dark:text-gray-400 border-b dark:border-dark-border">{user.career}</p>
-                            </div>
+                        
+                        <ReadOnlyField label="DNI" value={user.dni} />
+                        <ReadOnlyField label="Legajo" value={user.legajo} />
+
+                        {user.role === 'alumno' && user.career && (
+                           <ReadOnlyField label="Carrera" value={user.career} />
                         )}
-                         <div>
-                            <label htmlFor="dni" className="block text-sm font-medium text-gray-700 dark:text-gray-300">DNI</label>
-                            <input id="dni" type="text" value={dni} onChange={(e) => setDni(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
-                        </div>
+
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo Electrónico</label>
-                            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
+                            <label htmlFor="email" className="block text-sm font-medium text-text-primary">Correo Electrónico</label>
+                            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" />
                         </div>
                          <div>
-                            <label htmlFor="about" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Sobre mí</label>
-                            <textarea id="about" value={about} onChange={(e) => setAbout(e.target.value)} rows={3} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" placeholder="Cuéntanos algo sobre ti..."></textarea>
+                            <label htmlFor="about" className="block text-sm font-medium text-text-primary">Sobre mí</label>
+                            <textarea id="about" value={about} onChange={(e) => setAbout(e.target.value)} rows={3} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" placeholder="Cuéntanos algo sobre ti..."></textarea>
                         </div>
-                        <div className="mt-6 flex justify-end gap-3">
+                        <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-app-border">
+                            <button onClick={() => alert('Funcionalidad no implementada.')} className="px-4 py-2 bg-bg-tertiary text-text-primary rounded-md hover:bg-app-border">Cambiar Contraseña</button>
                             <button onClick={handleSave} className="px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Guardar Cambios</button>
                         </div>
                     </div>
@@ -1090,21 +1109,21 @@ const AddEventModal: React.FC<{ isOpen: boolean; onClose: () => void; onAddEvent
         <Modal isOpen={isOpen} onClose={onClose} title="Añadir Evento a la Agenda">
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="event-title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Título del Evento</label>
+                    <label htmlFor="event-title" className="block text-sm font-medium text-text-primary">Título del Evento</label>
                     <input id="event-title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
+                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" />
                 </div>
                 <div>
-                    <label htmlFor="event-day" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Día del Mes</label>
+                    <label htmlFor="event-day" className="block text-sm font-medium text-text-primary">Día del Mes</label>
                     <input id="event-day" type="number" value={day} onChange={(e) => setDay(parseInt(e.target.value, 10))} min="1" max="31"
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
+                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Color</label>
+                    <label className="block text-sm font-medium text-text-primary">Color</label>
                     <div className="flex space-x-2 mt-2">
                         {colorOptions.map(opt => (
                             <button key={opt.name} onClick={() => setColor(opt.name)}
-                                className={`w-8 h-8 rounded-full transition-transform transform hover:scale-110 ${opt.class} ${color === opt.name ? 'ring-2 ring-offset-2 ring-brand-primary dark:ring-offset-dark-card' : ''}`}>
+                                className={`w-8 h-8 rounded-full transition-transform transform hover:scale-110 ${opt.class} ${color === opt.name ? 'ring-2 ring-offset-2 ring-brand-primary ring-offset-card-bg' : ''}`}>
                             </button>
                         ))}
                     </div>
@@ -1130,17 +1149,24 @@ const CalendarPage: React.FC<{ events: CalendarEvent[]; onAddEventClick: () => v
 
     return (
         <div className="space-y-6">
-            <Card title="Mi Agenda">
+            <Card>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-text-primary">Mi Agenda</h3>
+                    <button onClick={onAddEventClick} className="flex items-center gap-2 px-3 py-1.5 bg-brand-primary text-white rounded-md text-sm hover:bg-brand-secondary transition-colors">
+                        <PlusCircleIcon className="w-5 h-5" />
+                        Añadir
+                    </button>
+                </div>
                 <div className="grid grid-cols-7 gap-1 text-center text-xs sm:text-sm">
                     {['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'].map(day => (
-                        <div key={day} className="font-semibold p-2 text-gray-600 dark:text-gray-400">{day}</div>
+                        <div key={day} className="font-semibold p-2 text-text-secondary">{day}</div>
                     ))}
                     {Array.from({ length: firstDayOfMonth }).map((_, i) => <div key={`empty-${i}`}></div>)}
                     {Array.from({ length: daysInMonth }).map((_, dayIndex) => {
                         const day = dayIndex + 1;
                         const dayEvents = getEventsForDay(day);
                         return (
-                            <div key={day} className={`p-1 sm:p-2 border border-light-border dark:border-dark-border rounded-md min-h-[70px] sm:min-h-[90px] flex flex-col ${day === today.getDate() && month === today.getMonth() ? 'bg-brand-primary/10 border-brand-primary' : ''}`}>
+                            <div key={day} className={`p-1 sm:p-2 border border-app-border rounded-md min-h-[70px] sm:min-h-[90px] flex flex-col ${day === today.getDate() && month === today.getMonth() ? 'bg-brand-primary/10 border-brand-primary' : ''}`}>
                                 <span className="font-medium">{day}</span>
                                 <div className="mt-1 space-y-1 overflow-hidden">
                                     {dayEvents.map(event => (
@@ -1157,21 +1183,17 @@ const CalendarPage: React.FC<{ events: CalendarEvent[]; onAddEventClick: () => v
             <Card title="Próximos Eventos">
                 <div className="flex justify-between items-center mb-4">
                     <h4 className="text-base font-semibold">Lista de Eventos del Mes</h4>
-                    <button onClick={onAddEventClick} className="flex items-center gap-2 px-3 py-1.5 bg-brand-primary text-white rounded-md text-sm hover:bg-brand-secondary transition-colors">
-                        <PlusCircleIcon className="w-5 h-5" />
-                        Añadir
-                    </button>
                 </div>
                 <ul className="space-y-2">
                     {events.length > 0 ? events.sort((a,b) => a.day - b.day).map(event => (
-                        <li key={event.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md flex items-center">
+                        <li key={event.id} className="p-3 bg-bg-primary rounded-md flex items-center">
                             <span className={`w-3 h-3 rounded-full mr-3 flex-shrink-0 ${colorClasses[event.color || 'accent-blue']}`}></span>
                             <div>
                                 <p className="font-semibold">{event.title}</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Fecha: {event.day}/{month + 1}</p>
+                                <p className="text-sm text-text-secondary">Fecha: {event.day}/{month + 1}</p>
                             </div>
                         </li>
-                    )) : <p className="text-gray-500 text-sm py-4 text-center">No tienes eventos este mes. ¡Añade uno!</p>}
+                    )) : <p className="text-text-secondary text-sm py-4 text-center">No tienes eventos este mes. ¡Añade uno!</p>}
                 </ul>
             </Card>
         </div>
@@ -1209,18 +1231,18 @@ const ProceduresPage: React.FC<{ onRequest: (type: ProcedureRequest['type']) => 
 
     return (
         <div className="relative">
-             <h1 className="text-2xl font-bold mb-6 text-light-text dark:text-dark-text">Trámites y Solicitudes</h1>
+             <h1 className="text-2xl font-bold mb-6 text-text-primary">Trámites y Solicitudes</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {procedures.map(proc => (
-                    <div key={proc.title} className="bg-light-card dark:bg-slate-800 rounded-xl shadow-lg p-6 flex flex-col items-center text-center animate-fade-in">
+                    <div key={proc.title} className="bg-card-bg rounded-xl shadow-lg p-6 flex flex-col items-center text-center animate-fade-in">
                         <div className="mb-4">
                             {proc.icon}
                         </div>
-                        <h3 className="text-lg font-semibold text-light-text dark:text-white mb-2">{proc.title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-slate-300 mb-6 flex-grow">{proc.description}</p>
+                        <h3 className="text-lg font-semibold text-text-primary mb-2">{proc.title}</h3>
+                        <p className="text-sm text-text-secondary mb-6 flex-grow">{proc.description}</p>
                         <button 
                             onClick={() => onRequest(proc.type)}
-                            className="w-full px-4 py-3 font-semibold text-slate-900 bg-emerald-400 rounded-lg hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400 focus:ring-offset-light-card dark:focus:ring-offset-slate-800 transition-colors duration-300"
+                            className="w-full px-4 py-3 font-semibold text-slate-900 bg-emerald-400 rounded-lg hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400 focus:ring-offset-card-bg transition-colors duration-300"
                         >
                             Iniciar Trámite
                         </button>
@@ -1236,7 +1258,7 @@ const ProceduresPage: React.FC<{ onRequest: (type: ProcedureRequest['type']) => 
 const PageHeader: React.FC<{ title: string; onBack: () => void; children?: React.ReactNode }> = ({ title, onBack, children }) => (
     <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-4">
-            <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+            <button onClick={onBack} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
               <ArrowLeftIcon className="w-6 h-6" />
             </button>
             <h1 className="text-2xl font-bold">{title}</h1>
@@ -1265,14 +1287,14 @@ const PendingSubmissionsModal: React.FC<{
         <Modal isOpen={isOpen} onClose={onClose} title={`Alumnos Pendientes: ${course.subject}`}>
             <ul className="space-y-3 max-h-80 overflow-y-auto">
                 {pendingStudents.length > 0 ? pendingStudents.map(student => (
-                    <li key={student.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                    <li key={student.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-bg-primary rounded-md">
                         <span className="font-medium mb-2 sm:mb-0">{student.name}</span>
                         <div className="flex gap-2 flex-shrink-0">
                             <button onClick={() => handleSendNotification(student.name)} className="px-2 py-1 text-xs rounded-full bg-accent-yellow text-white hover:bg-yellow-600">Enviar Notificación</button>
                             <button onClick={() => handleSendMessage(student.name)} className="px-2 py-1 text-xs rounded-full bg-accent-blue text-white hover:bg-blue-700">Enviar Mensaje</button>
                         </div>
                     </li>
-                )) : <p className="text-gray-500 text-center py-4">¡Ningún alumno pendiente!</p>}
+                )) : <p className="text-text-secondary text-center py-4">¡Ningún alumno pendiente!</p>}
             </ul>
             <button onClick={onClose} className="w-full mt-6 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Cerrar</button>
         </Modal>
@@ -1284,7 +1306,7 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
         <div className="space-y-6">
             <div>
                 <h2 className="text-2xl font-bold">Bienvenido, {user.name}</h2>
-                <p className="text-gray-500 dark:text-gray-400">Aquí tienes un resumen de tu actividad para hoy.</p>
+                <p className="text-text-secondary">Aquí tienes un resumen de tu actividad para hoy.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1304,10 +1326,10 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                     {MOCK_TEACHER_SCHEDULE.length > 0 ? (
                         <ul className="space-y-3">
                             {MOCK_TEACHER_SCHEDULE.map(cls => (
-                                <li key={cls.id} className="flex justify-between items-center p-2 rounded-md bg-light-bg dark:bg-dark-bg">
+                                <li key={cls.id} className="flex justify-between items-center p-2 rounded-md bg-bg-primary">
                                     <div>
                                         <p className="font-semibold">{cls.subject}</p>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">{cls.time}</p>
+                                        <p className="text-sm text-text-secondary">{cls.time}</p>
                                     </div>
                                     {cls.virtualLink ? (
                                         <a href={cls.virtualLink} target="_blank" rel="noopener noreferrer"
@@ -1316,12 +1338,12 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                                             Unirse
                                         </a>
                                     ) : (
-                                        <span className="font-mono text-sm px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Aula {cls.classroom}</span>
+                                        <span className="font-mono text-sm px-2 py-1 bg-bg-tertiary rounded">Aula {cls.classroom}</span>
                                     )}
                                 </li>
                             ))}
                         </ul>
-                    ) : <p className="text-center text-gray-500 py-4">No tienes clases programadas para hoy.</p>}
+                    ) : <p className="text-center text-text-secondary py-4">No tienes clases programadas para hoy.</p>}
                 </Card>
             </div>
             
@@ -1331,8 +1353,8 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                     {MOCK_TEACHER_SUMMARY.map(summary => (
                         <Card key={summary.id}>
                             <h4 className="font-bold text-lg">{summary.subject}</h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Comisión {summary.commission}</p>
-                            <div className="flex justify-between items-center border-t pt-3 mt-3 dark:border-dark-border">
+                            <p className="text-sm text-text-secondary mb-4">Comisión {summary.commission}</p>
+                            <div className="flex justify-between items-center border-t pt-3 mt-3 border-app-border">
                                 <span className="text-sm">{summary.studentCount} Alumnos</span>
                                 <button onClick={() => onShowPending(summary)} className="text-sm font-semibold text-accent-yellow hover:underline">
                                     {summary.pendingSubmissions} Entregas pendientes
@@ -1346,15 +1368,15 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
             <Card title="Material de Estudio">
                 <ul className="space-y-3 mb-4 max-h-48 overflow-y-auto">
                     {materials.slice(0, 4).map(m => (
-                        <li key={m.id} className="p-2 bg-light-bg dark:bg-dark-bg rounded-md flex justify-between items-center">
+                        <li key={m.id} className="p-2 bg-bg-primary rounded-md flex justify-between items-center">
                             <div>
                                 <p className="font-semibold text-sm">{m.title}</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">{m.subject}</p>
+                                <p className="text-xs text-text-secondary">{m.subject}</p>
                             </div>
-                            <span className="text-xs font-mono px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded flex-shrink-0">{m.fileType}</span>
+                            <span className="text-xs font-mono px-2 py-1 bg-bg-tertiary rounded flex-shrink-0">{m.fileType}</span>
                         </li>
                     ))}
-                    {materials.length === 0 && <p className="text-center text-sm text-gray-500 py-4">No hay materiales subidos.</p>}
+                    {materials.length === 0 && <p className="text-center text-sm text-text-secondary py-4">No hay materiales subidos.</p>}
                 </ul>
                 <button
                     onClick={() => navigate('materiales')}
@@ -1410,9 +1432,9 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <PageHeader title="Cargar Notas" onBack={onBack} />
             <Card>
                 <div className="mb-6">
-                    <label htmlFor="subject-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Seleccione una Materia</label>
+                    <label htmlFor="subject-select" className="block text-sm font-medium text-text-primary mb-2">Seleccione una Materia</label>
                     <select id="subject-select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}
-                        className="w-full max-w-sm p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                        className="w-full max-w-sm p-2 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                         {subjects.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                     </select>
                 </div>
@@ -1420,14 +1442,14 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <div className="overflow-x-auto">
                      {/* Desktop Table */}
                      <table className="w-full text-left hidden md:table">
-                        <thead className="border-b dark:border-dark-border bg-gray-50 dark:bg-gray-700/50">
+                        <thead className="border-b border-app-border bg-bg-secondary">
                             <tr>
                                 <th className="p-3 text-sm font-semibold uppercase">Alumno</th>
                                 <th className="p-3 text-center text-sm font-semibold uppercase">1er Cuat.</th>
                                 <th className="p-3 text-center text-sm font-semibold uppercase">2do Cuat.</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y dark:divide-dark-border">
+                        <tbody className="divide-y border-app-border">
                             {grades.map(student => (
                                 <tr key={student.id}>
                                     <td className="p-3">{student.name}</td>
@@ -1435,14 +1457,14 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                         <input type="number" min="0" max="10"
                                             value={student.semester1 ?? ''}
                                             onChange={(e) => handleGradeChange(student.id, 'semester1', e.target.value)}
-                                            className="w-16 p-2 text-center bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-md"
+                                            className="w-16 p-2 text-center bg-bg-primary border border-app-border rounded-md"
                                         />
                                     </td>
                                     <td className="p-3 text-center">
                                          <input type="number" min="0" max="10"
                                             value={student.semester2 ?? ''}
                                             onChange={(e) => handleGradeChange(student.id, 'semester2', e.target.value)}
-                                            className="w-16 p-2 text-center bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-md"
+                                            className="w-16 p-2 text-center bg-bg-primary border border-app-border rounded-md"
                                         />
                                     </td>
                                 </tr>
@@ -1453,22 +1475,22 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     {/* Mobile Card List */}
                     <div className="space-y-3 md:hidden">
                         {grades.map(student => (
-                            <div key={student.id} className="p-4 bg-light-bg dark:bg-dark-bg rounded-lg">
+                            <div key={student.id} className="p-4 bg-bg-primary rounded-lg">
                                 <p className="font-semibold mb-3">{student.name}</p>
                                 <div className="flex items-center justify-between mb-2">
-                                    <label htmlFor={`s1-${student.id}`} className="text-sm text-gray-600 dark:text-gray-400">1er Cuatrimestre</label>
+                                    <label htmlFor={`s1-${student.id}`} className="text-sm text-text-secondary">1er Cuatrimestre</label>
                                     <input id={`s1-${student.id}`} type="number" min="0" max="10"
                                         value={student.semester1 ?? ''}
                                         onChange={(e) => handleGradeChange(student.id, 'semester1', e.target.value)}
-                                        className="w-20 p-2 text-center bg-white dark:bg-dark-card border border-light-border dark:border-dark-border rounded-md"
+                                        className="w-20 p-2 text-center bg-card-bg border border-app-border rounded-md"
                                     />
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <label htmlFor={`s2-${student.id}`} className="text-sm text-gray-600 dark:text-gray-400">2do Cuatrimestre</label>
+                                    <label htmlFor={`s2-${student.id}`} className="text-sm text-text-secondary">2do Cuatrimestre</label>
                                     <input id={`s2-${student.id}`} type="number" min="0" max="10"
                                         value={student.semester2 ?? ''}
                                         onChange={(e) => handleGradeChange(student.id, 'semester2', e.target.value)}
-                                        className="w-20 p-2 text-center bg-white dark:bg-dark-card border border-light-border dark:border-dark-border rounded-md"
+                                        className="w-20 p-2 text-center bg-card-bg border border-app-border rounded-md"
                                     />
                                 </div>
                             </div>
@@ -1495,7 +1517,7 @@ const TeacherGradesPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <button 
                             onClick={handleSaveChanges} 
                             disabled={isSaving}
-                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
                             {isSaving ? 'Guardando...' : 'Guardar Cambios'}
                         </button>
                     )}
@@ -1541,7 +1563,7 @@ const TeacherAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => 
         presente: 'bg-accent-green text-white',
         ausente: 'bg-accent-red text-white',
         tarde: 'bg-accent-yellow text-white',
-        null: 'bg-gray-200 dark:bg-gray-600'
+        null: 'bg-bg-tertiary'
     };
 
     return (
@@ -1550,24 +1572,24 @@ const TeacherAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => 
             <Card>
                 <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                        <label htmlFor="subject-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Seleccione una Materia</label>
+                        <label htmlFor="subject-select" className="block text-sm font-medium text-text-primary mb-2">Seleccione una Materia</label>
                         <select id="subject-select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}
-                            className="w-full p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                            className="w-full p-2 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                             {subjects.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                         </select>
                     </div>
                     <div>
-                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fecha</label>
-                         <input type="date" defaultValue={new Date().toISOString().substring(0, 10)} className="w-full p-2 bg-light-bg dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md"/>
+                         <label className="block text-sm font-medium text-text-primary mb-2">Fecha</label>
+                         <input type="date" defaultValue={new Date().toISOString().substring(0, 10)} className="w-full p-2 bg-bg-secondary border border-app-border rounded-md"/>
                     </div>
                 </div>
                 
                  <div className="overflow-x-auto">
-                     <div className="hidden sm:flex justify-between p-3 border-b dark:border-dark-border bg-gray-50 dark:bg-gray-700/50 rounded-t-md">
+                     <div className="hidden sm:flex justify-between p-3 border-b border-app-border bg-bg-secondary rounded-t-md">
                         <div className="w-1/2 text-sm font-semibold uppercase">Alumno</div>
                         <div className="w-1/2 text-sm font-semibold uppercase text-center">Estado</div>
                     </div>
-                     <div className="divide-y dark:divide-dark-border">
+                     <div className="divide-y border-app-border">
                         {attendance.map(student => (
                             <div key={student.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3">
                                 <div className="mb-2 sm:mb-0 sm:w-1/2 font-medium">{student.name}</div>
@@ -1602,7 +1624,7 @@ const TeacherAttendancePage: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                         <button 
                             onClick={handleSaveChanges} 
                             disabled={isSaving}
-                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
                             {isSaving ? 'Guardando...' : 'Guardar Cambios'}
                         </button>
                     )}
@@ -1648,35 +1670,35 @@ const UploadMaterialModal: React.FC<{
         <Modal isOpen={isOpen} onClose={onClose} title="Subir Material de Estudio">
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="mat-title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Título</label>
-                    <input id="mat-title" type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                    <label htmlFor="mat-title" className="block text-sm font-medium text-text-primary">Título</label>
+                    <input id="mat-title" type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
                  <div>
-                    <label htmlFor="mat-subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Materia</label>
-                    <select id="mat-subject" value={subject} onChange={e => setSubject(e.target.value)} className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border">
+                    <label htmlFor="mat-subject" className="block text-sm font-medium text-text-primary">Materia</label>
+                    <select id="mat-subject" value={subject} onChange={e => setSubject(e.target.value)} className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border">
                         {subjects.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                 </div>
                  <div>
-                    <label htmlFor="mat-year" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Año</label>
-                    <select id="mat-year" value={year} onChange={e => setYear(e.target.value)} className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border">
+                    <label htmlFor="mat-year" className="block text-sm font-medium text-text-primary">Año</label>
+                    <select id="mat-year" value={year} onChange={e => setYear(e.target.value)} className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border">
                         <option>1er Año</option>
                         <option>2do Año</option>
                         <option>3er Año</option>
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Archivo</label>
-                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+                    <label className="block text-sm font-medium text-text-primary">Archivo</label>
+                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                         <div className="space-y-1 text-center">
                             <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <div className="flex text-sm text-gray-600 dark:text-gray-400">
-                                <label htmlFor="file-upload" className="relative cursor-pointer bg-light-card dark:bg-dark-card rounded-md font-medium text-brand-primary hover:text-brand-secondary focus-within:outline-none">
+                            <div className="flex text-sm text-text-secondary">
+                                <label htmlFor="file-upload" className="relative cursor-pointer bg-card-bg rounded-md font-medium text-brand-primary hover:text-brand-secondary focus-within:outline-none">
                                     <span>Selecciona un archivo</span>
                                     <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={e => setFile(e.target.files ? e.target.files[0] : null)} accept=".pdf,.docx,.ppt,.pptx" />
                                 </label>
                             </div>
-                            {file ? <p className="text-xs text-gray-500">{file.name}</p> : <p className="text-xs text-gray-500">PDF, DOCX, PPT hasta 10MB</p>}
+                            {file ? <p className="text-xs text-text-secondary">{file.name}</p> : <p className="text-xs text-text-secondary">PDF, DOCX, PPT hasta 10MB</p>}
                         </div>
                     </div>
                 </div>
@@ -1703,17 +1725,17 @@ const TeacherMaterialsPage: React.FC<{
                  {materials.length > 0 ? (
                     <ul className="space-y-4">
                         {materials.map(m => (
-                            <li key={m.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md flex justify-between items-center">
+                            <li key={m.id} className="p-3 bg-bg-primary rounded-md flex justify-between items-center">
                                 <div>
                                     <p className="font-semibold">{m.title}</p>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">{m.subject} - {m.year}</p>
+                                    <p className="text-sm text-text-secondary">{m.subject} - {m.year}</p>
                                 </div>
-                                <span className="text-sm font-mono px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">{m.fileType}</span>
+                                <span className="text-sm font-mono px-2 py-1 bg-bg-tertiary rounded">{m.fileType}</span>
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p className="text-center text-gray-500 py-6">Aún no has subido ningún material.</p>
+                    <p className="text-center text-text-secondary py-6">Aún no has subido ningún material.</p>
                 )}
             </Card>
         </div>
@@ -1771,12 +1793,12 @@ const CommunicationModal: React.FC<{
         <Modal isOpen={isOpen} onClose={onClose} title="Enviar Comunicado General">
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="comm-recipient-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Destinatario</label>
+                    <label htmlFor="comm-recipient-type" className="block text-sm font-medium text-text-primary">Destinatario</label>
                     <select 
                         id="comm-recipient-type" 
                         value={recipientType} 
                         onChange={e => setRecipientType(e.target.value)} 
-                        className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                        className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary"
                     >
                         <option value="all">Todos los Alumnos</option>
                         <option value="filtered">Filtrar por Carrera y Año</option>
@@ -1785,23 +1807,23 @@ const CommunicationModal: React.FC<{
                 {recipientType === 'filtered' && (
                     <>
                         <div>
-                            <label htmlFor="comm-career" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Carrera</label>
+                            <label htmlFor="comm-career" className="block text-sm font-medium text-text-primary">Carrera</label>
                             <select 
                                 id="comm-career" 
                                 value={selectedCareer} 
                                 onChange={e => setSelectedCareer(e.target.value)} 
-                                className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                                className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary"
                             >
                                 {careers.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
                         </div>
                         <div>
-                            <label htmlFor="comm-year" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Año</label>
+                            <label htmlFor="comm-year" className="block text-sm font-medium text-text-primary">Año</label>
                             <select 
                                 id="comm-year" 
                                 value={selectedYear} 
                                 onChange={e => setSelectedYear(e.target.value)} 
-                                className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"
+                                className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary"
                                 disabled={availableYears.length === 0}
                             >
                                 {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
@@ -1810,12 +1832,12 @@ const CommunicationModal: React.FC<{
                     </>
                 )}
                 <div>
-                    <label htmlFor="comm-subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Asunto</label>
-                    <input id="comm-subject" type="text" value={subject} onChange={e => setSubject(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary" />
+                    <label htmlFor="comm-subject" className="block text-sm font-medium text-text-primary">Asunto</label>
+                    <input id="comm-subject" type="text" value={subject} onChange={e => setSubject(e.target.value)} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary" />
                 </div>
                 <div>
-                    <label htmlFor="comm-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensaje</label>
-                    <textarea id="comm-message" value={message} onChange={e => setMessage(e.target.value)} rows={5} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border focus:ring-brand-primary focus:border-brand-primary"></textarea>
+                    <label htmlFor="comm-message" className="block text-sm font-medium text-text-primary">Mensaje</label>
+                    <textarea id="comm-message" value={message} onChange={e => setMessage(e.target.value)} rows={5} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border focus:ring-brand-primary focus:border-brand-primary"></textarea>
                 </div>
                 <button onClick={handleSend} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Enviar Comunicado</button>
             </div>
@@ -1836,30 +1858,30 @@ const ContactStudentModal: React.FC<{ isOpen: boolean; onClose: () => void; stud
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={`Contactar a ${student.name}`}>
             <div className="space-y-4">
-                 <div className="border-b border-gray-200 dark:border-gray-700 mb-4">
+                 <div className="border-b border-app-border mb-4">
                     <nav className="flex space-x-2" aria-label="Tabs">
-                        <button onClick={() => setContactType('message')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${contactType === 'message' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-gray-500'}`}>
+                        <button onClick={() => setContactType('message')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${contactType === 'message' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-text-secondary'}`}>
                             Enviar Mensaje
                         </button>
-                        <button onClick={() => setContactType('notice')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${contactType === 'notice' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-gray-500'}`}>
+                        <button onClick={() => setContactType('notice')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${contactType === 'notice' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-text-secondary'}`}>
                             Enviar Aviso
                         </button>
                     </nav>
                 </div>
                 {contactType === 'message' ? (
                     <div>
-                        <label htmlFor="student-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensaje Personalizado</label>
-                        <textarea id="student-message" rows={5} className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" placeholder={`Escribe un mensaje para ${student.name}...`}></textarea>
+                        <label htmlFor="student-message" className="block text-sm font-medium text-text-primary">Mensaje Personalizado</label>
+                        <textarea id="student-message" rows={5} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" placeholder={`Escribe un mensaje para ${student.name}...`}></textarea>
                     </div>
                 ) : (
                     <div>
-                         <label htmlFor="student-notice" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Plantilla de Aviso</label>
-                         <select id="student-notice" className="w-full p-2 mt-1 bg-light-bg dark:bg-slate-700 border rounded-md dark:border-dark-border">
+                         <label htmlFor="student-notice" className="block text-sm font-medium text-text-primary">Plantilla de Aviso</label>
+                         <select id="student-notice" className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border">
                             <option>Aviso por inasistencias</option>
                             <option>Aviso por bajo rendimiento académico</option>
                             <option>Solicitud de reunión</option>
                         </select>
-                        <p className="text-xs text-gray-500 mt-2">Se enviará una notificación con el aviso seleccionado.</p>
+                        <p className="text-xs text-text-secondary mt-2">Se enviará una notificación con el aviso seleccionado.</p>
                     </div>
                 )}
                 <button onClick={handleSend} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Enviar</button>
@@ -1942,30 +1964,30 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (st
         <div>
             <PageHeader title="Asistencia General" onBack={onBack} />
             <Card>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-light-bg dark:bg-dark-bg rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-bg-primary rounded-lg">
                     <div>
-                        <label htmlFor="att-date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Día</label>
+                        <label htmlFor="att-date" className="block text-sm font-medium text-text-primary mb-1">Día</label>
                         <input id="att-date" type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
-                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary" />
+                            className="w-full p-2 bg-card-bg border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary" />
                     </div>
                      <div>
-                        <label htmlFor="att-career" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Carrera</label>
+                        <label htmlFor="att-career" className="block text-sm font-medium text-text-primary mb-1">Carrera</label>
                         <select id="att-career" value={selectedCareer} onChange={e => setSelectedCareer(e.target.value)}
-                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                            className="w-full p-2 bg-card-bg border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                             {careers.map(career => <option key={career} value={career}>{career}</option>)}
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="att-year" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Año</label>
+                        <label htmlFor="att-year" className="block text-sm font-medium text-text-primary mb-1">Año</label>
                         <select id="att-year" value={selectedYear} onChange={e => setSelectedYear(e.target.value)}
-                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary" disabled={!selectedCareer}>
+                            className="w-full p-2 bg-card-bg border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary" disabled={!selectedCareer}>
                              {availableYears.map(year => <option key={year} value={year}>{year}</option>)}
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="att-subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Materia</label>
+                        <label htmlFor="att-subject" className="block text-sm font-medium text-text-primary mb-1">Materia</label>
                         <select id="att-subject" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}
-                            className="w-full p-2 bg-light-card dark:bg-slate-700 border border-light-border dark:border-dark-border rounded-md focus:ring-brand-primary focus:border-brand-primary" disabled={!selectedYear}>
+                            className="w-full p-2 bg-card-bg border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary" disabled={!selectedYear}>
                            {availableSubjects.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                         </select>
                     </div>
@@ -1973,13 +1995,13 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (st
 
                  <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="border-b dark:border-dark-border bg-gray-50 dark:bg-gray-700/50">
+                        <thead className="border-b border-app-border bg-bg-secondary">
                             <tr>
                                 <th className="p-3 text-sm font-semibold uppercase">Alumno</th>
                                 <th className="p-3 text-sm font-semibold uppercase text-right">Asistencia</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y dark:divide-dark-border">
+                        <tbody className="divide-y border-app-border">
                             {attendance.length > 0 ? attendance.map(student => {
                                 const studentData = allStudents.find(s => s.id === student.id);
                                 return (
@@ -1988,7 +2010,7 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (st
                                         <button onClick={() => onViewProfile(student.id)} className="font-medium text-left text-brand-primary hover:underline">
                                             {student.name}
                                         </button>
-                                        <span className="block text-xs text-gray-500 dark:text-gray-400">
+                                        <span className="block text-xs text-text-secondary">
                                             Legajo: {studentData?.legajo || 'N/A'}
                                         </span>
                                     </td>
@@ -2013,7 +2035,7 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (st
                                 </tr>
                             )}) : (
                                 <tr>
-                                    <td colSpan={2} className="p-4 text-center text-gray-500">No hay alumnos para la selección actual.</td>
+                                    <td colSpan={2} className="p-4 text-center text-text-secondary">No hay alumnos para la selección actual.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -2039,7 +2061,7 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (st
                         <button 
                             onClick={handleSaveChanges} 
                             disabled={isSaving || attendance.length === 0}
-                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed">
+                            className="px-6 py-2 bg-accent-blue text-white font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
                             {isSaving ? 'Guardando...' : 'Guardar'}
                         </button>
                     )}
@@ -2051,9 +2073,9 @@ const PreceptorAttendancePage: React.FC<{ onBack: () => void; onViewProfile: (st
 
 const PreceptorProceduresPage: React.FC<{
     requests: ProcedureRequest[];
-    onManageProcedure: (id: string, action: 'approve' | 'reject') => void;
+    onSelectRequest: (request: ProcedureRequest) => void;
     onBack: () => void;
-}> = ({ requests, onManageProcedure, onBack }) => {
+}> = ({ requests, onSelectRequest, onBack }) => {
     const [filter, setFilter] = useState<'pending' | 'approved' | 'rejected' | 'all'>('pending');
 
     const filteredRequests = useMemo(() => {
@@ -2074,14 +2096,14 @@ const PreceptorProceduresPage: React.FC<{
         <div>
             <PageHeader title="Gestión de Trámites" onBack={onBack} />
             <Card>
-                <div className="flex space-x-2 border-b dark:border-dark-border mb-4 pb-3">
+                <div className="flex flex-wrap gap-2 border-b border-app-border mb-4 pb-3">
                     {(['pending', 'approved', 'rejected', 'all'] as const).map(tab => (
                         <button
                             key={tab}
                             onClick={() => setFilter(tab)}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize ${filter === tab ? 'bg-brand-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize ${filter === tab ? 'bg-brand-primary text-white' : 'hover:bg-bg-tertiary'}`}
                         >
-                            {tab === 'all' ? 'Todos' : tab}
+                            {tab === 'all' ? 'Todos' : tab === 'pending' ? 'Pendientes' : tab === 'approved' ? 'Aprobados' : 'Rechazados'}
                         </button>
                     ))}
                 </div>
@@ -2089,28 +2111,22 @@ const PreceptorProceduresPage: React.FC<{
                 {filteredRequests.length > 0 ? (
                     <ul className="space-y-3">
                         {filteredRequests.map(req => (
-                            <li key={req.id} className="p-4 bg-light-bg dark:bg-dark-bg rounded-md">
+                            <li key={req.id} onClick={() => onSelectRequest(req)} className="p-4 bg-bg-primary rounded-md cursor-pointer hover:bg-bg-tertiary transition-transform duration-200 hover:scale-[1.02]">
                                 <div className="flex flex-wrap justify-between items-start gap-2">
                                     <div>
                                         <p className="font-semibold">{req.studentName}</p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">{req.type}</p>
-                                        <p className="text-xs text-gray-500 mt-1">{req.date}</p>
+                                        <p className="text-sm text-text-secondary">{req.type}</p>
+                                        <p className="text-xs text-text-secondary mt-1">{req.date}</p>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         {getStatusChip(req.status)}
-                                        {req.status === 'pending' && (
-                                            <div className="flex gap-2">
-                                                <button onClick={() => onManageProcedure(req.id, 'approve')} className="px-2 py-1 text-xs rounded-full bg-accent-green text-white hover:bg-green-600">Aprobar</button>
-                                                <button onClick={() => onManageProcedure(req.id, 'reject')} className="px-2 py-1 text-xs rounded-full bg-accent-red text-white hover:bg-red-600">Rechazar</button>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p className="text-center text-gray-500 py-6">No hay solicitudes que coincidan con el filtro.</p>
+                    <p className="text-center text-text-secondary py-6">No hay solicitudes que coincidan con el filtro.</p>
                 )}
             </Card>
         </div>
@@ -2126,30 +2142,29 @@ const PreceptorDashboard: React.FC<{
     onShowCommunications: () => void;
     navigate: (page: Page) => void;
     pendingProcedures: ProcedureRequest[];
-    onManageProcedure: (id: string, action: 'approve' | 'reject') => void;
     forumPosts: ForumPost[];
-}> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate, pendingProcedures, onManageProcedure, forumPosts }) => {
+}> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate, pendingProcedures, forumPosts }) => {
     
     return (
         <div className="space-y-6">
             <div>
                 <h2 className="text-2xl font-bold">Bienvenido, Preceptor {user.name}</h2>
-                <p className="text-gray-500 dark:text-gray-400">Panel de gestión y seguimiento de alumnos.</p>
+                <p className="text-text-secondary">Panel de gestión y seguimiento de alumnos.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="lg:col-span-2">
                     <Card title="Acciones Rápidas">
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                            <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center justify-center p-4 bg-bg-primary rounded-lg hover:bg-bg-tertiary transition-colors">
                                 <ClipboardDocumentCheckIcon className="w-8 h-8 mb-2 text-brand-primary" />
                                 <span className="font-semibold text-center">Ver Asistencia General</span>
                             </button>
-                             <button onClick={onShowCommunications} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                             <button onClick={onShowCommunications} className="flex flex-col items-center justify-center p-4 bg-bg-primary rounded-lg hover:bg-bg-tertiary transition-colors">
                                 <MegaphoneIcon className="w-8 h-8 mb-2 text-accent-purple" />
                                 <span className="font-semibold text-center">Enviar Comunicado</span>
                             </button>
-                            <button onClick={() => navigate('agenda')} className="flex flex-col items-center justify-center p-4 bg-light-bg dark:bg-dark-bg rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                            <button onClick={() => navigate('agenda')} className="flex flex-col items-center justify-center p-4 bg-bg-primary rounded-lg hover:bg-bg-tertiary transition-colors">
                                 <CalendarDaysIcon className="w-8 h-8 mb-2 text-accent-blue" />
                                 <span className="font-semibold text-center">Ver Agenda</span>
                             </button>
@@ -2161,9 +2176,9 @@ const PreceptorDashboard: React.FC<{
                     {pendingJustifications.length > 0 ? (
                         <ul className="space-y-3 max-h-80 overflow-y-auto">
                             {pendingJustifications.map(justification => (
-                                <li key={justification.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                <li key={justification.id} className="p-3 bg-bg-primary rounded-md">
                                     <p className="font-semibold">{justification.studentName}</p>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">{justification.subject} - {justification.date}</p>
+                                    <p className="text-sm text-text-secondary">{justification.subject} - {justification.date}</p>
                                     <p className="text-sm italic mt-1">"{justification.reason}"</p>
                                     <div className="flex gap-2 mt-3">
                                         <button onClick={() => onManageJustification(justification.id, 'approve')} className="px-2 py-1 text-xs rounded-full bg-accent-green text-white hover:bg-green-600">Aprobar</button>
@@ -2172,30 +2187,34 @@ const PreceptorDashboard: React.FC<{
                                 </li>
                             ))}
                         </ul>
-                    ) : <p className="text-gray-500 text-center py-4">No hay justificaciones pendientes.</p>}
+                    ) : <p className="text-text-secondary text-center py-4">No hay justificaciones pendientes.</p>}
                 </Card>
 
                 <Card title="Solicitudes de Trámites">
                     {pendingProcedures.length > 0 ? (
-                        <ul className="space-y-3 max-h-80 overflow-y-auto">
-                            {pendingProcedures.map(req => (
-                                <li key={req.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
-                                    <p className="font-semibold">{req.studentName}</p>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">{req.type} - {req.date}</p>
-                                    <div className="flex gap-2 mt-3">
-                                        <button onClick={() => onManageProcedure(req.id, 'approve')} className="px-2 py-1 text-xs rounded-full bg-accent-green text-white hover:bg-green-600">Aprobar</button>
-                                        <button onClick={() => onManageProcedure(req.id, 'reject')} className="px-2 py-1 text-xs rounded-full bg-accent-red text-white hover:bg-red-600">Rechazar</button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : <p className="text-gray-500 text-center py-4">No hay solicitudes pendientes.</p>}
+                         <>
+                            <ul className="space-y-3 max-h-72 overflow-y-auto">
+                                {pendingProcedures.map(req => (
+                                    <li key={req.id} className="p-3 bg-bg-primary rounded-md">
+                                        <p className="font-semibold">{req.studentName}</p>
+                                        <p className="text-sm text-text-secondary">{req.type} - {req.date}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                            <button 
+                                onClick={() => navigate('trámites')} 
+                                className="w-full mt-4 px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary"
+                            >
+                                Gestionar Trámites
+                            </button>
+                         </>
+                    ) : <p className="text-text-secondary text-center py-4">No hay solicitudes pendientes.</p>}
                 </Card>
 
                 <Card title="Alumnos en Observación">
                      <ul className="space-y-3 max-h-80 overflow-y-auto">
                         {MOCK_UNDERPERFORMING_STUDENTS.map(student => (
-                            <li key={student.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                            <li key={student.id} className="p-3 bg-bg-primary rounded-md">
                                 <div className="flex justify-between items-start">
                                     <div>
                                         <p className="font-semibold">{student.name}</p>
@@ -2215,15 +2234,15 @@ const PreceptorDashboard: React.FC<{
                     {forumPosts.length > 0 ? (
                         <ul className="space-y-4 max-h-80 overflow-y-auto">
                             {forumPosts.map(post => (
-                                <li key={post.id} className="p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                                <li key={post.id} className="p-3 bg-bg-primary rounded-md">
                                     <h4 className="font-semibold">{post.title}</h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                    <p className="text-sm text-text-secondary mt-1">
                                         en <span className="font-medium">{post.category}</span> por {post.author}
                                     </p>
                                 </li>
                             ))}
                         </ul>
-                    ) : <p className="text-center text-gray-500 py-4">No hay actividad reciente en los foros.</p>}
+                    ) : <p className="text-center text-text-secondary py-4">No hay actividad reciente en los foros.</p>}
                     <button 
                         onClick={() => navigate('foros')} 
                         className="w-full mt-4 px-4 py-2 font-semibold text-white bg-brand-primary rounded-md hover:bg-brand-secondary"
@@ -2241,7 +2260,7 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
     const profileData = MOCK_STUDENT_PROFILE_DATA[studentId] || MOCK_STUDENT_PROFILE_DATA['default'];
 
     const ProgressBar: React.FC<{ value: number }> = ({ value }) => (
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+        <div className="w-full bg-bg-tertiary rounded-full h-2.5">
             <div className="bg-brand-primary h-2.5 rounded-full" style={{ width: `${value}%` }}></div>
         </div>
     );
@@ -2255,7 +2274,7 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
                         <img src={profileData.avatarUrl} alt={profileData.name} className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"/>
                         <div className="text-center sm:text-left">
                             <h2 className="text-2xl sm:text-3xl font-bold">{profileData.name}</h2>
-                            <p className="text-md text-gray-500 dark:text-gray-400">Legajo: {profileData.legajo}</p>
+                            <p className="text-md text-text-secondary">Legajo: {profileData.legajo}</p>
                         </div>
                     </div>
                 </Card>
@@ -2275,10 +2294,10 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
                 <Card title="Notas de Parciales">
                     <ul className="space-y-3">
                         {profileData.partialGrades.map((grade: any) => (
-                             <li key={grade.id} className="flex justify-between items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                             <li key={grade.id} className="flex justify-between items-center p-3 bg-bg-primary rounded-md">
                                 <div>
                                     <p className="font-semibold">{grade.title}</p>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">{grade.date}</p>
+                                    <p className="text-sm text-text-secondary">{grade.date}</p>
                                 </div>
                                 <span className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold text-white ${grade.grade >= 7 ? 'bg-accent-green' : 'bg-accent-yellow'}`}>
                                     {grade.grade}
@@ -2290,7 +2309,7 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
                 <Card title="Inscripción a Finales">
                     <ul className="space-y-3">
                         {profileData.finalExams.map((exam: any) => (
-                             <li key={exam.subject} className="flex justify-between items-center p-3 bg-light-bg dark:bg-dark-bg rounded-md">
+                             <li key={exam.subject} className="flex justify-between items-center p-3 bg-bg-primary rounded-md">
                                 <span className="font-medium">{exam.subject}</span>
                                 {exam.enrolled ? (
                                     <span className="flex items-center gap-2 text-sm text-accent-green">
@@ -2311,11 +2330,11 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
                              {profileData.justifications.map((just: any) => <li key={just.id}>{just.reason}</li>)}
                         </ul>
                     ) : (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">El alumno no ha enviado justificaciones.</p>
+                        <p className="text-sm text-text-secondary">El alumno no ha enviado justificaciones.</p>
                     )}
                 </Card>
                 <Card title="Historial de Mensajes">
-                     <p className="text-sm text-gray-500 dark:text-gray-400">El historial de mensajes no está disponible.</p>
+                     <p className="text-sm text-text-secondary">El historial de mensajes no está disponible.</p>
                 </Card>
             </div>
         </div>
@@ -2324,7 +2343,7 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
 
 
 // --- LAYOUT COMPONENTS ---
-const Header: React.FC<{ user: User; onLogout: () => void; theme: string; toggleTheme: () => void; navigate: (page: Page) => void; isSubPage: boolean; notifications: Notification[] }> = ({ user, onLogout, theme, toggleTheme, navigate, isSubPage, notifications }) => {
+const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => void; isSubPage: boolean; notifications: Notification[]; navigate: (page: Page) => void; }> = ({ user, onLogout, onThemeChange, isSubPage, notifications, navigate }) => {
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -2340,33 +2359,31 @@ const Header: React.FC<{ user: User; onLogout: () => void; theme: string; toggle
     }, []);
     
     return (
-        <header className={`sticky top-0 z-20 flex items-center justify-between p-4 shadow-md transition-all duration-300 ${isSubPage ? 'md:hidden' : ''} ${isScrolled ? 'bg-light-card/80 dark:bg-dark-card/80 backdrop-blur-sm' : 'bg-light-card dark:bg-dark-card'}`}>
+        <header className={`sticky top-0 z-20 flex items-center justify-between p-4 shadow-md transition-all duration-300 ${isSubPage ? 'md:hidden' : ''} ${isScrolled ? 'bg-card-bg/80 backdrop-blur-sm' : 'bg-card-bg'}`}>
             <div className="flex items-center space-x-4">
                 <AcademicCapIcon className="w-8 h-8 text-brand-primary"/>
                 <span className="text-xl font-bold hidden sm:inline">Portal del Instituto</span>
-                 <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                    {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-                </button>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-                {user.role !== 'preceptor' && (
-                    <button onClick={() => navigate('mensajes')} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="Mensajes">
-                        <InboxIcon className="w-6 h-6" />
-                    </button>
-                )}
+                 <button onClick={onThemeChange} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors" title="Cambiar apariencia">
+                    <PaletteIcon className="w-6 h-6" />
+                </button>
+                <button onClick={() => navigate('mensajes')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors" title="Mensajes">
+                    <InboxIcon className="w-6 h-6" />
+                </button>
                 <div className="relative">
-                     <button onClick={() => setNotificationsOpen(o => !o)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                     <button onClick={() => setNotificationsOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
                         <BellIcon className="w-6 h-6" />
                         {notifications.some(n => !n.read) && <span className="absolute top-1 right-1 block w-2 h-2 bg-red-500 rounded-full"></span>}
                     </button>
                     {notificationsOpen && (
-                        <div className="absolute right-0 mt-2 w-72 bg-light-card dark:bg-dark-card border dark:border-dark-border rounded-md shadow-lg animate-fade-in">
-                            <div className="p-3 font-semibold border-b dark:border-dark-border">Notificaciones</div>
+                        <div className="absolute right-0 mt-2 w-72 bg-card-bg border border-app-border rounded-md shadow-lg animate-fade-in">
+                            <div className="p-3 font-semibold border-b border-app-border">Notificaciones</div>
                             <ul className="py-1 max-h-80 overflow-y-auto">
                                 {notifications.map(n => (
-                                    <li key={n.id} className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                                    <li key={n.id} className="px-3 py-2 hover:bg-bg-tertiary cursor-pointer">
                                         <p className={`text-sm ${!n.read ? 'font-bold' : ''}`}>{n.title}</p>
-                                        <p className="text-xs text-gray-500">{n.date}</p>
+                                        <p className="text-xs text-text-secondary">{n.date}</p>
                                     </li>
                                 ))}
                             </ul>
@@ -2374,21 +2391,21 @@ const Header: React.FC<{ user: User; onLogout: () => void; theme: string; toggle
                     )}
                 </div>
                  <div className="relative">
-                    <button onClick={() => setProfileMenuOpen(o => !o)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <button onClick={() => setProfileMenuOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
                         <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=32`} alt="Avatar" className="w-8 h-8 rounded-full" />
                     </button>
                     {profileMenuOpen && (
-                         <div className="absolute right-0 mt-2 w-48 bg-light-card dark:bg-dark-card border dark:border-dark-border rounded-md shadow-lg animate-fade-in">
+                         <div className="absolute right-0 mt-2 w-48 bg-card-bg border border-app-border rounded-md shadow-lg animate-fade-in">
                              <ul className="py-1">
                                  <li>
                                      <a href="#" onClick={(e) => { e.preventDefault(); navigate('perfil'); setProfileMenuOpen(false); }}
-                                        className="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        className="block px-4 py-2 text-sm text-text-primary hover:bg-bg-tertiary">
                                          Mi Perfil
                                      </a>
                                  </li>
                                  <li>
                                     <button onClick={() => { onLogout(); setProfileMenuOpen(false); }}
-                                            className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-bg-tertiary">
                                         Cerrar Sesión
                                     </button>
                                  </li>
@@ -2426,14 +2443,15 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
         { name: 'Panel Principal', page: 'panel', icon: <ChartBarIcon className="w-5 h-5"/> },
         { name: 'Asistencia', page: 'asistencia-general', icon: <CheckBadgeIcon className="w-5 h-5"/> },
         { name: 'Trámites', page: 'trámites', icon: <DocumentTextIcon className="w-5 h-5"/> },
+        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
     ];
 
     const links = user.role === 'alumno' ? alumnoLinks : user.role === 'profesor' ? profesorLinks : preceptorLinks;
 
     return (
-        <aside className="fixed top-0 left-0 z-10 w-64 h-screen bg-dark-card text-dark-text hidden md:flex flex-col">
-             <div className="flex items-center justify-center p-4 border-b border-dark-border h-[72px]">
+        <aside className="fixed top-0 left-0 z-10 w-64 h-screen bg-card-bg text-text-primary hidden md:flex flex-col">
+             <div className="flex items-center justify-center p-4 border-b border-app-border h-[72px]">
                 <h2 className="text-lg font-semibold">Navegación</h2>
             </div>
             <nav className="p-4 flex-grow">
@@ -2449,13 +2467,13 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
                     ))}
                 </ul>
             </nav>
-            <div className="p-4 border-t border-dark-border">
+            <div className="p-4 border-t border-app-border">
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('perfil'); }}
-                   className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700">
+                   className="flex items-center gap-3 p-2 rounded-md hover:bg-bg-tertiary">
                     <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=40`} alt="Avatar" className="w-10 h-10 rounded-full" />
                     <div>
                         <p className="font-semibold">{user.name}</p>
-                        <p className="text-xs text-gray-400">Ver Perfil</p>
+                        <p className="text-xs text-text-secondary">Ver Perfil</p>
                     </div>
                 </a>
             </div>
@@ -2471,14 +2489,14 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
         { name: 'Notas', page: 'calificaciones', icon: <AcademicCapIcon className="w-5 h-5" /> },
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-5 h-5" /> },
+        { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-5 h-5"/> },
     ];
 
     const profesorLinks: NavLink[] = [
         { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
         { name: 'Notas', page: 'calificaciones', icon: <PencilSquareIcon className="w-5 h-5" /> },
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
-        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5" /> },
+        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
     ];
 
     const preceptorLinks: NavLink[] = [
@@ -2494,10 +2512,10 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
 
 
     return (
-        <nav className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-${links.length} p-1 bg-light-card border-t border-light-border dark:bg-dark-card dark:border-dark-border md:hidden`}>
+        <nav className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-${links.length} p-1 bg-card-bg border-t border-app-border md:hidden`}>
             {links.map(link => (
                 <a href="#" key={link.page} onClick={(e) => { e.preventDefault(); navigate(link.page); }}
-                   className={`flex flex-col items-center justify-center w-full rounded-md p-1 transition-colors ${currentPage === link.page ? 'text-brand-primary' : 'text-gray-600 dark:text-gray-400 hover:text-brand-primary'}`}>
+                   className={`flex flex-col items-center justify-center w-full rounded-md p-1 transition-colors ${currentPage === link.page ? 'text-brand-primary' : 'text-text-secondary hover:text-brand-primary'}`}>
                     {link.icon}
                     <span className="text-[10px] text-center">{link.name}</span>
                 </a>
@@ -2539,24 +2557,24 @@ const TeacherAddEventModal: React.FC<{
                 <div>
                     <label htmlFor="event-title" className="block text-sm font-medium">Título del Evento</label>
                     <input id="event-title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
                 <div>
                     <label htmlFor="event-day" className="block text-sm font-medium">Día del Mes</label>
                     <input id="event-day" type="number" value={day} onChange={(e) => setDay(parseInt(e.target.value, 10))} min="1" max="31"
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md dark:border-dark-border" />
+                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
                 </div>
                 <div>
                     <label className="block text-sm font-medium">Color</label>
                     <div className="flex space-x-2 mt-2">
                         {colorOptions.map(opt => (
                             <button key={opt.name} onClick={() => setColor(opt.name)}
-                                className={`w-8 h-8 rounded-full transition-transform transform hover:scale-110 ${opt.class} ${color === opt.name ? 'ring-2 ring-offset-2 ring-brand-primary dark:ring-offset-dark-card' : ''}`}>
+                                className={`w-8 h-8 rounded-full transition-transform transform hover:scale-110 ${opt.class} ${color === opt.name ? 'ring-2 ring-offset-2 ring-brand-primary ring-offset-card-bg' : ''}`}>
                             </button>
                         ))}
                     </div>
                 </div>
-                 <div className="border-t dark:border-dark-border pt-4">
+                 <div className="border-t border-app-border pt-4">
                     <label className="block text-sm font-medium">Visibilidad</label>
                     <div className="flex items-center space-x-4 mt-2">
                         <label className="flex items-center cursor-pointer">
@@ -2575,7 +2593,7 @@ const TeacherAddEventModal: React.FC<{
                              <input type="checkbox" checked={notify} onChange={(e) => setNotify(e.target.checked)} className="h-4 w-4 accent-brand-primary rounded" />
                              <span className="ml-2 text-sm">Enviar notificación emergente a los alumnos</span>
                         </label>
-                        <p className="text-xs text-gray-500 mt-1 ml-6">Marcar si es un evento importante como un parcial o cambio de fecha.</p>
+                        <p className="text-xs text-text-secondary mt-1 ml-6">Marcar si es un evento importante como un parcial o cambio de fecha.</p>
                     </div>
                 )}
                 <button onClick={handleSubmit} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Añadir Evento</button>
@@ -2584,17 +2602,150 @@ const TeacherAddEventModal: React.FC<{
     );
 };
 
+const THEME_PALETTES = {
+  instituto: { name: 'Instituto', light: ['#f1f5f9', '#ffffff', '#14b8a6'], dark: ['#0f172a', '#1e293b', '#14b8a6'] },
+  celestial: { name: 'Celestial', light: ['#f5f5f5', '#ffffff', '#d4af37'], dark: ['#0c1445', '#182152', '#FFD700'] },
+  oscuro: { name: 'Oscuro', light: ['#ffffff', '#f9fafb', '#9ca3af'], dark: ['#111827', '#1f2937', '#3b82f6'] },
+  ensueño: { name: 'Ensoñación', light: ['#fdf2f8', '#ffffff', '#ec4899'], dark: ['#2c0b49', '#3c126b', '#f472b6'] },
+  enfoque: { name: 'Enfoque', light: ['#f0f9ff', '#ffffff', '#0891b2'], dark: ['#0e1e33', '#152c4a', '#22d3ee'] },
+  fantasma: { name: 'Fantasma', light: ['#f9fafb', '#ffffff', '#6b7280'], dark: ['#18181b', '#27272a', '#a1a1aa'] },
+  rebelde: { name: 'Rebelde', light: ['#fefce8', '#ffffff', '#eab308'], dark: ['#1c1917', '#292524', '#facc15'] },
+};
+
+const ThemeMenu: React.FC<{
+    activeScheme: string;
+    activeMode: 'light' | 'dark';
+    onSchemeChange: (scheme: string) => void;
+    onModeChange: (mode: 'light' | 'dark') => void;
+    onClose: () => void;
+}> = ({ activeScheme, activeMode, onSchemeChange, onModeChange, onClose }) => {
+    
+    return (
+        <div className="absolute right-4 top-20 z-40">
+            <Card className="w-80 sm:w-96 !p-0">
+                <div className="p-4 border-b border-app-border">
+                    <h3 className="text-lg font-semibold">Modelos de Apariencia</h3>
+                    <p className="text-sm text-text-secondary">Personaliza la apariencia de la aplicación.</p>
+                </div>
+                <div className="p-4 space-y-4">
+                    <div className="flex justify-around items-center bg-bg-primary p-1 rounded-lg">
+                        <button onClick={() => onModeChange('light')} className={`w-1/2 py-2 rounded-md flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${activeMode === 'light' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>
+                           <SunIcon className="w-5 h-5"/> Claro
+                        </button>
+                        <button onClick={() => onModeChange('dark')} className={`w-1/2 py-2 rounded-md flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${activeMode === 'dark' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>
+                            <MoonIcon className="w-5 h-5"/> Oscuro
+                        </button>
+                    </div>
+                    <div>
+                         <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
+                            <DevicePhoneMobileIcon className="w-5 h-5"/>
+                            Temas de Color
+                         </h4>
+                         <div className="grid grid-cols-2 gap-3">
+                            {Object.entries(THEME_PALETTES).map(([themeId, themeData]) => (
+                                <button key={themeId} onClick={() => onSchemeChange(themeId)} className={`p-3 border-2 rounded-lg text-left transition-all ${activeScheme === themeId ? 'border-brand-primary' : 'border-app-border hover:border-brand-primary/50'}`}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                         <div className={`w-3 h-3 rounded-full transition-colors ${activeScheme === themeId ? 'bg-brand-primary' : 'bg-transparent'}`}></div>
+                                         <span className="text-sm font-medium text-text-primary">{themeData.name}</span>
+                                    </div>
+                                    <div className="flex items-center space-x-1.5 pl-5">
+                                        {themeData[activeMode].map((color, idx) => (
+                                            <div key={idx} style={{ backgroundColor: color }} className="w-5 h-5 rounded-full border border-app-border"/>
+                                        ))}
+                                    </div>
+                                </button>
+                            ))}
+                         </div>
+                    </div>
+                </div>
+            </Card>
+        </div>
+    )
+};
+
+const ProcedureDetailModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    request: ProcedureRequest | null;
+    onUpdateRequest: (id: string, action: 'approve' | 'reject') => void;
+}> = ({ isOpen, onClose, request, onUpdateRequest }) => {
+    const [file, setFile] = useState<File | null>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            setFile(null);
+        }
+    }, [isOpen]);
+
+    if (!isOpen || !request) return null;
+
+    const handleApprove = () => {
+        if (request.status === 'pending' && !file) {
+            alert('Por favor, sube el archivo PDF correspondiente para aprobar la solicitud.');
+            return;
+        }
+        onUpdateRequest(request.id, 'approve');
+        onClose();
+    };
+
+    const handleReject = () => {
+        onUpdateRequest(request.id, 'reject');
+        onClose();
+    };
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} title="Detalle de Trámite">
+            <div className="space-y-4">
+                <div>
+                    <h4 className="text-lg font-semibold">{request.studentName}</h4>
+                    <p className="text-text-secondary">{request.type}</p>
+                    <p className="text-sm text-text-secondary">Fecha: {request.date}</p>
+                </div>
+                
+                {request.status === 'pending' && (
+                    <div className="space-y-4 pt-4 border-t border-app-border">
+                        <label className="block text-sm font-medium text-text-primary">Adjuntar Documento (PDF)</label>
+                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-app-border border-dashed rounded-md">
+                            <div className="space-y-1 text-center">
+                                <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
+                                <div className="flex text-sm text-text-secondary">
+                                    <label htmlFor="file-upload-procedure" className="relative cursor-pointer bg-card-bg rounded-md font-medium text-brand-primary hover:text-brand-secondary focus-within:outline-none">
+                                        <span>Selecciona un archivo</span>
+                                        <input id="file-upload-procedure" name="file-upload" type="file" className="sr-only" onChange={e => setFile(e.target.files ? e.target.files[0] : null)} accept=".pdf" />
+                                    </label>
+                                </div>
+                                {file ? <p className="text-xs text-text-secondary">{file.name}</p> : <p className="text-xs text-text-secondary">PDF hasta 10MB</p>}
+                            </div>
+                        </div>
+                        <div className="flex justify-end gap-3 pt-4">
+                            <button onClick={handleReject} className="px-4 py-2 bg-accent-red text-white rounded-md hover:bg-red-700">Rechazar</button>
+                            <button onClick={handleApprove} className="px-4 py-2 bg-accent-green text-white rounded-md hover:bg-green-700 disabled:bg-gray-400" disabled={!file}>
+                                Aprobar y Enviar
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {request.status !== 'pending' && (
+                    <div className="pt-4 border-t border-app-border">
+                        <p>Estado: <span className={`font-semibold capitalize ${request.status === 'approved' ? 'text-accent-green' : 'text-accent-red'}`}>{request.status === 'approved' ? 'Aprobado' : 'Rechazado'}</span></p>
+                        <p className="text-sm text-text-secondary mt-2">Esta solicitud ya ha sido procesada.</p>
+                        <div className="flex justify-end mt-4">
+                            <button onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Cerrar</button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </Modal>
+    );
+};
+
 const App: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [currentPage, setCurrentPage] = useState<Page>('panel');
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== 'undefined' && window.localStorage) {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) return savedTheme;
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        return 'light';
-    });
+    const [colorScheme, setColorScheme] = useState(() => localStorage.getItem('colorScheme') || 'oscuro');
+    const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('themeMode') as 'light' | 'dark') || 'dark');
+    
     const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(MOCK_CALENDAR_EVENTS);
     const [materials, setMaterials] = useState<Material[]>(MOCK_MATERIALS);
     const [studentNotifications, setStudentNotifications] = useState<Notification[]>(MOCK_STUDENT_NOTIFICATIONS);
@@ -2604,6 +2755,7 @@ const App: React.FC = () => {
     const [isUploadModalOpen, setUploadModalOpen] = useState(false);
     const [selectedCourseSummary, setSelectedCourseSummary] = useState<TeacherSummary | null>(null);
     const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+    const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
     
     // Preceptor specific state
     const [pendingJustifications, setPendingJustifications] = useState<PendingJustification[]>(MOCK_PENDING_JUSTIFICATIONS);
@@ -2611,6 +2763,8 @@ const App: React.FC = () => {
     const [isCommModalOpen, setCommModalOpen] = useState(false);
     const [isContactStudentModalOpen, setContactStudentModalOpen] = useState(false);
     const [selectedStudentToContact, setSelectedStudentToContact] = useState<UnderperformingStudent | null>(null);
+    const [isProcedureDetailModalOpen, setProcedureDetailModalOpen] = useState(false);
+    const [selectedProcedureRequest, setSelectedProcedureRequest] = useState<ProcedureRequest | null>(null);
     
     const teacherSubjects = useMemo(() => MOCK_TEACHER_SUMMARY.map(s => s.subject), []);
 
@@ -2655,6 +2809,11 @@ const App: React.FC = () => {
         setSelectedCourseSummary(summary);
         setPendingModalOpen(true);
     };
+
+    const handleOpenProcedureDetail = (req: ProcedureRequest) => {
+        setSelectedProcedureRequest(req);
+        setProcedureDetailModalOpen(true);
+    };
     
     // Preceptor functions
     const handleManageJustification = (id: string, action: 'approve' | 'reject') => {
@@ -2663,7 +2822,7 @@ const App: React.FC = () => {
     };
 
     const handleManageProcedure = (id: string, action: 'approve' | 'reject') => {
-        alert(`Solicitud ${action === 'approve' ? 'aprobada' : 'rechazada'}.`);
+        alert(`Solicitud de ${procedureRequests.find(r => r.id === id)?.studentName} ha sido ${action === 'approve' ? 'aprobada' : 'rechazada'}.`);
         setProcedureRequests(prev => prev.map(req => req.id === id ? { ...req, status: action === 'approve' ? 'approved' : 'rejected' } : req));
     };
 
@@ -2711,17 +2870,16 @@ const App: React.FC = () => {
     };
 
     useEffect(() => {
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
+        const root = document.documentElement;
+        if (themeMode === 'dark') {
+            root.classList.add('dark');
         } else {
-            document.documentElement.classList.remove('dark');
+            root.classList.remove('dark');
         }
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
-    const toggleTheme = useCallback(() => {
-        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-    }, []);
+        root.setAttribute('data-theme', colorScheme);
+        localStorage.setItem('themeMode', themeMode);
+        localStorage.setItem('colorScheme', colorScheme);
+    }, [themeMode, colorScheme]);
 
     const handleLogin = (loggedInUser: User) => {
         setUser(loggedInUser);
@@ -2813,12 +2971,12 @@ const App: React.FC = () => {
                                         onShowCommunications={() => setCommModalOpen(true)}
                                         navigate={setCurrentPage}
                                         pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
-                                        onManageProcedure={handleManageProcedure}
                                         forumPosts={forumPostsForUser}
                                     />;
                 case 'asistencia-general': return <PreceptorAttendancePage onBack={() => setCurrentPage('panel')} onViewProfile={(studentId) => { setSelectedStudentId(studentId); setCurrentPage('alumno-perfil'); }} />;
-                case 'trámites': return <PreceptorProceduresPage requests={procedureRequests} onManageProcedure={handleManageProcedure} onBack={() => setCurrentPage('panel')} />;
+                case 'trámites': return <PreceptorProceduresPage requests={procedureRequests} onSelectRequest={handleOpenProcedureDetail} onBack={() => setCurrentPage('panel')} />;
                 case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setTeacherAddEventModalOpen(true)} />;
+                case 'mensajes': return <MessagesPage currentUser={user} />;
                 case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
                 case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
                 case 'alumno-perfil': return selectedStudentId ? <StudentProfilePageForPreceptor studentId={selectedStudentId} onBack={() => { setCurrentPage('asistencia-general'); setSelectedStudentId(null); }} /> : <p>Error: No se ha seleccionado un alumno.</p>;
@@ -2830,7 +2988,6 @@ const App: React.FC = () => {
                                     onShowCommunications={() => setCommModalOpen(true)}
                                     navigate={setCurrentPage}
                                     pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
-                                    onManageProcedure={handleManageProcedure}
                                     forumPosts={forumPostsForUser}
                                 />;
             }
@@ -2855,7 +3012,7 @@ const App: React.FC = () => {
 
     if (currentPage === 'perfil' || isSubPage) {
         return (
-            <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
+            <div className="min-h-screen bg-bg-primary">
                 {/* Modals for Sub-Pages */}
                 <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddStudentEvent} />
                 <TeacherAddEventModal isOpen={isTeacherAddEventModalOpen} onClose={() => setTeacherAddEventModalOpen(false)} onAddEvent={handleAddTeacherEvent} />
@@ -2863,17 +3020,30 @@ const App: React.FC = () => {
                 <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} />
                 <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={handleSendCommunication} />
                 <ContactStudentModal isOpen={isContactStudentModalOpen} onClose={() => setContactStudentModalOpen(false)} student={selectedStudentToContact} />
+                 <ProcedureDetailModal 
+                    isOpen={isProcedureDetailModalOpen} 
+                    onClose={() => setProcedureDetailModalOpen(false)} 
+                    request={selectedProcedureRequest}
+                    onUpdateRequest={handleManageProcedure}
+                />
                 
-                {/* Main Header is hidden for sub-pages on desktop, but shown on mobile */}
                  <Header 
                     user={user} 
                     onLogout={handleLogout}
-                    theme={theme}
-                    toggleTheme={toggleTheme}
-                    navigate={setCurrentPage}
+                    onThemeChange={() => setIsThemeMenuOpen(prev => !prev)}
                     isSubPage={isSubPage}
                     notifications={notificationsForUser}
+                    navigate={setCurrentPage}
                 />
+                 {isThemeMenuOpen && (
+                    <ThemeMenu 
+                        activeScheme={colorScheme}
+                        activeMode={themeMode}
+                        onSchemeChange={setColorScheme}
+                        onModeChange={setThemeMode}
+                        onClose={() => setIsThemeMenuOpen(false)}
+                    />
+                )}
                  <div className={`p-4 sm:p-6 lg:p-8 ${isSubPage ? 'md:ml-64' : ''}`}>
                     {renderCurrentPage()}
                 </div>
@@ -2886,13 +3056,28 @@ const App: React.FC = () => {
     const isMessagesOrForumPage = currentPage === 'mensajes' || currentPage === 'foros';
 
     return (
-        <div className="flex h-screen bg-light-bg dark:bg-dark-bg">
+        <div className="flex h-screen bg-bg-primary">
             <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddStudentEvent} />
             <TeacherAddEventModal isOpen={isTeacherAddEventModalOpen} onClose={() => setTeacherAddEventModalOpen(false)} onAddEvent={handleAddTeacherEvent} />
             <UploadMaterialModal isOpen={isUploadModalOpen} onClose={() => setUploadModalOpen(false)} onUpload={handleUploadMaterial} subjects={teacherSubjects} />
             <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} />
             <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={handleSendCommunication} />
             <ContactStudentModal isOpen={isContactStudentModalOpen} onClose={() => setContactStudentModalOpen(false)} student={selectedStudentToContact} />
+            <ProcedureDetailModal 
+                isOpen={isProcedureDetailModalOpen} 
+                onClose={() => setProcedureDetailModalOpen(false)} 
+                request={selectedProcedureRequest}
+                onUpdateRequest={handleManageProcedure}
+            />
+             {isThemeMenuOpen && (
+                <ThemeMenu 
+                    activeScheme={colorScheme}
+                    activeMode={themeMode}
+                    onSchemeChange={setColorScheme}
+                    onModeChange={setThemeMode}
+                    onClose={() => setIsThemeMenuOpen(false)}
+                />
+            )}
             <Sidebar 
                 user={user}
                 currentPage={currentPage}
@@ -2903,11 +3088,10 @@ const App: React.FC = () => {
                 <Header 
                     user={user} 
                     onLogout={handleLogout}
-                    theme={theme}
-                    toggleTheme={toggleTheme}
-                    navigate={setCurrentPage}
+                    onThemeChange={() => setIsThemeMenuOpen(prev => !prev)}
                     isSubPage={false}
                     notifications={notificationsForUser}
+                    navigate={setCurrentPage}
                 />
                 <main className={`flex-1 overflow-y-auto pb-24 md:pb-8 ${isMessagesOrForumPage ? 'p-0 md:p-4' : 'p-4 sm:p-6 lg:p-8'}`}>
                      <div className={isMessagesOrForumPage ? 'h-full' : ''}>

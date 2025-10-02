@@ -5,23 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Academic Institute Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root, html[data-theme='instituto'] {
+        --color-brand-primary: #14b8a6;
+        --color-brand-secondary: #0d9488;
+        --color-bg-primary: #f1f5f9;
+        --color-bg-secondary: #f8fafc;
+        --color-bg-tertiary: #e2e8f0;
+        --color-card-bg: #ffffff;
+        --color-border: #e2e8f0;
+        --color-text-primary: #1e293b;
+        --color-text-secondary: #64748b;
+      }
+      html[data-theme='instituto'].dark {
+        --color-brand-primary: #14b8a6;
+        --color-brand-secondary: #2dd4bf;
+        --color-bg-primary: #0f172a;
+        --color-bg-secondary: #1e293b;
+        --color-bg-tertiary: #334155;
+        --color-card-bg: #1e293b;
+        --color-border: #334155;
+        --color-text-primary: #e2e8f0;
+        --color-text-secondary: #94a3b8;
+      }
+      html[data-theme='celestial'] {
+        --color-brand-primary: #d4af37;
+        --color-brand-secondary: #eac645;
+        --color-bg-primary: #f5f5f5;
+        --color-bg-secondary: #ffffff;
+        --color-bg-tertiary: #e0e0e0;
+        --color-card-bg: #ffffff;
+        --color-border: #eeeeee;
+        --color-text-primary: #212121;
+        --color-text-secondary: #757575;
+      }
+      html[data-theme='celestial'].dark {
+        --color-brand-primary: #FFD700;
+        --color-brand-secondary: #FFEC8B;
+        --color-bg-primary: #0c1445;
+        --color-bg-secondary: #1f295e;
+        --color-bg-tertiary: #3a437a;
+        --color-card-bg: #182152;
+        --color-border: #3a437a;
+        --color-text-primary: #E0EFFF;
+        --color-text-secondary: #A0B3D4;
+      }
+       html[data-theme='oscuro'] {
+        --color-brand-primary: #9ca3af;
+        --color-brand-secondary: #d1d5db;
+        --color-bg-primary: #ffffff;
+        --color-bg-secondary: #f9fafb;
+        --color-bg-tertiary: #f3f4f6;
+        --color-card-bg: #ffffff;
+        --color-border: #e5e7eb;
+        --color-text-primary: #111827;
+        --color-text-secondary: #4b5563;
+      }
+      html[data-theme='oscuro'].dark {
+        --color-brand-primary: #3b82f6;
+        --color-brand-secondary: #60a5fa;
+        --color-bg-primary: #111827;
+        --color-bg-secondary: #1f2937;
+        --color-bg-tertiary: #374151;
+        --color-card-bg: #1f2937;
+        --color-border: #374151;
+        --color-text-primary: #f9fafb;
+        --color-text-secondary: #9ca3af;
+      }
+      html[data-theme='ensueño'] {
+        --color-brand-primary: #ec4899;
+        --color-brand-secondary: #f472b6;
+        --color-bg-primary: #fdf2f8;
+        --color-bg-secondary: #fce7f3;
+        --color-bg-tertiary: #fbcfe8;
+        --color-card-bg: #ffffff;
+        --color-border: #fbcfe8;
+        --color-text-primary: #581c87;
+        --color-text-secondary: #a855f7;
+      }
+      html[data-theme='ensueño'].dark {
+        --color-brand-primary: #f472b6;
+        --color-brand-secondary: #ec4899;
+        --color-bg-primary: #2c0b49;
+        --color-bg-secondary: #4c1d95;
+        --color-bg-tertiary: #5b21b6;
+        --color-card-bg: #3c126b;
+        --color-border: #5b21b6;
+        --color-text-primary: #f5d0fe;
+        --color-text-secondary: #e9d5ff;
+      }
+      html[data-theme='enfoque'] {
+        --color-brand-primary: #0891b2;
+        --color-brand-secondary: #06b6d4;
+        --color-bg-primary: #f0f9ff;
+        --color-bg-secondary: #e0f2fe;
+        --color-bg-tertiary: #bae6fd;
+        --color-card-bg: #ffffff;
+        --color-border: #e0f2fe;
+        --color-text-primary: #0c4a6e;
+        --color-text-secondary: #0369a1;
+      }
+      html[data-theme='enfoque'].dark {
+        --color-brand-primary: #22d3ee;
+        --color-brand-secondary: #67e8f9;
+        --color-bg-primary: #0e1e33;
+        --color-bg-secondary: #1c3a63;
+        --color-bg-tertiary: #2a5894;
+        --color-card-bg: #152c4a;
+        --color-border: #2a5894;
+        --color-text-primary: #dbeafe;
+        --color-text-secondary: #bfdbfe;
+      }
+      html[data-theme='fantasma'] {
+        --color-brand-primary: #6b7280;
+        --color-brand-secondary: #9ca3af;
+        --color-bg-primary: #f9fafb;
+        --color-bg-secondary: #ffffff;
+        --color-bg-tertiary: #f3f4f6;
+        --color-card-bg: #ffffff;
+        --color-border: #e5e7eb;
+        --color-text-primary: #374151;
+        --color-text-secondary: #6b7280;
+      }
+      html[data-theme='fantasma'].dark {
+        --color-brand-primary: #a1a1aa;
+        --color-brand-secondary: #d4d4d8;
+        --color-bg-primary: #18181b;
+        --color-bg-secondary: #27272a;
+        --color-bg-tertiary: #3f3f46;
+        --color-card-bg: #27272a;
+        --color-border: #3f3f46;
+        --color-text-primary: #e4e4e7;
+        --color-text-secondary: #a1a1aa;
+      }
+      html[data-theme='rebelde'] {
+        --color-brand-primary: #eab308;
+        --color-brand-secondary: #facc15;
+        --color-bg-primary: #fefce8;
+        --color-bg-secondary: #fef9c3;
+        --color-bg-tertiary: #fef08a;
+        --color-card-bg: #ffffff;
+        --color-border: #fef08a;
+        --color-text-primary: #1e293b;
+        --color-text-secondary: #475569;
+      }
+      html[data-theme='rebelde'].dark {
+        --color-brand-primary: #facc15;
+        --color-brand-secondary: #eab308;
+        --color-bg-primary: #1c1917;
+        --color-bg-secondary: #292524;
+        --color-bg-tertiary: #44403c;
+        --color-card-bg: #292524;
+        --color-border: #44403c;
+        --color-text-primary: #fafaf9;
+        --color-text-secondary: #d6d3d1;
+      }
+    </style>
     <script>
       tailwind.config = {
         darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              // New Modern Palette: Teal & Slate
-              'brand-primary': '#14b8a6', // Teal 500
-              'brand-secondary': '#0d9488', // Teal 600
-              'light-bg': '#f1f5f9',      // Slate 100
-              'light-card': '#ffffff',    // White
-              'light-border': '#e2e8f0', // Slate 200
-              'light-text': '#1e293b',    // Slate 800
-              'dark-bg': '#0f172a',       // Slate 900
-              'dark-card': '#1e293b',     // Slate 800
-              'dark-border': '#334155',   // Slate 700
-              'dark-text': '#e2e8f0',     // Slate 200
+              'brand-primary': 'var(--color-brand-primary)',
+              'brand-secondary': 'var(--color-brand-secondary)',
+              'bg-primary': 'var(--color-bg-primary)',
+              'bg-secondary': 'var(--color-bg-secondary)',
+              'bg-tertiary': 'var(--color-bg-tertiary)',
+              'card-bg': 'var(--color-card-bg)',
+              'app-border': 'var(--color-border)',
+              'text-primary': 'var(--color-text-primary)',
+              'text-secondary': 'var(--color-text-secondary)',
               // Accent colors for calendar/charts
               'accent-red': '#ef4444',
               'accent-green': '#22c55e',
@@ -63,7 +217,7 @@
 }
 </script>
 </head>
-  <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text antialiased">
+  <body class="bg-bg-primary text-text-primary antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
