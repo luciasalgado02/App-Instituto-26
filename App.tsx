@@ -5,6 +5,8 @@
 
 
 
+
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
@@ -740,8 +742,9 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
     const [newMessage, setNewMessage] = useState('');
 
     // --- NEW STATE FOR FILTERS ---
-    const [contactFilterType, setContactFilterType] = useState<'alumnos' | 'profesores'>('alumnos');
-    const [studentContactTab, setStudentContactTab] = useState<'compañeros' | 'profesores'>('compañeros');
+    const [contactFilterType, setContactFilterType] = useState<'alumnos' | 'profesores' | 'preceptoría'>('alumnos');
+    const [studentContactTab, setStudentContactTab] = useState<'compañeros' | 'profesores' | 'preceptoría'>('compañeros');
+
 
     const careers = useMemo(() => MOCK_CAREERS.map(c => c.name), []);
     const [selectedCareer, setSelectedCareer] = useState<string>(careers[1] || careers[0] || ''); // Default to 2nd to match image
@@ -769,20 +772,23 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
             if (studentContactTab === 'compañeros') {
                 return allOtherUsers.filter(u => u.role === 'alumno');
             }
-            // 'profesores' tab
-            return allOtherUsers.filter(u => u.role === 'profesor' || u.role === 'preceptor');
+            if (studentContactTab === 'profesores') {
+                return allOtherUsers.filter(u => u.role === 'profesor');
+            }
+            // 'preceptoría' tab
+            return allOtherUsers.filter(u => u.role === 'preceptor');
         }
         
         if (currentUser.role === 'profesor' || currentUser.role === 'preceptor') {
-            let filteredUsers;
             if (contactFilterType === 'alumnos') {
-                filteredUsers = allOtherUsers.filter(u => u.role === 'alumno');
                 // NOTE: In a real app, you would filter by career and year here.
-                // The mock data does not consistently associate students with a career/year.
-            } else { // 'profesores'
-                filteredUsers = allOtherUsers.filter(u => u.role === 'profesor' && u.id !== currentUser.id);
+                return allOtherUsers.filter(u => u.role === 'alumno');
             }
-            return filteredUsers;
+            if (contactFilterType === 'profesores') {
+                return allOtherUsers.filter(u => u.role === 'profesor' && u.id !== currentUser.id);
+            }
+            // 'preceptoría' for professor
+            return allOtherUsers.filter(u => u.role === 'preceptor');
         }
 
         return allOtherUsers;
@@ -849,11 +855,31 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                         <>
                             {currentUser.role === 'alumno' && (
                                 <div className="flex bg-bg-secondary p-1 rounded-md mb-3">
-                                    <button onClick={() => setStudentContactTab('compañeros')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'compañeros' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Compañeros</button>
-                                    <button onClick={() => setStudentContactTab('profesores')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'profesores' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Profesores</button>
+                                    <button onClick={() => setStudentContactTab('compañeros')} className={`w-1/3 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'compañeros' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Compañeros</button>
+                                    <button onClick={() => setStudentContactTab('profesores')} className={`w-1/3 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'profesores' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Profesores</button>
+                                    <button onClick={() => setStudentContactTab('preceptoría')} className={`w-1/3 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'preceptoría' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Preceptoría</button>
                                 </div>
                             )}
-                            {(currentUser.role === 'profesor' || currentUser.role === 'preceptor') && (
+                             {currentUser.role === 'profesor' && (
+                                <div className="space-y-3 mb-4">
+                                    <div className="flex bg-bg-secondary p-1 rounded-md">
+                                        <button onClick={() => setContactFilterType('alumnos')} className={`w-1/3 text-center py-1 rounded text-sm font-medium ${contactFilterType === 'alumnos' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Alumnos</button>
+                                        <button onClick={() => setContactFilterType('profesores')} className={`w-1/3 text-center py-1 rounded text-sm font-medium ${contactFilterType === 'profesores' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Profesores</button>
+                                        <button onClick={() => setContactFilterType('preceptoría')} className={`w-1/3 text-center py-1 rounded text-sm font-medium ${contactFilterType === 'preceptoría' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Preceptoría</button>
+                                    </div>
+                                    {contactFilterType === 'alumnos' && (
+                                        <>
+                                            <select value={selectedCareer} onChange={e => setSelectedCareer(e.target.value)} className="w-full p-2 bg-bg-secondary border border-app-border rounded-md text-sm">
+                                                {careers.map(c => <option key={c} value={c}>{c}</option>)}
+                                            </select>
+                                            <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)} className="w-full p-2 bg-bg-secondary border border-app-border rounded-md text-sm" disabled={availableYears.length === 0}>
+                                                {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+                                            </select>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                            {currentUser.role === 'preceptor' && (
                                 <div className="space-y-3 mb-4">
                                     <div className="flex bg-bg-secondary p-1 rounded-md">
                                         <button onClick={() => setContactFilterType('alumnos')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${contactFilterType === 'alumnos' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Alumnos</button>
