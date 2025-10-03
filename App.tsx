@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
@@ -1271,17 +1272,11 @@ const PendingSubmissionsModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
     course: TeacherSummary | null;
-}> = ({ isOpen, onClose, course }) => {
+    onContactStudent: (student: PendingStudent) => void;
+}> = ({ isOpen, onClose, course, onContactStudent }) => {
     if (!isOpen || !course) return null;
 
     const pendingStudents = MOCK_PENDING_SUBMISSIONS[course.id] || [];
-
-    const handleSendNotification = (studentName: string) => {
-        alert(`Notificación de recordatorio enviada a ${studentName}.`);
-    };
-    const handleSendMessage = (studentName: string) => {
-        alert(`Mensaje de recordatorio enviado a la bandeja de entrada de ${studentName}.`);
-    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={`Alumnos Pendientes: ${course.subject}`}>
@@ -1290,13 +1285,58 @@ const PendingSubmissionsModal: React.FC<{
                     <li key={student.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-bg-primary rounded-md">
                         <span className="font-medium mb-2 sm:mb-0">{student.name}</span>
                         <div className="flex gap-2 flex-shrink-0">
-                            <button onClick={() => handleSendNotification(student.name)} className="px-2 py-1 text-xs rounded-full bg-accent-yellow text-white hover:bg-yellow-600">Enviar Notificación</button>
-                            <button onClick={() => handleSendMessage(student.name)} className="px-2 py-1 text-xs rounded-full bg-accent-blue text-white hover:bg-blue-700">Enviar Mensaje</button>
+                            <button onClick={() => onContactStudent(student)} className="px-2 py-1 text-xs rounded-full bg-accent-yellow text-white hover:bg-yellow-600">Enviar Notificación</button>
+                            <button onClick={() => onContactStudent(student)} className="px-2 py-1 text-xs rounded-full bg-accent-blue text-white hover:bg-blue-700">Enviar Mensaje</button>
                         </div>
                     </li>
                 )) : <p className="text-text-secondary text-center py-4">¡Ningún alumno pendiente!</p>}
             </ul>
             <button onClick={onClose} className="w-full mt-6 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Cerrar</button>
+        </Modal>
+    );
+};
+
+const TeacherContactStudentModal: React.FC<{ isOpen: boolean; onClose: () => void; student: PendingStudent | null; }> = ({ isOpen, onClose, student }) => {
+    const [contactType, setContactType] = useState<'message' | 'notice'>('message');
+    
+    const handleSend = () => {
+        alert(`Comunicación enviada a ${student?.name}.`);
+        onClose();
+    };
+
+    if (!student) return null;
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} title={`Contactar a ${student.name}`}>
+            <div className="space-y-4">
+                 <div className="border-b border-app-border mb-4">
+                    <nav className="flex space-x-2" aria-label="Tabs">
+                        <button onClick={() => setContactType('message')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${contactType === 'message' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-text-secondary'}`}>
+                            Enviar Mensaje
+                        </button>
+                        <button onClick={() => setContactType('notice')} className={`px-3 py-2 font-medium text-sm rounded-t-md ${contactType === 'notice' ? 'border-b-2 border-brand-primary text-brand-primary' : 'text-text-secondary'}`}>
+                            Enviar Aviso
+                        </button>
+                    </nav>
+                </div>
+                {contactType === 'message' ? (
+                    <div>
+                        <label htmlFor="student-message" className="block text-sm font-medium text-text-primary">Mensaje Personalizado</label>
+                        <textarea id="student-message" rows={5} className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" placeholder={`Escribe un mensaje para ${student.name}...`}></textarea>
+                    </div>
+                ) : (
+                    <div>
+                         <label htmlFor="student-notice" className="block text-sm font-medium text-text-primary">Plantilla de Aviso</label>
+                         <select id="student-notice" className="w-full p-2 mt-1 bg-bg-secondary border rounded-md border-app-border">
+                            <option>Recordatorio de entrega pendiente</option>
+                            <option>Consulta sobre dificultades con la tarea</option>
+                            <option>Solicitud de revisión de la entrega</option>
+                        </select>
+                        <p className="text-xs text-text-secondary mt-2">Se enviará una notificación con el aviso seleccionado.</p>
+                    </div>
+                )}
+                <button onClick={handleSend} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Enviar</button>
+            </div>
         </Modal>
     );
 };
@@ -2745,6 +2785,8 @@ const App: React.FC = () => {
     const [selectedCourseSummary, setSelectedCourseSummary] = useState<TeacherSummary | null>(null);
     const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
     const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+    const [isTeacherContactModalOpen, setTeacherContactModalOpen] = useState(false);
+    const [selectedStudentToContactByTeacher, setSelectedStudentToContactByTeacher] = useState<PendingStudent | null>(null);
     
     // Preceptor specific state
     const [pendingJustifications, setPendingJustifications] = useState<PendingJustification[]>(MOCK_PENDING_JUSTIFICATIONS);
@@ -2797,6 +2839,11 @@ const App: React.FC = () => {
     const handleShowPending = (summary: TeacherSummary) => {
         setSelectedCourseSummary(summary);
         setPendingModalOpen(true);
+    };
+
+    const handleTeacherContactStudent = (student: PendingStudent) => {
+        setSelectedStudentToContactByTeacher(student);
+        setTeacherContactModalOpen(true);
     };
 
     const handleOpenProcedureDetail = (req: ProcedureRequest) => {
@@ -3006,7 +3053,8 @@ const App: React.FC = () => {
                 <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddStudentEvent} />
                 <TeacherAddEventModal isOpen={isTeacherAddEventModalOpen} onClose={() => setTeacherAddEventModalOpen(false)} onAddEvent={handleAddTeacherEvent} />
                 <UploadMaterialModal isOpen={isUploadModalOpen} onClose={() => setUploadModalOpen(false)} onUpload={handleUploadMaterial} subjects={teacherSubjects} />
-                <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} />
+                <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} onContactStudent={handleTeacherContactStudent} />
+                <TeacherContactStudentModal isOpen={isTeacherContactModalOpen} onClose={() => setTeacherContactModalOpen(false)} student={selectedStudentToContactByTeacher} />
                 <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={handleSendCommunication} />
                 <ContactStudentModal isOpen={isContactStudentModalOpen} onClose={() => setContactStudentModalOpen(false)} student={selectedStudentToContact} />
                  <ProcedureDetailModal 
@@ -3049,7 +3097,8 @@ const App: React.FC = () => {
             <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddStudentEvent} />
             <TeacherAddEventModal isOpen={isTeacherAddEventModalOpen} onClose={() => setTeacherAddEventModalOpen(false)} onAddEvent={handleAddTeacherEvent} />
             <UploadMaterialModal isOpen={isUploadModalOpen} onClose={() => setUploadModalOpen(false)} onUpload={handleUploadMaterial} subjects={teacherSubjects} />
-            <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} />
+            <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} onContactStudent={handleTeacherContactStudent} />
+            <TeacherContactStudentModal isOpen={isTeacherContactModalOpen} onClose={() => setTeacherContactModalOpen(false)} student={selectedStudentToContactByTeacher} />
             <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={handleSendCommunication} />
             <ContactStudentModal isOpen={isContactStudentModalOpen} onClose={() => setContactStudentModalOpen(false)} student={selectedStudentToContact} />
             <ProcedureDetailModal 
