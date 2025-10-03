@@ -21,7 +21,6 @@ export const MOCK_USERS: Record<Role, User[]> = {
         { id: 's17', name: 'Martina Rios', email: 'martina.r@example.com', role: 'alumno', legajo: '22361' },
         { id: 's18', name: 'Benjamin Acosta', email: 'benjamin.a@example.com', role: 'alumno', legajo: '22362' },
         { id: 's19', name: 'Victoria Benitez', email: 'victoria.b@example.com', role: 'alumno', legajo: '22363' },
-        { id: 's20', name: 'Valentina Sanchez', email: 'valentina.s@example.com', role: 'alumno', legajo: '22345', avatarUrl: 'https://i.pravatar.cc/150?u=valentina' },
     ],
     profesor: [
         { id: 't1', name: 'Carlos Gómez', email: 'profesor@example.com', role: 'profesor', legajo: 'P001' },
@@ -34,26 +33,6 @@ export const MOCK_USERS: Record<Role, User[]> = {
 };
 
 export const MOCK_STUDENT_PROFILE_DATA: Record<string, any> = {
-    's20': { // Valentina Sanchez
-        id: 's20',
-        name: 'Valentina Sanchez',
-        legajo: '22345',
-        avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        attendanceBySubject: [
-            { subject: 'Física', percentage: 100 },
-            { subject: 'Química', percentage: 100 },
-        ],
-        partialGrades: [
-            { id: 'pg1', title: 'Parcial 1 - Física', date: '17 de octubre', grade: 9 },
-            { id: 'pg2', title: 'Parcial 1 - Química', date: '14 de octubre', grade: 8 },
-        ],
-        finalExams: [
-            { subject: 'Física', enrolled: true },
-            { subject: 'Química', enrolled: false },
-        ],
-        justifications: [],
-        messages: [],
-    },
      // Add more student profiles here if needed for navigation
     'default': {
         id: 'default',
@@ -405,7 +384,6 @@ export const MOCK_PRECEPTOR_ATTENDANCE_DETAIL: Record<string, Record<string, Stu
       { id: 's15', name: 'Diaz, Camila', status: null },
       { id: 's18', name: 'Acosta, Benjamin', status: null },
       { id: 's19', name: 'Benitez, Victoria', status: null },
-      { id: 's20', name: 'Sanchez, Valentina', status: null },
     ]
   }
 };
