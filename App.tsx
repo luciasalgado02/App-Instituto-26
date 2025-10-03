@@ -7,6 +7,8 @@
 
 
 
+
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
@@ -1006,7 +1008,7 @@ const NewPostModal: React.FC<{
 
 const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({ currentUser, initialPosts }) => {
     const [posts, setPosts] = useState(initialPosts);
-    const [selectedPostId, setSelectedPostId] = useState<string | null>(initialPosts[0]?.id || null);
+    const [selectedPostId, setSelectedPostId] = useState<string | null>(window.innerWidth >= 768 ? initialPosts[0]?.id || null : null);
     const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
     const [isNewPostModalOpen, setNewPostModalOpen] = useState(false);
     const [newReply, setNewReply] = useState('');
@@ -1015,6 +1017,17 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
         if (selectedCategory === 'Todas') return posts;
         return posts.filter(p => p.category === selectedCategory);
     }, [selectedCategory, posts]);
+
+    useEffect(() => {
+        if (window.innerWidth >= 768) {
+            const currentPostInFiltered = filteredPosts.find(p => p.id === selectedPostId);
+            if (!currentPostInFiltered && filteredPosts.length > 0) {
+                setSelectedPostId(filteredPosts[0].id);
+            } else if (filteredPosts.length === 0) {
+                setSelectedPostId(null);
+            }
+        }
+    }, [filteredPosts, selectedPostId]);
 
     const selectedPost = useMemo(() => posts.find(p => p.id === selectedPostId), [selectedPostId, posts]);
     const categories = useMemo(() => ['Todas', ...Array.from(new Set(posts.map(p => p.category)))], [posts]);
@@ -1049,7 +1062,7 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
     return(
         <>
         <div className="flex flex-col md:flex-row h-full gap-4">
-            <div className="w-full md:w-1/3 lg:w-1/4">
+            <div className={`w-full md:w-1/3 lg:w-1/4 ${selectedPostId ? 'hidden md:block' : 'block'}`}>
                  <Card>
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-semibold text-text-primary">Foros</h3>
@@ -1074,11 +1087,16 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
                     </ul>
                 </Card>
             </div>
-            <div className="flex-1">
-                 <Card title={selectedPost?.title || 'Selecciona un tema'} className="h-full flex flex-col">
+            <div className={`flex-1 ${selectedPostId ? 'flex flex-col' : 'hidden md:flex'}`}>
+                 <Card className="h-full flex flex-col">
                     {selectedPost ? (
                        <>
                             <div className="border-b border-app-border pb-4 mb-4">
+                                <button onClick={() => setSelectedPostId(null)} className="md:hidden flex items-center gap-2 mb-4 text-sm font-semibold text-text-secondary hover:text-brand-primary">
+                                    <ArrowLeftIcon className="w-4 h-4"/>
+                                    Volver a los temas
+                                </button>
+                               <h3 className="text-xl font-bold mb-2">{selectedPost.title}</h3>
                                <p className="text-sm text-text-secondary">Publicado por: {selectedPost.author}</p>
                                <p className="mt-2 prose prose-sm dark:prose-invert max-w-none">{selectedPost.content}</p>
                             </div>
@@ -1091,9 +1109,9 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
                                     </div>
                                 )) : <p className="text-sm text-text-secondary">No hay respuestas todavía.</p>}
                             </div>
-                            <div>
+                            <div className="mt-auto">
                                 <textarea value={newReply} onChange={(e) => setNewReply(e.target.value)} className="w-full p-2 border rounded-md bg-transparent border-app-border focus:ring-brand-primary focus:border-brand-primary" rows={3} placeholder="Escribe tu respuesta..."></textarea>
-                                <button onClick={handleAddReply} className="mt-2 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Responder</button>
+                                <button onClick={handleAddReply} className="w-full sm:w-auto mt-2 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Responder</button>
                             </div>
                        </>
                     ) : (
