@@ -1,6 +1,10 @@
 
 
 
+
+
+
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
@@ -735,15 +739,54 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
     const [activeTab, setActiveTab] = useState<'inbox' | 'contacts'>('inbox');
     const [newMessage, setNewMessage] = useState('');
 
+    // --- NEW STATE FOR FILTERS ---
+    const [contactFilterType, setContactFilterType] = useState<'alumnos' | 'profesores'>('alumnos');
+    const [studentContactTab, setStudentContactTab] = useState<'compañeros' | 'profesores'>('compañeros');
+
+    const careers = useMemo(() => MOCK_CAREERS.map(c => c.name), []);
+    const [selectedCareer, setSelectedCareer] = useState<string>(careers[1] || careers[0] || ''); // Default to 2nd to match image
+    
+    const availableYears = useMemo(() => {
+        const career = MOCK_CAREERS.find(c => c.name === selectedCareer);
+        return career ? Object.keys(career.years) : [];
+    }, [selectedCareer]);
+    
+    const [selectedYear, setSelectedYear] = useState<string>('2do Año'); // Default to match image
+
+    useEffect(() => {
+        if (availableYears.length > 0 && !availableYears.includes(selectedYear)) {
+            setSelectedYear(availableYears[0]);
+        }
+    }, [selectedCareer, availableYears, selectedYear]);
+    // --- END NEW STATE ---
+
     const allUsers = useMemo(() => [...MOCK_USERS.alumno, ...MOCK_USERS.profesor, ...MOCK_USERS.preceptor], []);
     
     const contacts = useMemo(() => {
         const allOtherUsers = allUsers.filter(u => u.id !== currentUser.id);
-        if (currentUser.role === 'profesor') {
-            return allOtherUsers.filter(u => u.role === 'alumno' || u.role === 'preceptor');
+
+        if (currentUser.role === 'alumno') {
+            if (studentContactTab === 'compañeros') {
+                return allOtherUsers.filter(u => u.role === 'alumno');
+            }
+            // 'profesores' tab
+            return allOtherUsers.filter(u => u.role === 'profesor' || u.role === 'preceptor');
         }
+        
+        if (currentUser.role === 'profesor' || currentUser.role === 'preceptor') {
+            let filteredUsers;
+            if (contactFilterType === 'alumnos') {
+                filteredUsers = allOtherUsers.filter(u => u.role === 'alumno');
+                // NOTE: In a real app, you would filter by career and year here.
+                // The mock data does not consistently associate students with a career/year.
+            } else { // 'profesores'
+                filteredUsers = allOtherUsers.filter(u => u.role === 'profesor' && u.id !== currentUser.id);
+            }
+            return filteredUsers;
+        }
+
         return allOtherUsers;
-    }, [allUsers, currentUser]);
+    }, [allUsers, currentUser, studentContactTab, contactFilterType, selectedCareer, selectedYear]);
     
     const selectedConversation = useMemo(() => conversations.find(c => c.id === selectedConversationId), [conversations, selectedConversationId]);
 
@@ -803,17 +846,43 @@ const MessagesPage: React.FC<{ currentUser: User }> = ({ currentUser }) => {
                             ))}
                         </ul>
                     ) : (
-                         <ul className="space-y-2">
-                            {contacts.map(contact => (
-                                <li key={contact.id} className="p-3 rounded-md cursor-pointer hover:bg-bg-tertiary flex items-center space-x-3">
-                                     <img src={contact.avatarUrl || `https://ui-avatars.com/api/?name=${contact.name.replace(' ', '+')}&background=4f46e5&color=fff&size=40`} alt={contact.name} className="w-10 h-10 rounded-full" />
-                                    <div>
-                                        <p className="font-semibold">{contact.name}</p>
-                                        <p className="text-sm text-text-secondary capitalize">{contact.role}</p>
+                        <>
+                            {currentUser.role === 'alumno' && (
+                                <div className="flex bg-bg-secondary p-1 rounded-md mb-3">
+                                    <button onClick={() => setStudentContactTab('compañeros')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'compañeros' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Compañeros</button>
+                                    <button onClick={() => setStudentContactTab('profesores')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${studentContactTab === 'profesores' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Profesores</button>
+                                </div>
+                            )}
+                            {(currentUser.role === 'profesor' || currentUser.role === 'preceptor') && (
+                                <div className="space-y-3 mb-4">
+                                    <div className="flex bg-bg-secondary p-1 rounded-md">
+                                        <button onClick={() => setContactFilterType('alumnos')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${contactFilterType === 'alumnos' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Alumnos</button>
+                                        <button onClick={() => setContactFilterType('profesores')} className={`w-1/2 text-center py-1 rounded text-sm font-medium ${contactFilterType === 'profesores' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>Profesores</button>
                                     </div>
-                                </li>
-                            ))}
-                        </ul>
+                                    {contactFilterType === 'alumnos' && (
+                                        <>
+                                            <select value={selectedCareer} onChange={e => setSelectedCareer(e.target.value)} className="w-full p-2 bg-bg-secondary border border-app-border rounded-md text-sm">
+                                                {careers.map(c => <option key={c} value={c}>{c}</option>)}
+                                            </select>
+                                            <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)} className="w-full p-2 bg-bg-secondary border border-app-border rounded-md text-sm" disabled={availableYears.length === 0}>
+                                                {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+                                            </select>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                            <ul className="space-y-2">
+                                {contacts.map(contact => (
+                                    <li key={contact.id} className="p-3 rounded-md cursor-pointer hover:bg-bg-tertiary flex items-center space-x-3">
+                                        <img src={contact.avatarUrl || `https://ui-avatars.com/api/?name=${contact.name.replace(' ', '+')}&background=4f46e5&color=fff&size=40`} alt={contact.name} className="w-10 h-10 rounded-full" />
+                                        <div>
+                                            <p className="font-semibold">{contact.name}</p>
+                                            <p className="text-sm text-text-secondary capitalize">{contact.role}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
                     )}
                 </Card>
             </div>
@@ -2383,9 +2452,7 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
 
 
 // --- LAYOUT COMPONENTS ---
-const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => void; isSubPage: boolean; notifications: Notification[]; navigate: (page: Page) => void; }> = ({ user, onLogout, onThemeChange, isSubPage, notifications, navigate }) => {
-    const [notificationsOpen, setNotificationsOpen] = useState(false);
-    const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+const Header: React.FC<{ user: User; onLogout: () => void; onMenuToggle: (menu: string) => void; activeMenu: string | null; isSubPage: boolean; notifications: Notification[]; navigate: (page: Page) => void; }> = ({ user, onLogout, onMenuToggle, activeMenu, isSubPage, notifications, navigate }) => {
     
     return (
         <header className={`sticky top-0 z-20 flex items-center justify-between p-4 backdrop-blur-lg transition-colors duration-300 ${isSubPage ? 'md:hidden' : ''} bg-card-bg/70`}>
@@ -2394,18 +2461,18 @@ const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => 
                 <span className="text-xl font-bold hidden sm:inline">Portal del Instituto</span>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-                 <button onClick={onThemeChange} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105" title="Cambiar apariencia">
+                 <button onClick={() => onMenuToggle('theme')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105" title="Cambiar apariencia">
                     <PaletteIcon className="w-6 h-6" />
                 </button>
                 <button onClick={() => navigate('mensajes')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105" title="Mensajes">
                     <InboxIcon className="w-6 h-6" />
                 </button>
                 <div className="relative">
-                     <button onClick={() => setNotificationsOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105">
+                     <button onClick={() => onMenuToggle('notifications')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105">
                         <BellIcon className="w-6 h-6" />
                         {notifications.some(n => !n.read) && <span className="absolute top-1 right-1 block w-2 h-2 bg-red-500 rounded-full"></span>}
                     </button>
-                    {notificationsOpen && (
+                    {activeMenu === 'notifications' && (
                         <div className="absolute right-0 mt-2 w-72 bg-card-bg border border-app-border rounded-md shadow-lg animate-fade-in">
                             <div className="p-3 font-semibold border-b border-app-border">Notificaciones</div>
                             <ul className="py-1 max-h-80 overflow-y-auto">
@@ -2420,20 +2487,20 @@ const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => 
                     )}
                 </div>
                  <div className="relative">
-                    <button onClick={() => setProfileMenuOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105">
+                    <button onClick={() => onMenuToggle('profile')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105">
                         <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=32`} alt="Avatar" className="w-8 h-8 rounded-full" />
                     </button>
-                    {profileMenuOpen && (
+                    {activeMenu === 'profile' && (
                          <div className="absolute right-0 mt-2 w-48 bg-card-bg border border-app-border rounded-md shadow-lg animate-fade-in">
                              <ul className="py-1">
                                  <li>
-                                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('perfil'); setProfileMenuOpen(false); }}
+                                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('perfil'); onMenuToggle('profile'); }}
                                         className="block px-4 py-2 text-sm text-text-primary hover:bg-bg-tertiary">
                                          Mi Perfil
                                      </a>
                                  </li>
                                  <li>
-                                    <button onClick={() => { onLogout(); setProfileMenuOpen(false); }}
+                                    <button onClick={() => { onLogout(); onMenuToggle('profile'); }}
                                             className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-bg-tertiary">
                                         Cerrar Sesión
                                     </button>
@@ -2646,8 +2713,7 @@ const ThemeMenu: React.FC<{
     activeMode: 'light' | 'dark';
     onSchemeChange: (scheme: string) => void;
     onModeChange: (mode: 'light' | 'dark') => void;
-    onClose: () => void;
-}> = ({ activeScheme, activeMode, onSchemeChange, onModeChange, onClose }) => {
+}> = ({ activeScheme, activeMode, onSchemeChange, onModeChange }) => {
     
     return (
         <div className="absolute right-4 top-20 z-40">
@@ -2774,6 +2840,7 @@ const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('panel');
     const [colorScheme, setColorScheme] = useState(() => localStorage.getItem('colorScheme') || 'sereno');
     const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('themeMode') as 'light' | 'dark') || 'light');
+    const [activeMenu, setActiveMenu] = useState<string | null>(null);
     
     const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(MOCK_CALENDAR_EVENTS);
     const [materials, setMaterials] = useState<Material[]>(MOCK_MATERIALS);
@@ -2784,7 +2851,6 @@ const App: React.FC = () => {
     const [isUploadModalOpen, setUploadModalOpen] = useState(false);
     const [selectedCourseSummary, setSelectedCourseSummary] = useState<TeacherSummary | null>(null);
     const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
-    const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
     const [isTeacherContactModalOpen, setTeacherContactModalOpen] = useState(false);
     const [selectedStudentToContactByTeacher, setSelectedStudentToContactByTeacher] = useState<PendingStudent | null>(null);
     
@@ -2798,6 +2864,10 @@ const App: React.FC = () => {
     const [selectedProcedureRequest, setSelectedProcedureRequest] = useState<ProcedureRequest | null>(null);
     
     const teacherSubjects = useMemo(() => MOCK_TEACHER_SUMMARY.map(s => s.subject), []);
+
+    const handleMenuToggle = useCallback((menu: string) => {
+        setActiveMenu(prev => (prev === menu ? null : menu));
+    }, []);
 
     const notificationsForUser = useMemo(() => {
         if (user?.role === 'profesor') {
@@ -3067,18 +3137,18 @@ const App: React.FC = () => {
                  <Header 
                     user={user} 
                     onLogout={handleLogout}
-                    onThemeChange={() => setIsThemeMenuOpen(prev => !prev)}
+                    onMenuToggle={handleMenuToggle}
+                    activeMenu={activeMenu}
                     isSubPage={isSubPage}
                     notifications={notificationsForUser}
                     navigate={setCurrentPage}
                 />
-                 {isThemeMenuOpen && (
+                 {activeMenu === 'theme' && (
                     <ThemeMenu 
                         activeScheme={colorScheme}
                         activeMode={themeMode}
                         onSchemeChange={setColorScheme}
                         onModeChange={setThemeMode}
-                        onClose={() => setIsThemeMenuOpen(false)}
                     />
                 )}
                  <div className={`p-4 sm:p-6 lg:p-8 ${isSubPage ? 'md:ml-64' : ''}`}>
@@ -3107,13 +3177,12 @@ const App: React.FC = () => {
                 request={selectedProcedureRequest}
                 onUpdateRequest={handleManageProcedure}
             />
-             {isThemeMenuOpen && (
+             {activeMenu === 'theme' && (
                 <ThemeMenu 
                     activeScheme={colorScheme}
                     activeMode={themeMode}
                     onSchemeChange={setColorScheme}
                     onModeChange={setThemeMode}
-                    onClose={() => setIsThemeMenuOpen(false)}
                 />
             )}
             <Sidebar 
@@ -3126,7 +3195,8 @@ const App: React.FC = () => {
                 <Header 
                     user={user} 
                     onLogout={handleLogout}
-                    onThemeChange={() => setIsThemeMenuOpen(prev => !prev)}
+                    onMenuToggle={handleMenuToggle}
+                    activeMenu={activeMenu}
                     isSubPage={false}
                     notifications={notificationsForUser}
                     navigate={setCurrentPage}
