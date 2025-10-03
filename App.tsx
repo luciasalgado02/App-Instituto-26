@@ -2346,20 +2346,9 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
 const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => void; isSubPage: boolean; notifications: Notification[]; navigate: (page: Page) => void; }> = ({ user, onLogout, onThemeChange, isSubPage, notifications, navigate }) => {
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
-        };
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
     
     return (
-        <header className={`sticky top-0 z-20 flex items-center justify-between p-4 shadow-md transition-all duration-300 ${isSubPage ? 'md:hidden' : ''} ${isScrolled ? 'bg-card-bg/80 backdrop-blur-sm' : 'bg-card-bg'}`}>
+        <header className={`sticky top-0 z-20 flex items-center justify-between p-4 backdrop-blur-lg transition-colors duration-300 ${isSubPage ? 'md:hidden' : ''} bg-card-bg/70`}>
             <div className="flex items-center space-x-4">
                 <AcademicCapIcon className="w-8 h-8 text-brand-primary"/>
                 <span className="text-xl font-bold hidden sm:inline">Portal del Instituto</span>
@@ -2512,7 +2501,7 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
 
 
     return (
-        <nav className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-${links.length} p-1 bg-card-bg border-t border-app-border md:hidden`}>
+        <nav className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-${links.length} p-1 bg-card-bg/70 backdrop-blur-lg md:hidden`}>
             {links.map(link => (
                 <a href="#" key={link.page} onClick={(e) => { e.preventDefault(); navigate(link.page); }}
                    className={`flex flex-col items-center justify-center w-full rounded-md p-1 transition-colors ${currentPage === link.page ? 'text-brand-primary' : 'text-text-secondary hover:text-brand-primary'}`}>
