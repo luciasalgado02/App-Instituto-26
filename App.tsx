@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
@@ -1062,7 +1051,7 @@ const ForumPage: React.FC<{ currentUser: User; initialPosts: ForumPost[] }> = ({
     return(
         <>
         <div className="flex flex-col md:flex-row h-full gap-4">
-            <div className={`w-full md:w-1/3 lg:w-1/4 ${selectedPostId ? 'hidden md:block' : 'block'}`}>
+            <div className={`w-full md:w-1/3 lg:w-1/4 ${selectedPostId && window.innerWidth < 768 ? 'hidden' : 'block'}`}>
                  <Card>
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-semibold text-text-primary">Foros</h3>
@@ -2637,6 +2626,7 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
         { name: 'Notas', page: 'calificaciones', icon: <PencilSquareIcon className="w-5 h-5" /> },
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
+        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> },
     ];
 
     const preceptorLinks: NavLink[] = [
