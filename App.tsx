@@ -2354,14 +2354,14 @@ const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => 
                 <span className="text-xl font-bold hidden sm:inline">Portal del Instituto</span>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-                 <button onClick={onThemeChange} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors" title="Cambiar apariencia">
+                 <button onClick={onThemeChange} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105" title="Cambiar apariencia">
                     <PaletteIcon className="w-6 h-6" />
                 </button>
-                <button onClick={() => navigate('mensajes')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors" title="Mensajes">
+                <button onClick={() => navigate('mensajes')} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105" title="Mensajes">
                     <InboxIcon className="w-6 h-6" />
                 </button>
                 <div className="relative">
-                     <button onClick={() => setNotificationsOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
+                     <button onClick={() => setNotificationsOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105">
                         <BellIcon className="w-6 h-6" />
                         {notifications.some(n => !n.read) && <span className="absolute top-1 right-1 block w-2 h-2 bg-red-500 rounded-full"></span>}
                     </button>
@@ -2380,7 +2380,7 @@ const Header: React.FC<{ user: User; onLogout: () => void; onThemeChange: () => 
                     )}
                 </div>
                  <div className="relative">
-                    <button onClick={() => setProfileMenuOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
+                    <button onClick={() => setProfileMenuOpen(o => !o)} className="p-2 rounded-full hover:bg-bg-tertiary transition-colors transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105">
                         <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=32`} alt="Avatar" className="w-8 h-8 rounded-full" />
                     </button>
                     {profileMenuOpen && (
@@ -2448,7 +2448,7 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
                     {links.map(link => (
                         <li key={link.name}>
                             <a href="#" onClick={(e) => { e.preventDefault(); navigate(link.page); }} 
-                               className={`flex items-center p-3 my-1 rounded-md transition-colors ${currentPage === link.page ? 'bg-brand-primary text-white' : 'hover:bg-brand-primary/50'}`}>
+                               className={`flex items-center p-3 my-1 rounded-md transition-colors transition-transform duration-200 ease-in-out hover:translate-x-2 ${currentPage === link.page ? 'bg-brand-primary text-white' : 'hover:bg-brand-primary/50'}`}>
                                 <span className="mr-3">{link.icon}</span>
                                 {link.name}
                             </a>
@@ -2458,7 +2458,7 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
             </nav>
             <div className="p-4 border-t border-app-border">
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('perfil'); }}
-                   className="flex items-center gap-3 p-2 rounded-md hover:bg-bg-tertiary">
+                   className="flex items-center gap-3 p-2 rounded-md hover:bg-bg-tertiary transition-transform duration-200 ease-in-out hover:translate-x-2">
                     <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=40`} alt="Avatar" className="w-10 h-10 rounded-full" />
                     <div>
                         <p className="font-semibold">{user.name}</p>
@@ -2504,7 +2504,7 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
         <nav className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-${links.length} p-1 bg-card-bg/70 backdrop-blur-lg md:hidden`}>
             {links.map(link => (
                 <a href="#" key={link.page} onClick={(e) => { e.preventDefault(); navigate(link.page); }}
-                   className={`flex flex-col items-center justify-center w-full rounded-md p-1 transition-colors ${currentPage === link.page ? 'text-brand-primary' : 'text-text-secondary hover:text-brand-primary'}`}>
+                   className={`flex flex-col items-center justify-center w-full rounded-md p-1 transition-colors transition-transform duration-200 ease-in-out hover:-translate-y-1 active:scale-95 ${currentPage === link.page ? 'text-brand-primary' : 'text-text-secondary hover:text-brand-primary'}`}>
                     {link.icon}
                     <span className="text-[10px] text-center">{link.name}</span>
                 </a>
