@@ -2592,9 +2592,9 @@ const TeacherAddEventModal: React.FC<{
 };
 
 const THEME_PALETTES = {
+  sereno: { name: 'Sereno', light: ['#f8f7f2', '#ffffff', '#4a6c6f'], dark: ['#1a1d21', '#24282e', '#8cb8bc'] },
   instituto: { name: 'Instituto', light: ['#f1f5f9', '#ffffff', '#14b8a6'], dark: ['#0f172a', '#1e293b', '#14b8a6'] },
   celestial: { name: 'Celestial', light: ['#f5f5f5', '#ffffff', '#d4af37'], dark: ['#0c1445', '#182152', '#FFD700'] },
-  oscuro: { name: 'Oscuro', light: ['#ffffff', '#f9fafb', '#9ca3af'], dark: ['#111827', '#1f2937', '#3b82f6'] },
   ensueño: { name: 'Ensoñación', light: ['#fdf2f8', '#ffffff', '#ec4899'], dark: ['#2c0b49', '#3c126b', '#f472b6'] },
   enfoque: { name: 'Enfoque', light: ['#f0f9ff', '#ffffff', '#0891b2'], dark: ['#0e1e33', '#152c4a', '#22d3ee'] },
   fantasma: { name: 'Fantasma', light: ['#f9fafb', '#ffffff', '#6b7280'], dark: ['#18181b', '#27272a', '#a1a1aa'] },
@@ -2732,8 +2732,8 @@ const ProcedureDetailModal: React.FC<{
 const App: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [currentPage, setCurrentPage] = useState<Page>('panel');
-    const [colorScheme, setColorScheme] = useState(() => localStorage.getItem('colorScheme') || 'oscuro');
-    const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('themeMode') as 'light' | 'dark') || 'dark');
+    const [colorScheme, setColorScheme] = useState(() => localStorage.getItem('colorScheme') || 'sereno');
+    const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('themeMode') as 'light' | 'dark') || 'light');
     
     const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(MOCK_CALENDAR_EVENTS);
     const [materials, setMaterials] = useState<Material[]>(MOCK_MATERIALS);
