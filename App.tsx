@@ -188,6 +188,72 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; chi
     );
 };
 
+const WeeklyCalendar: React.FC<{ events: CalendarEvent[]; }> = ({ events }) => {
+    const today = new Date();
+    const currentDay = today.getDay();
+    const mondayOffset = (currentDay === 0) ? -6 : 1 - currentDay;
+    
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + mondayOffset);
+    monday.setHours(0, 0, 0, 0);
+
+    const weekDays = Array.from({ length: 5 }).map((_, i) => {
+        const day = new Date(monday);
+        day.setDate(monday.getDate() + i);
+        return day;
+    });
+
+    const getEventsForDay = (date: Date) => {
+        const dayNumber = date.getDate();
+        return events.filter(e => e.day === dayNumber);
+    };
+
+    const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+    
+    const colorClasses: Record<string, string> = {
+        'accent-blue': 'bg-accent-blue/20 text-accent-blue border-l-4 border-accent-blue',
+        'accent-purple': 'bg-accent-purple/20 text-accent-purple border-l-4 border-accent-purple',
+        'accent-yellow': 'bg-accent-yellow/20 text-accent-yellow border-l-4 border-accent-yellow',
+        'accent-red': 'bg-accent-red/20 text-accent-red border-l-4 border-accent-red',
+        'accent-green': 'bg-accent-green/20 text-accent-green border-l-4 border-accent-green',
+    };
+    
+    const defaultColorClass = 'bg-gray-500/20 text-gray-500 border-l-4 border-gray-500';
+
+    return (
+        <Card title="Registro Semanal">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {weekDays.map((day, index) => {
+                    const dayEvents = getEventsForDay(day);
+                    const isToday = day.toDateString() === today.toDateString();
+                    return (
+                        <div key={index} className={`rounded-lg p-3 flex flex-col ${isToday ? 'bg-brand-primary/10 ring-2 ring-brand-primary/50' : 'bg-bg-primary'}`}>
+                            <div className={`flex justify-between items-center pb-2 mb-2 border-b ${isToday ? 'border-brand-primary/50' : 'border-app-border'}`}>
+                                <p className="text-sm font-semibold">{dayNames[index]}</p>
+                                <p className={`font-bold text-lg ${isToday ? 'text-brand-primary' : ''}`}>{day.getDate()}</p>
+                            </div>
+                            <div className="space-y-2 min-h-[60px] flex-grow">
+                                {dayEvents.length > 0 ? dayEvents.slice(0, 2).map(event => (
+                                    <div key={event.id} title={event.title} className={`p-2 rounded text-xs ${colorClasses[event.color || ''] || defaultColorClass}`}>
+                                        <p className="font-semibold truncate">{event.title}</p>
+                                    </div>
+                                )) : (
+                                    <div className="flex h-full items-center justify-center">
+                                       <p className="text-xs text-text-secondary text-center">Sin eventos</p>
+                                    </div>
+                                )}
+                                {dayEvents.length > 2 && (
+                                     <p className="text-xs text-text-secondary text-center pt-1">+ {dayEvents.length - 2} más</p>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </Card>
+    );
+};
+
 
 // --- LOGIN SCREEN ---
 const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) => {
@@ -460,7 +526,7 @@ const MaterialsSection: React.FC<{ materials: Material[] }> = ({ materials }) =>
 };
 
 
-const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: ForumPost[]; materials: Material[]; }> = ({ navigate, forumPosts, materials }) => {
+const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: ForumPost[]; materials: Material[]; events: CalendarEvent[]; }> = ({ navigate, forumPosts, materials, events }) => {
     const [isFinalsModalOpen, setFinalsModalOpen] = useState(false);
     const recentPosts = forumPosts.slice(0, 3);
 
@@ -469,6 +535,9 @@ const StudentDashboard: React.FC<{ navigate: (page: Page) => void; forumPosts: F
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="lg:col-span-2">
                     <AcademicSummaryCard />
+                </div>
+                <div className="lg:col-span-2">
+                    <WeeklyCalendar events={events} />
                 </div>
                 <Card title="Novedades Importantes">
                     <ul className="space-y-4">
@@ -1443,7 +1512,7 @@ const TeacherContactStudentModal: React.FC<{ isOpen: boolean; onClose: () => voi
     );
 };
 
-const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; onShowPending: (summary: TeacherSummary) => void; forumPosts: ForumPost[]; materials: Material[]; }> = ({ user, navigate, onShowPending, forumPosts, materials }) => {
+const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; onShowPending: (summary: TeacherSummary) => void; forumPosts: ForumPost[]; materials: Material[]; events: CalendarEvent[]; }> = ({ user, navigate, onShowPending, forumPosts, materials, events }) => {
     return (
         <div className="space-y-6">
             <div>
@@ -1488,6 +1557,8 @@ const TeacherDashboard: React.FC<{ user: User; navigate: (page: Page) => void; o
                     ) : <p className="text-center text-text-secondary py-4">No tienes clases programadas para hoy.</p>}
                 </Card>
             </div>
+
+            <WeeklyCalendar events={events} />
             
             <div>
                 <h3 className="text-xl font-semibold mb-4">Resumen de Cursos</h3>
@@ -2285,7 +2356,8 @@ const PreceptorDashboard: React.FC<{
     navigate: (page: Page) => void;
     pendingProcedures: ProcedureRequest[];
     forumPosts: ForumPost[];
-}> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate, pendingProcedures, forumPosts }) => {
+    events: CalendarEvent[];
+}> = ({ user, pendingJustifications, onManageJustification, onContactStudent, onShowCommunications, navigate, pendingProcedures, forumPosts, events }) => {
     
     return (
         <div className="space-y-6">
@@ -2312,6 +2384,10 @@ const PreceptorDashboard: React.FC<{
                             </button>
                         </div>
                     </Card>
+                </div>
+
+                <div className="lg:col-span-2">
+                    <WeeklyCalendar events={events} />
                 </div>
                 
                 <Card title="Justificaciones Pendientes">
@@ -3090,7 +3166,7 @@ const App: React.FC = () => {
     const renderCurrentPage = () => {
         if (user.role === 'profesor') {
             switch(currentPage) {
-                case 'panel': return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} />;
+                case 'panel': return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
                 case 'calificaciones': return <TeacherGradesPage onBack={() => setCurrentPage('panel')} />;
                 case 'asistencia': return <TeacherAttendancePage onBack={() => setCurrentPage('panel')} />;
                 case 'materiales': return <TeacherMaterialsPage materials={materials} onUploadClick={() => setUploadModalOpen(true)} onBack={() => setCurrentPage('panel')} />;
@@ -3098,7 +3174,7 @@ const App: React.FC = () => {
                 case 'mensajes': return <MessagesPage currentUser={user} />;
                 case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
                 case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-                default: return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} />;
+                default: return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
             }
         }
         if (user.role === 'preceptor') {
@@ -3112,6 +3188,7 @@ const App: React.FC = () => {
                                         navigate={setCurrentPage}
                                         pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
                                         forumPosts={forumPostsForUser}
+                                        events={eventsForUser}
                                     />;
                 case 'asistencia-general': return <PreceptorAttendancePage onBack={() => setCurrentPage('panel')} onViewProfile={(studentId) => { setSelectedStudentId(studentId); setCurrentPage('alumno-perfil'); }} />;
                 case 'trámites': return <PreceptorProceduresPage requests={procedureRequests} onSelectRequest={handleOpenProcedureDetail} onBack={() => setCurrentPage('panel')} />;
@@ -3129,13 +3206,14 @@ const App: React.FC = () => {
                                     navigate={setCurrentPage}
                                     pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
                                     forumPosts={forumPostsForUser}
+                                    events={eventsForUser}
                                 />;
             }
         }
 
         // Alumno role pages
         switch (currentPage) {
-            case 'panel': return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} />;
+            case 'panel': return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
             case 'calificaciones': return <GradesPage />;
             case 'asistencia': return <AttendancePage />;
             case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setAddEventModalOpen(true)} />;
@@ -3143,7 +3221,7 @@ const App: React.FC = () => {
             case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
             case 'trámites': return <ProceduresPage onRequest={handleRequestProcedure} navigate={setCurrentPage} />;
             case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-            default: return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} />;
+            default: return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
         }
     };
     
