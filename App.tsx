@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
 import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
@@ -286,7 +287,7 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
         <div className="flex items-center justify-center min-h-screen bg-bg-primary p-4">
             <div className="w-full max-w-md p-6 sm:p-8 space-y-6 sm:space-y-8 bg-card-bg rounded-lg shadow-lg animate-fade-in">
                 <div className="text-center">
-                    <AcademicCapIcon className="w-16 h-16 mx-auto text-brand-primary"/>
+                    <img src='https://i.postimg.cc/ZnvcNRgC/450c3215-379b-4542-8a15-08ed88e6d696.png' alt="Instituto 26 Logo" className="w-16 h-16 mx-auto"/>
                     <h1 className="mt-4 text-xl sm:text-2xl font-bold text-center text-text-primary">Instituto Superior de Formación Docente y Técnica N° 26</h1>
                     <p className="mt-2 text-text-secondary">Inicia sesión para acceder a tu panel</p>
                 </div>
