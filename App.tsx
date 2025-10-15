@@ -2941,29 +2941,26 @@ const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page
 // --- NEW COMPONENT FOR DIRECTOR ROLE ---
 const DirectorDashboard: React.FC = () => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card title="Asistencia General" className="md:col-span-1">
-                <div className="flex items-center justify-center">
-                    <CircularProgress value={MOCK_DIRECTOR_STATS.asistenciaGeneral} text={`${MOCK_DIRECTOR_STATS.asistenciaGeneral}%`} color="#3b82f6" max={100} />
-                </div>
-            </Card>
-            <Card title="Rendimiento Académico" className="md:col-span-1">
-                <div className="flex items-center justify-center">
-                    <CircularProgress value={MOCK_DIRECTOR_STATS.rendimientoAcademico} text={`${MOCK_DIRECTOR_STATS.rendimientoAcademico}`} color="#10b981" max={10} />
-                </div>
-            </Card>
-             <Card title="Docentes Activos" className="md:col-span-1">
-                <p className="text-4xl font-bold text-center">{MOCK_DIRECTOR_STATS.docentesActivos}</p>
-            </Card>
-            <Card title="Alumnos Inscriptos" className="md:col-span-1">
-                <p className="text-4xl font-bold text-center">{MOCK_DIRECTOR_STATS.alumnosInscriptos}</p>
-            </Card>
-            <div className="md:col-span-2 lg:col-span-4">
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Card title="Asistencia General">
+                    <div className="flex items-center justify-center">
+                        <CircularProgress value={MOCK_DIRECTOR_STATS.asistenciaGeneral} text={`${MOCK_DIRECTOR_STATS.asistenciaGeneral}%`} color="#3b82f6" max={100} />
+                    </div>
+                </Card>
+                 <Card title="Docentes Activos">
+                    <p className="text-4xl font-bold text-center mt-4">{MOCK_DIRECTOR_STATS.docentesActivos}</p>
+                </Card>
+                <Card title="Alumnos Inscriptos">
+                    <p className="text-4xl font-bold text-center mt-4">{MOCK_DIRECTOR_STATS.alumnosInscriptos}</p>
+                </Card>
+            </div>
+            <div>
                  <Card title="Personal Activo">
                      <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="border-b">
+                                <tr className="border-b border-app-border">
                                     <th className="p-2 text-left">Nombre</th>
                                     <th className="p-2 text-left">Rol</th>
                                     <th className="p-2 text-left">Email</th>
