@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest } from './types';
-import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA } from './constants';
+import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest, AuxiliarTask, StudentCenterAnnouncement, StudentClaim, IncidentReport } from './types';
+import { MOCK_USERS, MOCK_STUDENT_DATA, MOCK_CONVERSATIONS, MOCK_FORUM_POSTS, MOCK_PRECEPTOR_FORUM_POSTS, MOCK_MATERIALS, MOCK_CALENDAR_EVENTS, MOCK_STUDENT_NOTIFICATIONS, MOCK_TEACHER_NOTIFICATIONS, MOCK_PRECEPTOR_NOTIFICATIONS, MOCK_PENDING_JUSTIFICATIONS, MOCK_UNDERPERFORMING_STUDENTS, MOCK_NEWS, MOCK_FINALS_SUBJECTS, MOCK_TODAY_SCHEDULE, MOCK_TEACHER_SCHEDULE, MOCK_TEACHER_SUMMARY, MOCK_PENDING_SUBMISSIONS, MOCK_COURSE_GRADES, MOCK_COURSE_ATTENDANCE, MOCK_PRECEPTOR_ATTENDANCE_DETAIL, MOCK_PROCEDURE_REQUESTS, MOCK_SUBJECTS_BY_YEAR, MOCK_CAREERS, MOCK_STUDENT_PROFILE_DATA, MOCK_DIRECTOR_STATS, MOCK_STAFF_LIST, MOCK_AUXILIAR_TASKS, MOCK_STUDENT_CENTER_ANNOUNCEMENTS, MOCK_STUDENT_CLAIMS, MOCK_INCIDENTS } from './constants';
 
 // --- ICONS (as components for reusability) ---
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -26,7 +25,7 @@ const BookOpenIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 const AcademicCapIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0l-2.072-1.036A59.922 59.922 0 0112 3.493a59.922 59.922 0 0111.824 5.617l-2.072 1.036m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.258-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0l-2.072-1.036A59.922 59.922 0 0112 3.493a59.922 59.922 0 0111.824 5.617l-2.072 1.036m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
     </svg>
 );
 const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -161,8 +160,45 @@ const ArrowDownTrayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
+// --- NEW ICONS FOR NEW ROLES ---
+const UserGroupIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-7.5-2.962A3.75 3.75 0 0112 15.75c1.253 0 2.423.404 3.372 1.068M12 15.75A3.75 3.75 0 018.628 12 3.75 3.75 0 0112 8.25c1.253 0 2.423.404 3.372 1.068M15 6.75A3.75 3.75 0 0111.628 3 3.75 3.75 0 018.25 6.75c0 1.253.404 2.423 1.068 3.372m0 0a3.75 3.75 0 013.372 0M6.75 8.25A3.75 3.75 0 013 11.628 3.75 3.75 0 016.75 15c1.253 0 2.423-.404 3.372-1.068m0 0a3.75 3.75 0 01-3.372 0" />
+    </svg>
+);
 
-type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites' | 'alumno-perfil';
+const ChartPieIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+    </svg>
+);
+
+const WrenchScrewdriverIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 1.263a2.25 2.25 0 010 3.182l-2.72 2.72a2.25 2.25 0 01-3.182 0l-1.263-1.263a2.25 2.25 0 010-3.182l2.72-2.72a2.25 2.25 0 013.182 0zM15.75 9.75l-4.218-4.218a2.25 2.25 0 013.182 0l1.036 1.036m-3.182-3.182a2.25 2.25 0 013.182 0l4.218 4.218m-8.436 8.436a2.25 2.25 0 01-3.182 0l-1.036-1.036a2.25 2.25 0 010-3.182l4.218-4.218a2.25 2.25 0 013.182 0l1.036 1.036m-3.182 3.182l-4.218 4.218a2.25 2.25 0 01-3.182 0l-1.036-1.036a2.25 2.25 0 010-3.182l4.218-4.218a2.25 2.25 0 013.182 0l1.036 1.036" />
+    </svg>
+);
+
+const BuildingOfficeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h6M9 11.25h6M9 15.75h6" />
+    </svg>
+);
+
+const InboxArrowDownIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75M3.75 6.75h16.5" />
+    </svg>
+);
+
+const ExclamationTriangleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+    </svg>
+);
+
+type Page = 'panel' | 'calificaciones' | 'asistencia' | 'agenda' | 'mensajes' | 'foros' | 'perfil' | 'materiales' | 'asistencia-general' | 'trámites' | 'alumno-perfil' | 'personal' | 'estadisticas' | 'comunicados' | 'tareas' | 'instalaciones' | 'turnos' | 'eventos' | 'anuncios' | 'reclamos' ;
 
 // --- REUSABLE UI COMPONENTS ---
 const Card: React.FC<{ title?: string; children: React.ReactNode; className?: string; }> = ({ title, children, className = '' }) => (
@@ -266,10 +302,13 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
     const [isForgotModalOpen, setForgotModalOpen] = useState(false);
 
     useEffect(() => {
-        const credentials = {
+        const credentials: Record<Role, { email: string; pass: string }> = {
             alumno: { email: 'alumno@example.com', pass: 'password' },
             profesor: { email: 'profesor@example.com', pass: 'password' },
-            preceptor: { email: 'preceptor@example.com', pass: 'password' }
+            preceptor: { email: 'preceptor@example.com', pass: 'password' },
+            directivo: { email: 'directivo@example.com', pass: 'password' },
+            auxiliar: { email: 'auxiliar@example.com', pass: 'password' },
+            centro_estudiantes: { email: 'centro@example.com', pass: 'password' },
         };
         setEmail(credentials[role].email);
         setPassword(credentials[role].pass);
@@ -300,6 +339,9 @@ const LoginScreen: React.FC<{ onLogin: (user: User) => void; }> = ({ onLogin }) 
                             <option value="alumno">Alumno</option>
                             <option value="profesor">Profesor</option>
                             <option value="preceptor">Preceptor</option>
+                            <option value="directivo">Directivo</option>
+                            <option value="auxiliar">Auxiliar</option>
+                            <option value="centro_estudiantes">Centro de Estudiantes</option>
                         </select>
                     </div>
                     <div>
@@ -2303,7 +2345,12 @@ const PreceptorProceduresPage: React.FC<{
             approved: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
             rejected: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
         };
-        return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[status]}`}>{status}</span>;
+        const statusText: Record<typeof status, string> = {
+            pending: 'Pendiente',
+            approved: 'Aprobado',
+            rejected: 'Rechazado'
+        };
+        return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[status]}`}>{statusText[status]}</span>;
     };
 
     return (
@@ -2315,7 +2362,7 @@ const PreceptorProceduresPage: React.FC<{
                         <button
                             key={tab}
                             onClick={() => setFilter(tab)}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize ${filter === tab ? 'bg-brand-primary text-white' : 'hover:bg-bg-tertiary'}`}
+                            className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${filter === tab ? 'bg-brand-primary text-white' : 'bg-bg-secondary hover:bg-bg-tertiary'}`}
                         >
                             {tab === 'all' ? 'Todos' : tab === 'pending' ? 'Pendientes' : tab === 'approved' ? 'Aprobados' : 'Rechazados'}
                         </button>
@@ -2323,22 +2370,27 @@ const PreceptorProceduresPage: React.FC<{
                 </div>
 
                 {filteredRequests.length > 0 ? (
-                    <ul className="space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                         {filteredRequests.map(req => (
-                            <li key={req.id} onClick={() => onSelectRequest(req)} className="p-4 bg-bg-primary rounded-md cursor-pointer hover:bg-bg-tertiary transition-transform duration-200 hover:scale-[1.02]">
-                                <div className="flex flex-wrap justify-between items-start gap-2">
-                                    <div>
+                            <button
+                                key={req.id}
+                                onClick={() => onSelectRequest(req)}
+                                className="p-4 bg-bg-primary rounded-lg text-left hover:bg-bg-tertiary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-bg-primary"
+                                disabled={req.status !== 'pending'}
+                            >
+                                <div className="flex flex-col h-full">
+                                    <div className="flex-grow">
                                         <p className="font-semibold">{req.studentName}</p>
                                         <p className="text-sm text-text-secondary">{req.type}</p>
                                         <p className="text-xs text-text-secondary mt-1">{req.date}</p>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="mt-3">
                                         {getStatusChip(req.status)}
                                     </div>
                                 </div>
-                            </li>
+                            </button>
                         ))}
-                    </ul>
+                    </div>
                 ) : (
                     <p className="text-center text-text-secondary py-6">No hay solicitudes que coincidan con el filtro.</p>
                 )}
@@ -2560,6 +2612,95 @@ const StudentProfilePageForPreceptor: React.FC<{ studentId: string; onBack: () =
     )
 }
 
+const ProcedureDetailModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    request: ProcedureRequest | null;
+    onApprove: (requestId: string, file: File) => void;
+    onReject: (requestId: string) => void;
+}> = ({ isOpen, onClose, request, onApprove, onReject }) => {
+    const [file, setFile] = useState<File | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            if (e.target.files[0].type === 'application/pdf' && e.target.files[0].size <= 10 * 1024 * 1024) {
+                 setFile(e.target.files[0]);
+            } else {
+                alert('Por favor, selecciona un archivo PDF de hasta 10MB.');
+                e.target.value = ''; // Reset input
+            }
+        }
+    };
+    
+    const handleApprove = () => {
+        if (request && file) {
+            onApprove(request.id, file);
+            handleClose();
+        } else {
+            alert('Por favor, adjunta un documento para aprobar.');
+        }
+    };
+
+    const handleReject = () => {
+        if (request) {
+            onReject(request.id);
+            handleClose();
+        }
+    };
+
+    const handleClose = () => {
+        setFile(null);
+        onClose();
+    };
+
+
+    if (!isOpen || !request) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" aria-modal="true">
+            <div className="bg-card-bg rounded-lg shadow-xl w-full max-w-md m-4 animate-fade-in">
+                <div className="flex items-center justify-between p-4 border-b border-app-border">
+                    <h3 className="text-lg font-semibold text-text-primary">Detalle de Trámite</h3>
+                    <button onClick={handleClose} className="p-1 rounded-full hover:bg-bg-tertiary">
+                        <CloseIcon className="w-5 h-5 text-text-secondary" />
+                    </button>
+                </div>
+                <div className="p-6 space-y-4">
+                    <div>
+                        <h4 className="text-xl font-bold text-text-primary">{request.studentName}</h4>
+                        <p className="text-text-secondary">{request.type}</p>
+                        <p className="text-sm text-text-secondary">Fecha: {request.date}</p>
+                    </div>
+                    <hr className="border-app-border" />
+                    <div>
+                        <label className="block text-sm font-medium text-text-primary mb-2">Adjuntar Documento (PDF)</label>
+                        <div className="flex items-center justify-center w-full">
+                            <label htmlFor="file-upload-procedure" className="flex flex-col items-center justify-center w-full h-32 border-2 border-app-border border-dashed rounded-lg cursor-pointer bg-bg-secondary hover:bg-bg-tertiary">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+                                    <UploadIcon className="w-8 h-8 mb-2 text-text-secondary"/>
+                                    {file ? (
+                                        <p className="text-sm text-accent-green font-semibold">{file.name}</p>
+                                    ) : (
+                                        <>
+                                            <p className="mb-2 text-sm text-text-secondary"><span className="font-semibold">Selecciona un archivo</span></p>
+                                            <p className="text-xs text-text-secondary">PDF hasta 10MB</p>
+                                        </>
+                                    )}
+                                </div>
+                                <input id="file-upload-procedure" type="file" className="hidden" onChange={handleFileChange} accept="application/pdf" />
+                            </label>
+                        </div> 
+                    </div>
+                </div>
+                <div className="flex items-center justify-end p-4 bg-bg-primary rounded-b-lg space-x-3">
+                    <button onClick={handleReject} className="px-6 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors">Rechazar</button>
+                    <button onClick={handleApprove} className="px-6 py-2 text-sm font-semibold text-white bg-gray-500 rounded-md hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={!file}>Aprobar y Enviar</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 // --- LAYOUT COMPONENTS ---
 const Header: React.FC<{ user: User; onLogout: () => void; onMenuToggle: (menu: string) => void; activeMenu: string | null; isSubPage: boolean; notifications: Notification[]; navigate: (page: Page) => void; }> = ({ user, onLogout, onMenuToggle, activeMenu, isSubPage, notifications, navigate }) => {
@@ -2632,7 +2773,9 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
         { name: 'Calificaciones', page: 'calificaciones', icon: <AcademicCapIcon className="w-5 h-5"/> }, 
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> }, 
+        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> },
+        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> },
+        { name: 'Materiales', page: 'materiales', icon: <BookOpenIcon className="w-5 h-5"/> },
         { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-5 h-5"/> },
     ];
 
@@ -2642,7 +2785,8 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
         { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
         { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> }, 
-        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> }
+        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> },
+        { name: 'Materiales', page: 'materiales', icon: <BookOpenIcon className="w-5 h-5"/> },
     ];
     
     const preceptorLinks: NavLink[] = [
@@ -2650,677 +2794,519 @@ const Sidebar: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) 
         { name: 'Asistencia', page: 'asistencia-general', icon: <CheckBadgeIcon className="w-5 h-5"/> },
         { name: 'Trámites', page: 'trámites', icon: <DocumentTextIcon className="w-5 h-5"/> },
         { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5"/> },
+        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> },
         { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
     ];
 
-    const links = user.role === 'alumno' ? alumnoLinks : user.role === 'profesor' ? profesorLinks : preceptorLinks;
+    const directivoLinks: NavLink[] = [
+        { name: 'Inicio', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
+        { name: 'Personal', page: 'personal', icon: <UserGroupIcon className="w-5 h-5" /> },
+        { name: 'Alumnos', page: 'asistencia-general', icon: <AcademicCapIcon className="w-5 h-5" /> },
+        { name: 'Estadísticas', page: 'estadisticas', icon: <ChartPieIcon className="w-5 h-5" /> },
+        { name: 'Comunicados', page: 'comunicados', icon: <MegaphoneIcon className="w-5 h-5" /> },
+    ];
+
+    const auxiliarLinks: NavLink[] = [
+        { name: 'Inicio', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
+        { name: 'Tareas', page: 'tareas', icon: <WrenchScrewdriverIcon className="w-5 h-5" /> },
+        { name: 'Instalaciones', page: 'instalaciones', icon: <BuildingOfficeIcon className="w-5 h-5" /> },
+        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-5 h-5" /> },
+        { name: 'Turnos', page: 'turnos', icon: <ClockIcon className="w-5 h-5" /> },
+    ];
+    
+    const centroEstudiantesLinks: NavLink[] = [
+        { name: 'Inicio', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
+        { name: 'Eventos', page: 'eventos', icon: <CalendarDaysIcon className="w-5 h-5" /> },
+        { name: 'Comunidad', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5" /> },
+        { name: 'Anuncios', page: 'anuncios', icon: <MegaphoneIcon className="w-5 h-5" /> },
+        { name: 'Reclamos', page: 'reclamos', icon: <InboxArrowDownIcon className="w-5 h-5" /> },
+    ];
+
+    const links = {
+        alumno: alumnoLinks,
+        profesor: profesorLinks,
+        preceptor: preceptorLinks,
+        directivo: directivoLinks,
+        auxiliar: auxiliarLinks,
+        centro_estudiantes: centroEstudiantesLinks,
+    }[user.role];
 
     return (
         <aside className="fixed top-0 left-0 z-10 w-64 h-screen bg-card-bg text-text-primary hidden md:flex flex-col">
              <div className="flex items-center justify-center p-4 border-b border-app-border h-[72px]">
                 <h2 className="text-lg font-semibold">Navegación</h2>
             </div>
-            <nav className="p-4 flex-grow">
-                <ul>
-                    {links.map(link => (
-                        <li key={link.name}>
-                            <a href="#" onClick={(e) => { e.preventDefault(); navigate(link.page); }} 
-                               className={`flex items-center p-3 my-1 rounded-md transition-colors transition-transform duration-200 ease-in-out hover:translate-x-2 ${currentPage === link.page ? 'bg-brand-primary text-white' : 'hover:bg-brand-primary/50'}`}>
-                                <span className="mr-3">{link.icon}</span>
-                                {link.name}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
+            <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                {links.map(link => (
+                    <button key={link.page} onClick={() => navigate(link.page)}
+                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${currentPage === link.page ? 'bg-brand-primary text-white' : 'hover:bg-bg-tertiary'}`}>
+                        {link.icon}
+                        <span>{link.name}</span>
+                    </button>
+                ))}
             </nav>
-            <div className="p-4 border-t border-app-border">
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('perfil'); }}
-                   className="flex items-center gap-3 p-2 rounded-md hover:bg-bg-tertiary transition-transform duration-200 ease-in-out hover:translate-x-2">
-                    <img src={user.avatarUrl || `https://ui-avatars.com/api/?name=${user.name.replace(' ', '+')}&background=4f46e5&color=fff&size=40`} alt="Avatar" className="w-10 h-10 rounded-full" />
-                    <div>
-                        <p className="font-semibold">{user.name}</p>
-                        <p className="text-xs text-text-secondary">Ver Perfil</p>
-                    </div>
-                </a>
+            <div className="p-4 mt-auto border-t border-app-border">
+                <button onClick={() => navigate('perfil')}
+                    className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-secondary hover:bg-bg-tertiary">
+                    <UserCircleIcon className="w-5 h-5"/>
+                    <span>Mi Perfil</span>
+                </button>
+                <button onClick={onLogout}
+                    className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-secondary hover:bg-bg-tertiary hover:text-red-500 transition-colors">
+                    <ArrowLeftOnRectangleIcon className="w-5 h-5"/>
+                    <span>Cerrar Sesión</span>
+                </button>
             </div>
         </aside>
     );
 };
 
 const BottomNav: React.FC<{ user: User; currentPage: Page; navigate: (page: Page) => void; }> = ({ user, currentPage, navigate }) => {
-     type NavLink = { name: string; page: Page; icon: React.ReactNode; };
+    type NavLink = { name: string; page: Page; icon: React.ReactNode; };
 
-    const alumnoLinks: NavLink[] = [
-        { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
-        { name: 'Notas', page: 'calificaciones', icon: <AcademicCapIcon className="w-5 h-5" /> },
-        { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
-        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-5 h-5"/> },
+    const alumnoLinks: NavLink[] = [ 
+        { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-6 h-6"/> }, 
+        { name: 'Notas', page: 'calificaciones', icon: <AcademicCapIcon className="w-6 h-6"/> }, 
+        { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-6 h-6"/> },
+        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-6 h-6" /> },
+        { name: 'Trámites', page: 'trámites', icon: <PencilSquareIcon className="w-6 h-6"/> },
     ];
 
     const profesorLinks: NavLink[] = [
-        { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5" /> },
-        { name: 'Notas', page: 'calificaciones', icon: <PencilSquareIcon className="w-5 h-5" /> },
-        { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-5 h-5" /> },
-        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
-        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-5 h-5"/> },
-    ];
-
-    const preceptorLinks: NavLink[] = [
-        { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-5 h-5"/> },
-        { name: 'Asistencia', page: 'asistencia-general', icon: <CheckBadgeIcon className="w-5 h-5"/> },
-        { name: 'Trámites', page: 'trámites', icon: <DocumentTextIcon className="w-5 h-5"/> },
-        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-5 h-5" /> },
+        { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-6 h-6"/> }, 
+        { name: 'Notas', page: 'calificaciones', icon: <PencilSquareIcon className="w-6 h-6"/> }, 
+        { name: 'Asistencia', page: 'asistencia', icon: <CheckBadgeIcon className="w-6 h-6"/> },
+        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-6 h-6" /> },
+        { name: 'Foros', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-6 h-6"/> },
     ];
     
-    const links = user.role === 'alumno' ? alumnoLinks : user.role === 'profesor' ? profesorLinks : preceptorLinks;
+    const preceptorLinks: NavLink[] = [
+        { name: 'Panel', page: 'panel', icon: <ChartBarIcon className="w-6 h-6"/> },
+        { name: 'Asistencia', page: 'asistencia-general', icon: <CheckBadgeIcon className="w-6 h-6"/> },
+        { name: 'Trámites', page: 'trámites', icon: <DocumentTextIcon className="w-6 h-6"/> },
+        { name: 'Agenda', page: 'agenda', icon: <CalendarDaysIcon className="w-6 h-6" /> },
+    ];
 
-    if (links.length === 0) return null;
+    const directivoLinks: NavLink[] = [
+        { name: 'Inicio', page: 'panel', icon: <ChartBarIcon className="w-6 h-6" /> },
+        { name: 'Personal', page: 'personal', icon: <UserGroupIcon className="w-6 h-6" /> },
+        { name: 'Alumnos', page: 'asistencia-general', icon: <AcademicCapIcon className="w-6 h-6" /> },
+        { name: 'Stats', page: 'estadisticas', icon: <ChartPieIcon className="w-6 h-6" /> },
+        { name: 'Avisos', page: 'comunicados', icon: <MegaphoneIcon className="w-6 h-6" /> },
+    ];
 
+    const auxiliarLinks: NavLink[] = [
+        { name: 'Inicio', page: 'panel', icon: <ChartBarIcon className="w-6 h-6" /> },
+        { name: 'Tareas', page: 'tareas', icon: <WrenchScrewdriverIcon className="w-6 h-6" /> },
+        { name: 'Sedes', page: 'instalaciones', icon: <BuildingOfficeIcon className="w-6 h-6" /> },
+        { name: 'Mensajes', page: 'mensajes', icon: <InboxIcon className="w-6 h-6" /> },
+        { name: 'Turnos', page: 'turnos', icon: <ClockIcon className="w-6 h-6" /> },
+    ];
+    
+    const centroEstudiantesLinks: NavLink[] = [
+        { name: 'Inicio', page: 'panel', icon: <ChartBarIcon className="w-6 h-6" /> },
+        { name: 'Eventos', page: 'eventos', icon: <CalendarDaysIcon className="w-6 h-6" /> },
+        { name: 'Comunidad', page: 'foros', icon: <ChatBubbleLeftRightIcon className="w-6 h-6" /> },
+        { name: 'Anuncios', page: 'anuncios', icon: <MegaphoneIcon className="w-6 h-6" /> },
+        { name: 'Reclamos', page: 'reclamos', icon: <InboxArrowDownIcon className="w-6 h-6" /> },
+    ];
+
+    const links = {
+        alumno: alumnoLinks,
+        profesor: profesorLinks,
+        preceptor: preceptorLinks,
+        directivo: directivoLinks,
+        auxiliar: auxiliarLinks,
+        centro_estudiantes: centroEstudiantesLinks,
+    }[user.role].slice(0, 5);
 
     return (
-        <nav className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-${links.length} p-1 bg-card-bg/70 backdrop-blur-lg md:hidden`}>
+        <nav className="fixed bottom-0 left-0 right-0 z-20 md:hidden bg-card-bg border-t border-app-border flex justify-around">
             {links.map(link => (
-                <a href="#" key={link.page} onClick={(e) => { e.preventDefault(); navigate(link.page); }}
-                   className={`flex flex-col items-center justify-center w-full rounded-md p-1 transition-colors transition-transform duration-200 ease-in-out hover:-translate-y-1 active:scale-95 ${currentPage === link.page ? 'text-brand-primary' : 'text-text-secondary hover:text-brand-primary'}`}>
+                <button
+                    key={link.page}
+                    onClick={() => navigate(link.page)}
+                    className={`flex flex-col items-center justify-center p-2 w-full text-xs transition-colors ${
+                        currentPage === link.page ? 'text-brand-primary' : 'text-text-secondary hover:text-brand-primary'
+                    }`}
+                >
                     {link.icon}
-                    <span className="text-[10px] text-center">{link.name}</span>
-                </a>
+                    <span className="mt-1">{link.name}</span>
+                </button>
             ))}
         </nav>
     );
-}
+};
 
-// --- MAIN APP COMPONENT ---
-
-const TeacherAddEventModal: React.FC<{
-    isOpen: boolean;
-    onClose: () => void;
-    onAddEvent: (eventData: { title: string; day: number; color: string; isPublic: boolean; notify: boolean; }) => void;
-}> = ({ isOpen, onClose, onAddEvent }) => {
-    const [title, setTitle] = useState('');
-    const [day, setDay] = useState<number>(new Date().getDate());
-    const [color, setColor] = useState('accent-blue');
-    const [isPublic, setIsPublic] = useState(true);
-    const [notify, setNotify] = useState(false);
-
-    const colorOptions = [
-        { name: 'accent-blue', class: 'bg-accent-blue' }, { name: 'accent-green', class: 'bg-accent-green' },
-        { name: 'accent-purple', class: 'bg-accent-purple' }, { name: 'accent-red', class: 'bg-accent-red' },
-        { name: 'accent-yellow', class: 'bg-accent-yellow' },
-    ];
-
-    const handleSubmit = () => {
-        if (!title.trim() || !day) return;
-        onAddEvent({ title, day: Number(day), color, isPublic, notify });
-        onClose();
-        // Reset state
-        setTitle(''); setDay(new Date().getDate()); setColor('accent-blue'); setIsPublic(true); setNotify(false);
-    };
-
+// --- NEW COMPONENT FOR DIRECTOR ROLE ---
+const DirectorDashboard: React.FC = () => {
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Añadir Evento a la Agenda">
-            <div className="space-y-4">
-                <div>
-                    <label htmlFor="event-title" className="block text-sm font-medium">Título del Evento</label>
-                    <input id="event-title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card title="Asistencia General" className="md:col-span-1">
+                <div className="flex items-center justify-center">
+                    <CircularProgress value={MOCK_DIRECTOR_STATS.asistenciaGeneral} text={`${MOCK_DIRECTOR_STATS.asistenciaGeneral}%`} color="#3b82f6" max={100} />
                 </div>
-                <div>
-                    <label htmlFor="event-day" className="block text-sm font-medium">Día del Mes</label>
-                    <input id="event-day" type="number" value={day} onChange={(e) => setDay(parseInt(e.target.value, 10))} min="1" max="31"
-                        className="w-full p-2 mt-1 bg-transparent border rounded-md border-app-border" />
+            </Card>
+            <Card title="Rendimiento Académico" className="md:col-span-1">
+                <div className="flex items-center justify-center">
+                    <CircularProgress value={MOCK_DIRECTOR_STATS.rendimientoAcademico} text={`${MOCK_DIRECTOR_STATS.rendimientoAcademico}`} color="#10b981" max={10} />
                 </div>
-                <div>
-                    <label className="block text-sm font-medium">Color</label>
-                    <div className="flex space-x-2 mt-2">
-                        {colorOptions.map(opt => (
-                            <button key={opt.name} onClick={() => setColor(opt.name)}
-                                className={`w-8 h-8 rounded-full transition-transform transform hover:scale-110 ${opt.class} ${color === opt.name ? 'ring-2 ring-offset-2 ring-brand-primary ring-offset-card-bg' : ''}`}>
-                            </button>
-                        ))}
+            </Card>
+             <Card title="Docentes Activos" className="md:col-span-1">
+                <p className="text-4xl font-bold text-center">{MOCK_DIRECTOR_STATS.docentesActivos}</p>
+            </Card>
+            <Card title="Alumnos Inscriptos" className="md:col-span-1">
+                <p className="text-4xl font-bold text-center">{MOCK_DIRECTOR_STATS.alumnosInscriptos}</p>
+            </Card>
+            <div className="md:col-span-2 lg:col-span-4">
+                 <Card title="Personal Activo">
+                     <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="border-b">
+                                    <th className="p-2 text-left">Nombre</th>
+                                    <th className="p-2 text-left">Rol</th>
+                                    <th className="p-2 text-left">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {MOCK_STAFF_LIST.map(staff => (
+                                    <tr key={staff.id} className="border-b last:border-0">
+                                        <td className="p-2">{staff.name}</td>
+                                        <td className="p-2 capitalize">{staff.role}</td>
+                                        <td className="p-2">{staff.email}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                 <div className="border-t border-app-border pt-4">
-                    <label className="block text-sm font-medium">Visibilidad</label>
-                    <div className="flex items-center space-x-4 mt-2">
-                        <label className="flex items-center cursor-pointer">
-                            <input type="radio" name="visibility" checked={isPublic} onChange={() => setIsPublic(true)} className="h-4 w-4 accent-brand-primary"/>
-                            <span className="ml-2">Público (para alumnos)</span>
-                        </label>
-                        <label className="flex items-center cursor-pointer">
-                            <input type="radio" name="visibility" checked={!isPublic} onChange={() => setIsPublic(false)} className="h-4 w-4 accent-brand-primary"/>
-                            <span className="ml-2">Privado (solo para mí)</span>
-                        </label>
-                    </div>
-                </div>
-                {isPublic && (
-                    <div className="pl-6 border-l-2 border-brand-primary/50">
-                        <label className="flex items-center cursor-pointer">
-                             <input type="checkbox" checked={notify} onChange={(e) => setNotify(e.target.checked)} className="h-4 w-4 accent-brand-primary rounded" />
-                             <span className="ml-2 text-sm">Enviar notificación emergente a los alumnos</span>
-                        </label>
-                        <p className="text-xs text-text-secondary mt-1 ml-6">Marcar si es un evento importante como un parcial o cambio de fecha.</p>
-                    </div>
-                )}
-                <button onClick={handleSubmit} className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary">Añadir Evento</button>
+                </Card>
             </div>
-        </Modal>
+        </div>
     );
 };
 
-const THEME_PALETTES = {
-  sereno: { name: 'Sereno', light: ['#f8f7f2', '#ffffff', '#4a6c6f'], dark: ['#1a1d21', '#24282e', '#8cb8bc'] },
-  instituto: { name: 'Instituto', light: ['#f1f5f9', '#ffffff', '#14b8a6'], dark: ['#0f172a', '#1e293b', '#14b8a6'] },
-  celestial: { name: 'Celestial', light: ['#f5f5f5', '#ffffff', '#d4af37'], dark: ['#0c1445', '#182152', '#FFD700'] },
-  ensueño: { name: 'Ensoñación', light: ['#fdf2f8', '#ffffff', '#ec4899'], dark: ['#2c0b49', '#3c126b', '#f472b6'] },
-  enfoque: { name: 'Enfoque', light: ['#f0f9ff', '#ffffff', '#0891b2'], dark: ['#0e1e33', '#152c4a', '#22d3ee'] },
-  fantasma: { name: 'Fantasma', light: ['#f9fafb', '#ffffff', '#6b7280'], dark: ['#18181b', '#27272a', '#a1a1aa'] },
-  rebelde: { name: 'Rebelde', light: ['#fefce8', '#ffffff', '#eab308'], dark: ['#1c1917', '#292524', '#facc15'] },
+// --- NEW COMPONENT FOR AUXILIAR ROLE ---
+const AuxiliarDashboard: React.FC = () => {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card title="Tareas Pendientes">
+                <ul className="space-y-3">
+                    {MOCK_AUXILIAR_TASKS.filter(t => t.status !== 'completed').map(task => (
+                        <li key={task.id} className="p-3 bg-bg-primary rounded-md flex justify-between items-center">
+                            <span>{task.title}</span>
+                            <span className={`px-2 py-1 text-xs rounded-full ${task.status === 'in_progress' ? 'bg-yellow-500' : 'bg-red-500'} text-white`}>
+                                {task.status === 'in_progress' ? 'En Progreso' : 'Pendiente'}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+            <Card title="Reportes de Incidentes">
+                <ul className="space-y-3">
+                    {MOCK_INCIDENTS.map(incident => (
+                        <li key={incident.id} className="p-3 bg-bg-primary rounded-md flex justify-between items-center">
+                            <span>{incident.title} ({incident.location})</span>
+                            <span className={`px-2 py-1 text-xs rounded-full ${incident.status === 'reported' ? 'bg-red-500' : 'bg-green-500'} text-white`}>
+                                {incident.status === 'reported' ? 'Reportado' : 'Resuelto'}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+                 <button className="w-full mt-4 bg-brand-primary text-white py-2 rounded-md hover:bg-brand-secondary">Reportar Nuevo Incidente</button>
+            </Card>
+        </div>
+    );
 };
 
-const ThemeMenu: React.FC<{
-    activeScheme: string;
-    activeMode: 'light' | 'dark';
-    onSchemeChange: (scheme: string) => void;
-    onModeChange: (mode: 'light' | 'dark') => void;
-}> = ({ activeScheme, activeMode, onSchemeChange, onModeChange }) => {
-    
+// --- NEW COMPONENT FOR CENTRO DE ESTUDIANTES ROLE ---
+const StudentCenterDashboard: React.FC = () => {
     return (
-        <div className="absolute right-4 top-20 z-40">
-            <Card className="w-80 sm:w-96 !p-0">
-                <div className="p-4 border-b border-app-border">
-                    <h3 className="text-lg font-semibold">Modelos de Apariencia</h3>
-                    <p className="text-sm text-text-secondary">Personaliza la apariencia de la aplicación.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card title="Últimos Anuncios">
+                 <ul className="space-y-3">
+                    {MOCK_STUDENT_CENTER_ANNOUNCEMENTS.map(ann => (
+                        <li key={ann.id} className="p-3 bg-bg-primary rounded-md">
+                            <h4 className="font-semibold">{ann.title}</h4>
+                            <p className="text-sm text-text-secondary">{ann.content}</p>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+             <Card title="Sugerencias y Reclamos">
+                 <ul className="space-y-3">
+                    {MOCK_STUDENT_CLAIMS.map(claim => (
+                        <li key={claim.id} className="p-3 bg-bg-primary rounded-md">
+                            <p className="font-semibold">{claim.title}</p>
+                            <p className="text-xs text-text-secondary">De: {claim.studentName} - Estado: {claim.status}</p>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+        </div>
+    );
+};
+
+const THEMES = [
+    { id: 'sereno', name: 'Sereno', colors: ['#f0eee9', '#ffffff', '#4a6c6f'] },
+    { id: 'instituto', name: 'Instituto', colors: ['#f8fafc', '#ffffff', '#14b8a6'] },
+    { id: 'celestial', name: 'Celestial', colors: ['#f5f5f5', '#ffffff', '#d4af37'] },
+    { id: 'ensueño', name: 'Ensoñación', colors: ['#fdf2f8', '#ffffff', '#ec4899'] },
+    { id: 'enfoque', name: 'Enfoque', colors: ['#f0f9ff', '#ffffff', '#0891b2'] },
+    { id: 'fantasma', name: 'Fantasma', colors: ['#f9fafb', '#ffffff', '#6b7280'] },
+    { id: 'rebelde', name: 'Rebelde', colors: ['#fefce8', '#ffffff', '#eab308'] },
+];
+
+const AppearanceMenu: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    mode: 'light' | 'dark';
+    onModeChange: (mode: 'light' | 'dark') => void;
+    colorTheme: string;
+    onColorThemeChange: (theme: string) => void;
+}> = ({ isOpen, onClose, mode, onModeChange, colorTheme, onColorThemeChange }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose} aria-modal="true">
+            <div className="bg-card-bg rounded-xl shadow-xl w-[90vw] max-w-sm animate-fade-in" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-2 p-4 border-b border-app-border">
+                    <button onClick={onClose} className="p-2 -m-2 rounded-full hover:bg-bg-tertiary transition-colors">
+                        <ArrowLeftIcon className="w-5 h-5 text-text-primary" />
+                    </button>
+                    <div>
+                        <h3 className="text-lg font-semibold">Modelos de Apariencia</h3>
+                        <p className="text-sm text-text-secondary">Personaliza la apariencia de la aplicación.</p>
+                    </div>
                 </div>
-                <div className="p-4 space-y-4">
-                    <div className="flex justify-around items-center bg-bg-primary p-1 rounded-lg">
-                        <button onClick={() => onModeChange('light')} className={`w-1/2 py-2 rounded-md flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${activeMode === 'light' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>
-                           <SunIcon className="w-5 h-5"/> Claro
+                <div className="p-4 space-y-6">
+                    <div className="p-1 space-x-1 bg-bg-secondary rounded-lg flex">
+                        <button onClick={() => onModeChange('light')} className={`w-full py-1.5 text-sm font-medium rounded-md transition-colors ${mode === 'light' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary hover:bg-bg-tertiary'}`}>
+                            <div className="flex items-center justify-center gap-2">
+                                <SunIcon className="w-5 h-5" />
+                                <span>Claro</span>
+                            </div>
                         </button>
-                        <button onClick={() => onModeChange('dark')} className={`w-1/2 py-2 rounded-md flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${activeMode === 'dark' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary'}`}>
-                            <MoonIcon className="w-5 h-5"/> Oscuro
+                        <button onClick={() => onModeChange('dark')} className={`w-full py-1.5 text-sm font-medium rounded-md transition-colors ${mode === 'dark' ? 'bg-card-bg shadow text-brand-primary' : 'text-text-secondary hover:bg-bg-tertiary'}`}>
+                             <div className="flex items-center justify-center gap-2">
+                                <MoonIcon className="w-5 h-5" />
+                                <span>Oscuro</span>
+                            </div>
                         </button>
                     </div>
                     <div>
-                         <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                            <DevicePhoneMobileIcon className="w-5 h-5"/>
-                            Temas de Color
-                         </h4>
-                         <div className="grid grid-cols-2 gap-3">
-                            {Object.entries(THEME_PALETTES).map(([themeId, themeData]) => (
-                                <button key={themeId} onClick={() => onSchemeChange(themeId)} className={`p-3 border-2 rounded-lg text-left transition-all ${activeScheme === themeId ? 'border-brand-primary' : 'border-app-border hover:border-brand-primary/50'}`}>
-                                    <div className="flex items-center gap-2 mb-2">
-                                         <div className={`w-3 h-3 rounded-full transition-colors ${activeScheme === themeId ? 'bg-brand-primary' : 'bg-transparent'}`}></div>
-                                         <span className="text-sm font-medium text-text-primary">{themeData.name}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-1.5 pl-5">
-                                        {themeData[activeMode].map((color, idx) => (
-                                            <div key={idx} style={{ backgroundColor: color }} className="w-5 h-5 rounded-full border border-app-border"/>
+                        <div className="flex items-center gap-2 mb-3">
+                            <DevicePhoneMobileIcon className="w-5 h-5" />
+                            <h4 className="text-md font-semibold">Temas de Color</h4>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            {THEMES.map((theme) => (
+                                <button key={theme.id} onClick={() => onColorThemeChange(theme.id)} className={`p-3 border-2 rounded-lg text-left transition-colors ${colorTheme === theme.id ? 'border-brand-primary' : 'border-app-border hover:border-text-secondary'}`}>
+                                    <p className="font-semibold">{theme.name}</p>
+                                    <div className="flex space-x-2 mt-2">
+                                        {theme.colors.map((color, index) => (
+                                            <div key={index} className="w-5 h-5 rounded-full" style={{ backgroundColor: color, border: '1px solid var(--color-border)' }}></div>
                                         ))}
                                     </div>
                                 </button>
                             ))}
-                         </div>
+                        </div>
                     </div>
                 </div>
-            </Card>
-        </div>
-    )
-};
-
-const ProcedureDetailModal: React.FC<{
-    isOpen: boolean;
-    onClose: () => void;
-    request: ProcedureRequest | null;
-    onUpdateRequest: (id: string, action: 'approve' | 'reject') => void;
-}> = ({ isOpen, onClose, request, onUpdateRequest }) => {
-    const [file, setFile] = useState<File | null>(null);
-
-    useEffect(() => {
-        if (isOpen) {
-            setFile(null);
-        }
-    }, [isOpen]);
-
-    if (!isOpen || !request) return null;
-
-    const handleApprove = () => {
-        if (request.status === 'pending' && !file) {
-            alert('Por favor, sube el archivo PDF correspondiente para aprobar la solicitud.');
-            return;
-        }
-        onUpdateRequest(request.id, 'approve');
-        onClose();
-    };
-
-    const handleReject = () => {
-        onUpdateRequest(request.id, 'reject');
-        onClose();
-    };
-
-    return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Detalle de Trámite">
-            <div className="space-y-4">
-                <div>
-                    <h4 className="text-lg font-semibold">{request.studentName}</h4>
-                    <p className="text-text-secondary">{request.type}</p>
-                    <p className="text-sm text-text-secondary">Fecha: {request.date}</p>
-                </div>
-                
-                {request.status === 'pending' && (
-                    <div className="space-y-4 pt-4 border-t border-app-border">
-                        <label className="block text-sm font-medium text-text-primary">Adjuntar Documento (PDF)</label>
-                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-app-border border-dashed rounded-md">
-                            <div className="space-y-1 text-center">
-                                <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-                                <div className="flex text-sm text-text-secondary">
-                                    <label htmlFor="file-upload-procedure" className="relative cursor-pointer bg-card-bg rounded-md font-medium text-brand-primary hover:text-brand-secondary focus-within:outline-none">
-                                        <span>Selecciona un archivo</span>
-                                        <input id="file-upload-procedure" name="file-upload" type="file" className="sr-only" onChange={e => setFile(e.target.files ? e.target.files[0] : null)} accept=".pdf" />
-                                    </label>
-                                </div>
-                                {file ? <p className="text-xs text-text-secondary">{file.name}</p> : <p className="text-xs text-text-secondary">PDF hasta 10MB</p>}
-                            </div>
-                        </div>
-                        <div className="flex justify-end gap-3 pt-4">
-                            <button onClick={handleReject} className="px-4 py-2 bg-accent-red text-white rounded-md hover:bg-red-700">Rechazar</button>
-                            <button onClick={handleApprove} className="px-4 py-2 bg-accent-green text-white rounded-md hover:bg-green-700 disabled:bg-gray-400" disabled={!file}>
-                                Aprobar y Enviar
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {request.status !== 'pending' && (
-                    <div className="pt-4 border-t border-app-border">
-                        <p>Estado: <span className={`font-semibold capitalize ${request.status === 'approved' ? 'text-accent-green' : 'text-accent-red'}`}>{request.status === 'approved' ? 'Aprobado' : 'Rechazado'}</span></p>
-                        <p className="text-sm text-text-secondary mt-2">Esta solicitud ya ha sido procesada.</p>
-                        <div className="flex justify-end mt-4">
-                            <button onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Cerrar</button>
-                        </div>
-                    </div>
-                )}
             </div>
-        </Modal>
+        </div>
     );
 };
 
+
+// --- MAIN APP COMPONENT ---
 const App: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [currentPage, setCurrentPage] = useState<Page>('panel');
-    const [colorScheme, setColorScheme] = useState(() => localStorage.getItem('colorScheme') || 'sereno');
-    const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('themeMode') as 'light' | 'dark') || 'light');
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const [colorTheme, setColorTheme] = useState('sereno');
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     
-    const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(MOCK_CALENDAR_EVENTS);
-    const [materials, setMaterials] = useState<Material[]>(MOCK_MATERIALS);
-    const [studentNotifications, setStudentNotifications] = useState<Notification[]>(MOCK_STUDENT_NOTIFICATIONS);
-    const [isAddEventModalOpen, setAddEventModalOpen] = useState(false);
-    const [isTeacherAddEventModalOpen, setTeacherAddEventModalOpen] = useState(false);
-    const [isPendingModalOpen, setPendingModalOpen] = useState(false);
-    const [isUploadModalOpen, setUploadModalOpen] = useState(false);
-    const [selectedCourseSummary, setSelectedCourseSummary] = useState<TeacherSummary | null>(null);
-    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
-    const [isTeacherContactModalOpen, setTeacherContactModalOpen] = useState(false);
-    const [selectedStudentToContactByTeacher, setSelectedStudentToContactByTeacher] = useState<PendingStudent | null>(null);
-    
-    // Preceptor specific state
-    const [pendingJustifications, setPendingJustifications] = useState<PendingJustification[]>(MOCK_PENDING_JUSTIFICATIONS);
-    const [procedureRequests, setProcedureRequests] = useState<ProcedureRequest[]>(MOCK_PROCEDURE_REQUESTS);
+    // modals state
+    const [pendingModalCourse, setPendingModalCourse] = useState<TeacherSummary | null>(null);
+    const [contactStudent, setContactStudent] = useState<PendingStudent | UnderperformingStudent | null>(null);
     const [isCommModalOpen, setCommModalOpen] = useState(false);
-    const [isContactStudentModalOpen, setContactStudentModalOpen] = useState(false);
-    const [selectedStudentToContact, setSelectedStudentToContact] = useState<UnderperformingStudent | null>(null);
-    const [isProcedureDetailModalOpen, setProcedureDetailModalOpen] = useState(false);
-    const [selectedProcedureRequest, setSelectedProcedureRequest] = useState<ProcedureRequest | null>(null);
-    
-    const teacherSubjects = useMemo(() => MOCK_TEACHER_SUMMARY.map(s => s.subject), []);
+    const [isUploadModalOpen, setUploadModalOpen] = useState(false);
+    const [isAddEventModalOpen, setAddEventModalOpen] = useState(false);
+    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+    const [selectedProcedure, setSelectedProcedure] = useState<ProcedureRequest | null>(null);
 
-    const handleMenuToggle = useCallback((menu: string) => {
-        setActiveMenu(prev => (prev === menu ? null : menu));
-    }, []);
-
-    const notificationsForUser = useMemo(() => {
-        if (user?.role === 'profesor') {
-            return MOCK_TEACHER_NOTIFICATIONS;
-        }
-        if (user?.role === 'preceptor') {
-            return MOCK_PRECEPTOR_NOTIFICATIONS;
-        }
-        return studentNotifications;
-    }, [user, studentNotifications]);
-
-    const forumPostsForUser = useMemo(() => {
-        if (!user) return [];
-        if (user.role === 'profesor') {
-            const teacherSubjects = MOCK_TEACHER_SUMMARY.map(s => s.subject);
-            return MOCK_FORUM_POSTS.filter(post => teacherSubjects.includes(post.category));
-        }
-        if (user.role === 'preceptor') {
-            return MOCK_PRECEPTOR_FORUM_POSTS;
-        }
-        if (user.role === 'alumno') {
-            // Students see a combined view of academic and administrative forums
-            return [...MOCK_FORUM_POSTS, ...MOCK_PRECEPTOR_FORUM_POSTS];
-        }
-        return MOCK_FORUM_POSTS;
-    }, [user]);
-    
-    const eventsForUser = useMemo(() => {
-        if (!user) return [];
-        if (user.role === 'alumno') {
-            // Students see public events and their own private events
-            return calendarEvents.filter(e => e.isPublic || e.ownerId === user.id);
-        }
-        // Teachers and Preceptors see public events and their own private events
-        return calendarEvents.filter(e => e.isPublic || e.ownerId === user.id);
-    }, [calendarEvents, user]);
-
-
-    const handleShowPending = (summary: TeacherSummary) => {
-        setSelectedCourseSummary(summary);
-        setPendingModalOpen(true);
-    };
-
-    const handleTeacherContactStudent = (student: PendingStudent) => {
-        setSelectedStudentToContactByTeacher(student);
-        setTeacherContactModalOpen(true);
-    };
-
-    const handleOpenProcedureDetail = (req: ProcedureRequest) => {
-        setSelectedProcedureRequest(req);
-        setProcedureDetailModalOpen(true);
-    };
-    
-    // Preceptor functions
-    const handleManageJustification = (id: string, action: 'approve' | 'reject') => {
-        alert(`Justificación ${action === 'approve' ? 'aprobada' : 'rechazada'}.`);
-        setPendingJustifications(prev => prev.filter(j => j.id !== id));
-    };
-
-    const handleManageProcedure = (id: string, action: 'approve' | 'reject') => {
-        alert(`Solicitud de ${procedureRequests.find(r => r.id === id)?.studentName} ha sido ${action === 'approve' ? 'aprobada' : 'rechazada'}.`);
-        setProcedureRequests(prev => prev.map(req => req.id === id ? { ...req, status: action === 'approve' ? 'approved' : 'rejected' } : req));
-    };
-
-    const handleContactStudent = (student: UnderperformingStudent) => {
-        setSelectedStudentToContact(student);
-        setContactStudentModalOpen(true);
-    };
-    
-    const handleSendCommunication = (subject: string, message: string, recipient: string) => {
-        const newNotification: Notification = {
-            id: `notif-${Date.now()}`,
-            title: `Nuevo comunicado: ${subject}`,
-            date: 'ahora mismo',
-            read: false,
-        };
-        setStudentNotifications(prev => [newNotification, ...prev]);
-
-        const today = new Date();
-        const newEvent: CalendarEvent = {
-            id: `evt-${Date.now()}`,
-            day: today.getDate(),
-            title: `Comunicado: ${subject}`,
-            description: message,
-            color: 'accent-red',
-            isPublic: true,
-            ownerId: user!.id,
-        };
-        setCalendarEvents(prev => [...prev, newEvent].sort((a,b) => a.day - b.day));
-
-        alert(`Comunicado sobre "${subject}" enviado a ${recipient}.`);
-    };
-
-     const handleRequestProcedure = (type: ProcedureRequest['type']) => {
-        if (!user) return;
-        const newRequest: ProcedureRequest = {
-            id: `pr-${Date.now()}`,
-            studentId: user.id,
-            studentName: user.name,
-            type,
-            date: new Date().toLocaleDateString('es-AR'),
-            status: 'pending',
-        };
-        setProcedureRequests(prev => [newRequest, ...prev]);
-        alert(`Tu solicitud de "${type}" ha sido enviada. Recibirás una notificación cuando sea procesada.`);
-    };
+    // data state
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [pendingJustifications, setPendingJustifications] = useState(MOCK_PENDING_JUSTIFICATIONS);
+    const [materials, setMaterials] = useState(MOCK_MATERIALS);
+    const [events, setEvents] = useState(MOCK_CALENDAR_EVENTS);
+    const [procedureRequests, setProcedureRequests] = useState(MOCK_PROCEDURE_REQUESTS);
 
     useEffect(() => {
-        const root = document.documentElement;
-        if (themeMode === 'dark') {
-            root.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', colorTheme);
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
         } else {
-            root.classList.remove('dark');
+            document.documentElement.classList.remove('dark');
         }
-        root.setAttribute('data-theme', colorScheme);
-        localStorage.setItem('themeMode', themeMode);
-        localStorage.setItem('colorScheme', colorScheme);
-    }, [themeMode, colorScheme]);
+    }, [theme, colorTheme]);
 
     const handleLogin = (loggedInUser: User) => {
         setUser(loggedInUser);
         setCurrentPage('panel');
+        if(loggedInUser.role === 'alumno') setNotifications(MOCK_STUDENT_NOTIFICATIONS);
+        if(loggedInUser.role === 'profesor') setNotifications(MOCK_TEACHER_NOTIFICATIONS);
+        if(loggedInUser.role === 'preceptor') setNotifications(MOCK_PRECEPTOR_NOTIFICATIONS);
     };
-    
-    const handleUpdateUser = (updatedUser: User) => {
-        setUser(updatedUser);
-    }
 
     const handleLogout = () => {
         setUser(null);
-    }
+        setNotifications([]);
+    };
+
+    const navigate = (page: Page) => {
+        setCurrentPage(page);
+        setActiveMenu(null);
+    };
+
+    const onMenuToggle = (menu: string) => {
+        setActiveMenu(prev => (prev === menu ? null : menu));
+    };
     
-    const handleAddStudentEvent = (newEventData: Omit<CalendarEvent, 'id' | 'description' | 'isPublic' | 'ownerId'>) => {
+    const handleManageJustification = (id: string, action: 'approve' | 'reject') => {
+        setPendingJustifications(prev => prev.filter(j => j.id !== id));
+        alert(`Justificación ${action === 'approve' ? 'aprobada' : 'rechazada'}.`);
+    };
+
+    const handleUploadMaterial = (newMaterial: Omit<Material, 'id'>) => {
+        setMaterials(prev => [{ id: `m-${Date.now()}`, ...newMaterial }, ...prev]);
+    };
+
+    const handleAddEvent = (newEventData: Omit<CalendarEvent, 'id'| 'description' | 'isPublic' | 'ownerId'>) => {
         const newEvent: CalendarEvent = {
             ...newEventData,
             id: `evt-${Date.now()}`,
-            description: 'Evento personal',
-            isPublic: false, // Student-added events are private to them
-            ownerId: user!.id,
+            description: '',
+            isPublic: true,
+            ownerId: user!.id
         };
-        setCalendarEvents(prev => [...prev, newEvent].sort((a,b) => a.day - b.day));
+        setEvents(prev => [...prev, newEvent]);
+    };
+
+    const handleApproveProcedure = (requestId: string, file: File) => {
+        setProcedureRequests(prev => prev.map(req => 
+            req.id === requestId ? { ...req, status: 'approved' } : req
+        ));
+        alert(`Trámite de ${selectedProcedure?.studentName} aprobado y archivo ${file.name} enviado.`);
+        setSelectedProcedure(null);
+    };
+
+    const handleRejectProcedure = (requestId: string) => {
+        setProcedureRequests(prev => prev.map(req => 
+            req.id === requestId ? { ...req, status: 'rejected' } : req
+        ));
+        alert(`Trámite de ${selectedProcedure?.studentName} rechazado.`);
+        setSelectedProcedure(null);
     };
     
-    const handleAddTeacherEvent = (eventData: { title: string; day: number; color: string; isPublic: boolean; notify: boolean; }) => {
-        const { title, day, color, isPublic, notify } = eventData;
-        const newEvent: CalendarEvent = {
-            id: `evt-${Date.now()}`,
-            title,
-            day,
-            color,
-            description: 'Evento creado por ' + user?.name,
-            isPublic,
-            ownerId: user!.id,
-        };
-        setCalendarEvents(prev => [...prev, newEvent].sort((a,b) => a.day - b.day));
-        
-        if (isPublic && notify) {
-            const newNotification: Notification = {
-                id: `notif-${Date.now()}`,
-                title: `Nuevo evento en la agenda: ${title}`,
-                date: 'ahora mismo',
-                read: false,
-            };
-            setStudentNotifications(prev => [newNotification, ...prev]);
-            alert(`Evento público "${title}" creado y notificación enviada a los alumnos.`);
-        } else if (isPublic) {
-            alert(`Evento público "${title}" creado.`);
-        } else {
-            alert(`Evento privado "${title}" creado.`);
+    const renderContent = () => {
+        switch (currentPage) {
+            case 'panel':
+                if (user?.role === 'alumno') return <StudentDashboard navigate={navigate} forumPosts={MOCK_FORUM_POSTS} materials={materials} events={events} />;
+                if (user?.role === 'profesor') return <TeacherDashboard user={user} navigate={navigate} onShowPending={setPendingModalCourse} forumPosts={MOCK_FORUM_POSTS} materials={materials} events={events} />;
+                if (user?.role === 'preceptor') return <PreceptorDashboard user={user} pendingJustifications={pendingJustifications} onManageJustification={handleManageJustification} onContactStudent={setContactStudent} onShowCommunications={() => setCommModalOpen(true)} navigate={navigate} pendingProcedures={procedureRequests.filter(p=>p.status === 'pending')} forumPosts={MOCK_PRECEPTOR_FORUM_POSTS} events={events} />;
+                if (user?.role === 'directivo') return <DirectorDashboard />;
+                if (user?.role === 'auxiliar') return <AuxiliarDashboard />;
+                if (user?.role === 'centro_estudiantes') return <StudentCenterDashboard />;
+                return <div>Panel no disponible para este rol.</div>;
+            case 'calificaciones':
+                if(user?.role === 'alumno') return <GradesPage />;
+                if(user?.role === 'profesor') return <TeacherGradesPage onBack={() => navigate('panel')} />;
+                return null;
+            case 'asistencia':
+                if(user?.role === 'alumno') return <AttendancePage />;
+                if(user?.role === 'profesor') return <TeacherAttendancePage onBack={() => navigate('panel')} />;
+                return null;
+            case 'asistencia-general':
+                if (user?.role === 'preceptor' || user?.role === 'directivo') {
+                    return <PreceptorAttendancePage onBack={() => navigate('panel')} onViewProfile={(id) => { setSelectedStudentId(id); navigate('alumno-perfil'); }} />;
+                }
+                return null;
+            case 'mensajes':
+                return <MessagesPage currentUser={user!} />;
+            case 'foros':
+                const forumPosts = user?.role === 'preceptor' ? MOCK_PRECEPTOR_FORUM_POSTS : MOCK_FORUM_POSTS;
+                return <ForumPage currentUser={user!} initialPosts={forumPosts} />;
+            case 'materiales':
+                if (user?.role === 'alumno') return <MaterialsSection materials={materials} />;
+                if (user?.role === 'profesor') return <TeacherMaterialsPage materials={materials} onUploadClick={() => setUploadModalOpen(true)} onBack={() => navigate('panel')} />;
+                return null;
+            case 'agenda':
+                return <CalendarPage events={events.filter(e => e.isPublic || e.ownerId === user?.id)} onAddEventClick={() => setAddEventModalOpen(true)} />;
+            case 'perfil':
+                return <ProfilePage user={user!} onUpdate={setUser} onBack={() => navigate('panel')} />;
+            case 'trámites':
+                 if (user?.role === 'alumno') return <ProceduresPage navigate={navigate} onRequest={(type) => alert(`Solicitud de "${type}" iniciada.`)} />;
+                 if (user?.role === 'preceptor') return <PreceptorProceduresPage requests={procedureRequests} onSelectRequest={setSelectedProcedure} onBack={() => navigate('panel')} />;
+                 return null;
+            case 'alumno-perfil':
+                if ((user?.role === 'preceptor' || user?.role === 'directivo') && selectedStudentId) {
+                    return <StudentProfilePageForPreceptor studentId={selectedStudentId} onBack={() => { setSelectedStudentId(null); navigate('asistencia-general'); }} />;
+                }
+                return null;
+            // Add cases for other pages based on roles
+            default:
+                return <div>Página no encontrada</div>;
         }
-    };
-    
-    const handleUploadMaterial = (materialData: Omit<Material, 'id'>) => {
-        const newMaterial: Material = {
-            ...materialData,
-            id: `mat-${Date.now()}`
-        };
-        setMaterials(prev => [newMaterial, ...prev]);
-        alert(`Material "${newMaterial.title}" subido correctamente.`);
     };
 
     if (!user) {
         return <LoginScreen onLogin={handleLogin} />;
     }
 
-    const renderCurrentPage = () => {
-        if (user.role === 'profesor') {
-            switch(currentPage) {
-                case 'panel': return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
-                case 'calificaciones': return <TeacherGradesPage onBack={() => setCurrentPage('panel')} />;
-                case 'asistencia': return <TeacherAttendancePage onBack={() => setCurrentPage('panel')} />;
-                case 'materiales': return <TeacherMaterialsPage materials={materials} onUploadClick={() => setUploadModalOpen(true)} onBack={() => setCurrentPage('panel')} />;
-                case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setTeacherAddEventModalOpen(true)} />;
-                case 'mensajes': return <MessagesPage currentUser={user} />;
-                case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
-                case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-                default: return <TeacherDashboard user={user} navigate={setCurrentPage} onShowPending={handleShowPending} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
-            }
-        }
-        if (user.role === 'preceptor') {
-            switch(currentPage) {
-                case 'panel': return <PreceptorDashboard 
-                                        user={user} 
-                                        pendingJustifications={pendingJustifications}
-                                        onManageJustification={handleManageJustification}
-                                        onContactStudent={handleContactStudent}
-                                        onShowCommunications={() => setCommModalOpen(true)}
-                                        navigate={setCurrentPage}
-                                        pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
-                                        forumPosts={forumPostsForUser}
-                                        events={eventsForUser}
-                                    />;
-                case 'asistencia-general': return <PreceptorAttendancePage onBack={() => setCurrentPage('panel')} onViewProfile={(studentId) => { setSelectedStudentId(studentId); setCurrentPage('alumno-perfil'); }} />;
-                case 'trámites': return <PreceptorProceduresPage requests={procedureRequests} onSelectRequest={handleOpenProcedureDetail} onBack={() => setCurrentPage('panel')} />;
-                case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setTeacherAddEventModalOpen(true)} />;
-                case 'mensajes': return <MessagesPage currentUser={user} />;
-                case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
-                case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-                case 'alumno-perfil': return selectedStudentId ? <StudentProfilePageForPreceptor studentId={selectedStudentId} onBack={() => { setCurrentPage('asistencia-general'); setSelectedStudentId(null); }} /> : <p>Error: No se ha seleccionado un alumno.</p>;
-                default: return <PreceptorDashboard 
-                                    user={user} 
-                                    pendingJustifications={pendingJustifications}
-                                    onManageJustification={handleManageJustification}
-                                    onContactStudent={handleContactStudent}
-                                    onShowCommunications={() => setCommModalOpen(true)}
-                                    navigate={setCurrentPage}
-                                    pendingProcedures={procedureRequests.filter(p => p.status === 'pending')}
-                                    forumPosts={forumPostsForUser}
-                                    events={eventsForUser}
-                                />;
-            }
-        }
-
-        // Alumno role pages
-        switch (currentPage) {
-            case 'panel': return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
-            case 'calificaciones': return <GradesPage />;
-            case 'asistencia': return <AttendancePage />;
-            case 'agenda': return <CalendarPage events={eventsForUser} onAddEventClick={() => setAddEventModalOpen(true)} />;
-            case 'mensajes': return <MessagesPage currentUser={user} />;
-            case 'foros': return <ForumPage currentUser={user} initialPosts={forumPostsForUser} />;
-            case 'trámites': return <ProceduresPage onRequest={handleRequestProcedure} navigate={setCurrentPage} />;
-            case 'perfil': return <ProfilePage user={user} onUpdate={handleUpdateUser} onBack={() => setCurrentPage('panel')} />;
-            default: return <StudentDashboard navigate={setCurrentPage} forumPosts={forumPostsForUser} materials={materials} events={eventsForUser} />;
-        }
-    };
-    
-    const isSubPage = (user.role === 'profesor' && (currentPage === 'calificaciones' || currentPage === 'asistencia' || currentPage === 'materiales')) || (user.role === 'preceptor' && (currentPage === 'asistencia-general' || currentPage === 'trámites' || currentPage === 'alumno-perfil'));
-
-
-    if (currentPage === 'perfil' || isSubPage) {
-        return (
-            <div className="min-h-screen bg-bg-primary">
-                {/* Modals for Sub-Pages */}
-                <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddStudentEvent} />
-                <TeacherAddEventModal isOpen={isTeacherAddEventModalOpen} onClose={() => setTeacherAddEventModalOpen(false)} onAddEvent={handleAddTeacherEvent} />
-                <UploadMaterialModal isOpen={isUploadModalOpen} onClose={() => setUploadModalOpen(false)} onUpload={handleUploadMaterial} subjects={teacherSubjects} />
-                <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} onContactStudent={handleTeacherContactStudent} />
-                <TeacherContactStudentModal isOpen={isTeacherContactModalOpen} onClose={() => setTeacherContactModalOpen(false)} student={selectedStudentToContactByTeacher} />
-                <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={handleSendCommunication} />
-                <ContactStudentModal isOpen={isContactStudentModalOpen} onClose={() => setContactStudentModalOpen(false)} student={selectedStudentToContact} />
-                 <ProcedureDetailModal 
-                    isOpen={isProcedureDetailModalOpen} 
-                    onClose={() => setProcedureDetailModalOpen(false)} 
-                    request={selectedProcedureRequest}
-                    onUpdateRequest={handleManageProcedure}
-                />
-                
-                 <Header 
-                    user={user} 
-                    onLogout={handleLogout}
-                    onMenuToggle={handleMenuToggle}
-                    activeMenu={activeMenu}
-                    isSubPage={isSubPage}
-                    notifications={notificationsForUser}
-                    navigate={setCurrentPage}
-                />
-                 {activeMenu === 'theme' && (
-                    <ThemeMenu 
-                        activeScheme={colorScheme}
-                        activeMode={themeMode}
-                        onSchemeChange={setColorScheme}
-                        onModeChange={setThemeMode}
-                    />
-                )}
-                 <div className={`p-4 sm:p-6 lg:p-8 ${isSubPage ? 'md:ml-64' : ''}`}>
-                    {renderCurrentPage()}
-                </div>
-                 {isSubPage && <Sidebar user={user} currentPage={currentPage} navigate={setCurrentPage} onLogout={handleLogout} />}
-            </div>
-        );
-    }
-    
-
-    const isMessagesOrForumPage = currentPage === 'mensajes' || currentPage === 'foros';
+    const isSubPage = currentPage !== 'panel';
 
     return (
-        <div className="flex h-screen bg-bg-primary">
-            <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddStudentEvent} />
-            <TeacherAddEventModal isOpen={isTeacherAddEventModalOpen} onClose={() => setTeacherAddEventModalOpen(false)} onAddEvent={handleAddTeacherEvent} />
-            <UploadMaterialModal isOpen={isUploadModalOpen} onClose={() => setUploadModalOpen(false)} onUpload={handleUploadMaterial} subjects={teacherSubjects} />
-            <PendingSubmissionsModal isOpen={isPendingModalOpen} onClose={() => setPendingModalOpen(false)} course={selectedCourseSummary} onContactStudent={handleTeacherContactStudent} />
-            <TeacherContactStudentModal isOpen={isTeacherContactModalOpen} onClose={() => setTeacherContactModalOpen(false)} student={selectedStudentToContactByTeacher} />
-            <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={handleSendCommunication} />
-            <ContactStudentModal isOpen={isContactStudentModalOpen} onClose={() => setContactStudentModalOpen(false)} student={selectedStudentToContact} />
-            <ProcedureDetailModal 
-                isOpen={isProcedureDetailModalOpen} 
-                onClose={() => setProcedureDetailModalOpen(false)} 
-                request={selectedProcedureRequest}
-                onUpdateRequest={handleManageProcedure}
-            />
-             {activeMenu === 'theme' && (
-                <ThemeMenu 
-                    activeScheme={colorScheme}
-                    activeMode={themeMode}
-                    onSchemeChange={setColorScheme}
-                    onModeChange={setThemeMode}
-                />
-            )}
-            <Sidebar 
-                user={user}
-                currentPage={currentPage}
-                navigate={setCurrentPage}
-                onLogout={handleLogout}
-            />
-            <div className="flex-1 flex flex-col md:ml-64">
+        <div className="min-h-screen bg-bg-primary text-text-primary">
+            <Sidebar user={user} currentPage={currentPage} navigate={navigate} onLogout={handleLogout} />
+            <div className="md:ml-64 flex flex-col h-screen">
                 <Header 
                     user={user} 
-                    onLogout={handleLogout}
-                    onMenuToggle={handleMenuToggle}
-                    activeMenu={activeMenu}
-                    isSubPage={false}
-                    notifications={notificationsForUser}
-                    navigate={setCurrentPage}
+                    onLogout={handleLogout} 
+                    onMenuToggle={onMenuToggle} 
+                    activeMenu={activeMenu} 
+                    isSubPage={isSubPage}
+                    notifications={notifications}
+                    navigate={navigate}
                 />
-                <main className={`flex-1 overflow-y-auto pb-24 md:pb-8 ${isMessagesOrForumPage ? 'p-0 md:p-4' : 'p-4 sm:p-6 lg:p-8'}`}>
-                     <div className={isMessagesOrForumPage ? 'h-full' : ''}>
-                        {renderCurrentPage()}
-                    </div>
+                <main className="flex-1 p-4 sm:p-6 overflow-y-auto pb-20 md:p-6 md:pb-6">
+                    {renderContent()}
                 </main>
-                <BottomNav user={user} currentPage={currentPage} navigate={setCurrentPage} />
+                <BottomNav user={user} currentPage={currentPage} navigate={navigate} />
             </div>
+            {/* --- Modals --- */}
+            <AppearanceMenu 
+                isOpen={activeMenu === 'theme'}
+                onClose={() => setActiveMenu(null)}
+                mode={theme}
+                onModeChange={setTheme}
+                colorTheme={colorTheme}
+                onColorThemeChange={setColorTheme}
+            />
+            <PendingSubmissionsModal isOpen={!!pendingModalCourse} onClose={() => setPendingModalCourse(null)} course={pendingModalCourse} onContactStudent={setContactStudent} />
+            <TeacherContactStudentModal isOpen={!!contactStudent && 'pendingSubmissions' in contactStudent} onClose={() => setContactStudent(null)} student={contactStudent as PendingStudent | null} />
+            <ContactStudentModal isOpen={!!contactStudent && 'reason' in contactStudent} onClose={() => setContactStudent(null)} student={contactStudent as UnderperformingStudent | null} />
+            <CommunicationModal isOpen={isCommModalOpen} onClose={() => setCommModalOpen(false)} onSend={(sub, msg, rec) => alert(`Comunicado enviado a ${rec}`)} />
+            <UploadMaterialModal isOpen={isUploadModalOpen} onClose={() => setUploadModalOpen(false)} onUpload={handleUploadMaterial} subjects={['Programación I', 'Bases de Datos', 'Análisis Matemático']} />
+            <AddEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onAddEvent={handleAddEvent} />
+            <ProcedureDetailModal
+                isOpen={!!selectedProcedure}
+                onClose={() => setSelectedProcedure(null)}
+                request={selectedProcedure}
+                onApprove={handleApproveProcedure}
+                onReject={handleRejectProcedure}
+            />
         </div>
     );
 };

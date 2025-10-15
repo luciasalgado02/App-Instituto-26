@@ -1,4 +1,4 @@
-import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, CalendarEvent, Notification, Assignment, NewsItem, FinalExamSubject, ClassSchedule, ChatMessage, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, ProcedureRequest, Career } from './types';
+import type { User, Role, Grade, Attendance, Material, Conversation, ForumPost, CalendarEvent, Notification, Assignment, NewsItem, FinalExamSubject, ClassSchedule, ChatMessage, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, ProcedureRequest, Career, AuxiliarTask, IncidentReport, StudentCenterAnnouncement, StudentClaim } from './types';
 
 export const MOCK_USERS: Record<Role, User[]> = {
     alumno: [
@@ -29,6 +29,15 @@ export const MOCK_USERS: Record<Role, User[]> = {
     ],
     preceptor: [
         { id: 'p1', name: 'Laura Martinez', email: 'preceptor@example.com', role: 'preceptor', legajo: 'PREC01' }
+    ],
+    directivo: [
+        { id: 'd1', name: 'Susana Horia', email: 'directivo@example.com', role: 'directivo', legajo: 'DIR01' }
+    ],
+    auxiliar: [
+        { id: 'a1', name: 'Roberto Carlos', email: 'auxiliar@example.com', role: 'auxiliar', legajo: 'AUX01' }
+    ],
+    centro_estudiantes: [
+        { id: 'ce1', name: 'Delegado Estudiantil', email: 'centro@example.com', role: 'centro_estudiantes', legajo: 'CE01' }
     ]
 };
 
@@ -391,4 +400,41 @@ export const MOCK_PRECEPTOR_ATTENDANCE_DETAIL: Record<string, Record<string, Stu
 export const MOCK_PROCEDURE_REQUESTS: ProcedureRequest[] = [
     { id: 'pr1', studentId: 's2', studentName: 'Juan Rodriguez', type: 'Constancia de Aluno Regular', date: '22/09/2024', status: 'pending' },
     { id: 'pr2', studentId: 's7', studentName: 'Sofia Lopez', type: 'Solicitud de Mesa Especial', date: '21/09/2024', status: 'pending' },
+];
+
+
+// --- NEW MOCK DATA FOR NEW ROLES ---
+export const MOCK_DIRECTOR_STATS = {
+    asistenciaGeneral: 87,
+    rendimientoAcademico: 7.8,
+    docentesActivos: 15,
+    alumnosInscriptos: 320,
+};
+
+export const MOCK_STAFF_LIST: User[] = [
+    ...MOCK_USERS.profesor,
+    ...MOCK_USERS.preceptor,
+    ...MOCK_USERS.auxiliar,
+];
+
+export const MOCK_AUXILIAR_TASKS: AuxiliarTask[] = [
+    { id: 'task1', title: 'Limpieza Aulas Planta Baja', status: 'pending', area: 'Planta Baja' },
+    { id: 'task2', title: 'Revisar canilla baño de hombres', status: 'in_progress', area: 'Planta Baja' },
+    { id: 'task3', title: 'Preparar Salón de Actos', status: 'completed', area: '1er Piso' },
+    { id: 'task4', title: 'Reponer insumos de limpieza', status: 'pending', area: 'Depósito' },
+];
+
+export const MOCK_INCIDENTS: IncidentReport[] = [
+    { id: 'inc1', title: 'Luz parpadeante en Aula 102', status: 'reported', location: 'Aula 102' },
+    { id: 'inc2', title: 'Puerta de baño trabada', status: 'resolved', location: 'Baño Mujeres' },
+];
+
+export const MOCK_STUDENT_CENTER_ANNOUNCEMENTS: StudentCenterAnnouncement[] = [
+    { id: 'sca1', title: '¡Inscripciones abiertas para el torneo de fútbol!', content: 'Anotá a tu equipo en la oficina del centro de estudiantes. ¡Hay cupos limitados!', date: 'Hace 2 horas' },
+    { id: 'sca2', title: 'Campaña solidaria: Colecta de abrigos', content: 'Estamos juntando abrigos y frazadas para donar. Podés dejarlos en la caja que está en la entrada.', date: 'Ayer' },
+];
+
+export const MOCK_STUDENT_CLAIMS: StudentClaim[] = [
+    { id: 'scl1', studentName: 'Ana Pérez', title: 'Sugerencia: Más enchufes en la biblioteca', category: 'suggestion', status: 'received' },
+    { id: 'scl2', studentName: 'Juan Rodriguez', title: 'Reclamo: Falta de agua en los bebederos', category: 'claim', status: 'in_review' },
 ];

@@ -1,4 +1,4 @@
-export type Role = 'alumno' | 'profesor' | 'preceptor';
+export type Role = 'alumno' | 'profesor' | 'preceptor' | 'directivo' | 'auxiliar' | 'centro_estudiantes';
 
 export interface User {
   id: string;
@@ -159,7 +159,7 @@ export interface UnderperformingStudent {
   id: string;
   name: string;
   reason: string; // e.g., 'Bajo Promedio', 'Inasistencias'
-  value: string; // e.g., '5.5 Promedio', '5 Faltas'
+  value: string; // e.g., '5 Faltas'
 }
 
 export interface ProcedureRequest {
@@ -174,4 +174,35 @@ export interface ProcedureRequest {
 export interface Career {
   name: string;
   years: Record<string, string[]>;
+}
+
+// --- New Types for Additional Roles ---
+
+export interface AuxiliarTask {
+    id: string;
+    title: string;
+    status: 'pending' | 'in_progress' | 'completed';
+    area: string;
+}
+
+export interface IncidentReport {
+    id: string;
+    title: string;
+    status: 'reported' | 'resolved';
+    location: string;
+}
+
+export interface StudentCenterAnnouncement {
+    id: string;
+    title: string;
+    content: string;
+    date: string;
+}
+
+export interface StudentClaim {
+    id: string;
+    studentName: string;
+    title: string;
+    category: 'suggestion' | 'claim';
+    status: 'received' | 'in_review' | 'answered';
 }
