@@ -160,6 +160,13 @@ const ArrowDownTrayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
+const MagnifyingGlassIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    </svg>
+);
+
+
 // --- NEW ICONS FOR NEW ROLES ---
 const UserGroupIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -2983,6 +2990,83 @@ const DirectorDashboard: React.FC = () => {
     );
 };
 
+const StaffPage: React.FC<{ onBack: () => void; navigate: (page: Page) => void; }> = ({ onBack, navigate }) => {
+    type StaffFilter = 'all' | 'profesor' | 'preceptor' | 'auxiliar';
+    const [activeFilter, setActiveFilter] = useState<StaffFilter>('all');
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredStaff = useMemo(() => {
+        return MOCK_STAFF_LIST.filter(staff => {
+            const matchesFilter = activeFilter === 'all' || staff.role === activeFilter;
+            const matchesSearch = searchTerm === '' || staff.name.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchesFilter && matchesSearch;
+        });
+    }, [activeFilter, searchTerm]);
+
+    const filterTabs: { id: StaffFilter, name: string }[] = [
+        { id: 'all', name: 'Todos' },
+        { id: 'profesor', name: 'Profesores' },
+        { id: 'preceptor', name: 'Preceptores' },
+        { id: 'auxiliar', name: 'Auxiliares' },
+    ];
+
+    return (
+        <div>
+            <PageHeader title="Gestión del Personal" onBack={onBack} />
+            <Card>
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                    <div className="relative flex-grow">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <MagnifyingGlassIcon className="w-5 h-5 text-text-secondary" />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Buscar por nombre..."
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            className="w-full p-2 pl-10 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary"
+                        />
+                    </div>
+                </div>
+                 <div className="flex flex-wrap gap-2 border-b border-app-border mb-4 pb-3">
+                    {filterTabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveFilter(tab.id)}
+                            className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${activeFilter === tab.id ? 'bg-brand-primary text-white' : 'bg-bg-secondary hover:bg-bg-tertiary'}`}
+                        >
+                            {tab.name}
+                        </button>
+                    ))}
+                </div>
+                {filteredStaff.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {filteredStaff.map(staff => (
+                            <div key={staff.id} className="bg-bg-primary p-4 rounded-lg flex flex-col">
+                                <div className="flex items-center gap-4 mb-3">
+                                    <img src={staff.avatarUrl || `https://ui-avatars.com/api/?name=${staff.name.replace(' ', '+')}&background=4f46e5&color=fff&size=48`} alt={staff.name} className="w-12 h-12 rounded-full" />
+                                    <div>
+                                        <h4 className="font-semibold">{staff.name}</h4>
+                                        <p className="text-sm text-text-secondary capitalize">{staff.role}</p>
+                                        <p className="text-xs text-text-secondary">Legajo: {staff.legajo}</p>
+                                    </div>
+                                </div>
+                                <div className="mt-auto flex gap-2 pt-3 border-t border-app-border">
+                                    <button onClick={() => navigate('mensajes')} className="flex-1 text-center py-1.5 px-3 text-xs bg-accent-blue text-white rounded-md hover:bg-blue-700 transition-colors">Enviar Mensaje</button>
+                                    <button onClick={() => alert('Funcionalidad no implementada.')} className="flex-1 text-center py-1.5 px-3 text-xs bg-bg-tertiary text-text-primary rounded-md hover:bg-app-border transition-colors">Ver Perfil</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-text-secondary py-6">No se encontró personal que coincida con la búsqueda.</p>
+                )}
+            </Card>
+        </div>
+    );
+};
+
+
 // --- NEW COMPONENT FOR AUXILIAR ROLE ---
 const AuxiliarDashboard: React.FC = () => {
     return (
@@ -3250,6 +3334,11 @@ const App: React.FC = () => {
             case 'alumno-perfil':
                 if ((user?.role === 'preceptor' || user?.role === 'directivo') && selectedStudentId) {
                     return <StudentProfilePageForPreceptor studentId={selectedStudentId} onBack={() => { setSelectedStudentId(null); navigate('asistencia-general'); }} />;
+                }
+                return null;
+            case 'personal':
+                if (user?.role === 'directivo') {
+                    return <StaffPage onBack={() => navigate('panel')} navigate={navigate} />;
                 }
                 return null;
             // Add cases for other pages based on roles
