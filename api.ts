@@ -149,6 +149,11 @@ export const getGeneralAttendanceData = async () => simulateNetwork({
     careers: MOCK_CAREERS,
     attendanceDetail: MOCK_PRECEPTOR_ATTENDANCE_DETAIL,
 });
+export const saveGeneralAttendance = async (career: string, year: string, subject: string, attendance: StudentAttendanceRecord[]) => {
+    // In a real app, this would update the database. For now, we just log and return success.
+    console.log("Saving general attendance for:", { career, year, subject, attendance });
+    return simulateNetwork({ success: true });
+};
 export const getStudentProfile = async (studentId: string) => simulateNetwork(MOCK_STUDENT_PROFILE_DATA[studentId] || MOCK_STUDENT_PROFILE_DATA['default']);
 export const getProcedureRequests = async () => simulateNetwork(db.procedureRequests);
 export const manageProcedure = async (requestId: string, status: 'approved' | 'rejected') => {

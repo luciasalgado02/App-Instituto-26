@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest, AuxiliarTask, StudentCenterAnnouncement, StudentClaim, IncidentReport, ForumReply, Career } from './types';
 import * as api from './api';
@@ -2253,7 +2254,180 @@ const TeacherAttendancePage: React.FC<{onBack: () => void;}> = ({onBack}) => {
     );
 }
 
-// ... more component stubs for Preceptor, Director, etc.
+const PreceptorGeneralAttendancePage: React.FC<{onBack: () => void;}> = ({onBack}) => {
+    const [attendanceData, setAttendanceData] = useState<{ careers: Career[], attendanceDetail: Record<string, Record<string, StudentAttendanceRecord[]>> } | null>(null);
+    const [selectedCareer, setSelectedCareer] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
+    const [selectedSubject, setSelectedSubject] = useState('');
+    const [attendance, setAttendance] = useState<StudentAttendanceRecord[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [courseLoading, setCourseLoading] = useState(false);
+    const [hasSaved, setHasSaved] = useState(false);
+
+    useEffect(() => {
+        api.getGeneralAttendanceData().then(data => {
+            setAttendanceData(data);
+            if (data.careers.length > 0) {
+                setSelectedCareer(data.careers[0].name);
+            }
+            setLoading(false);
+        });
+    }, []);
+
+    const availableYears = useMemo(() => {
+        if (!attendanceData || !selectedCareer) return [];
+        const career = attendanceData.careers.find(c => c.name === selectedCareer);
+        return career ? Object.keys(career.years) : [];
+    }, [selectedCareer, attendanceData]);
+    
+    const availableSubjects = useMemo(() => {
+        if (!attendanceData || !selectedCareer || !selectedYear) return [];
+        const career = attendanceData.careers.find(c => c.name === selectedCareer);
+        return career?.years[selectedYear] || [];
+    }, [selectedCareer, selectedYear, attendanceData]);
+
+    useEffect(() => {
+        if (availableYears.length > 0 && !availableYears.includes(selectedYear)) {
+            setSelectedYear(availableYears[0]);
+        }
+    }, [selectedCareer, availableYears, selectedYear]);
+    
+    useEffect(() => {
+        if (availableSubjects.length > 0 && !availableSubjects.includes(selectedSubject)) {
+            setSelectedSubject(availableSubjects[0]);
+        }
+    }, [selectedYear, availableSubjects, selectedSubject]);
+    
+    useEffect(() => {
+        if (attendanceData && selectedCareer && selectedYear && selectedSubject) {
+            setCourseLoading(true);
+            setHasSaved(false);
+            const students = attendanceData.attendanceDetail[selectedYear]?.[selectedSubject] || [];
+            // Make a copy to avoid direct state mutation issues with mock data
+            setAttendance(JSON.parse(JSON.stringify(students)));
+            setCourseLoading(false);
+        } else {
+            setAttendance([]);
+        }
+    }, [selectedCareer, selectedYear, selectedSubject, attendanceData]);
+
+    const handleStatusChange = (studentId: string, status: StudentAttendanceRecord['status']) => {
+        setAttendance(prev => prev.map(s => s.id === studentId ? { ...s, status } : s));
+        setHasSaved(false);
+    };
+
+    const handleSaveChanges = async () => {
+        if (!selectedSubject) return;
+        setCourseLoading(true);
+        try {
+            await api.saveGeneralAttendance(selectedCareer, selectedYear, selectedSubject, attendance);
+            setHasSaved(true);
+            alert("Asistencia guardada exitosamente.");
+        } catch(e) {
+            alert("Error al guardar la asistencia.");
+        } finally {
+            setCourseLoading(false);
+        }
+    };
+
+    const handleDownloadPDF = () => {
+        if (!selectedSubject || attendance.length === 0) return;
+        const { jsPDF } = jspdf;
+        const doc = new jsPDF();
+        const today = new Date().toLocaleDateString('es-AR');
+        
+        doc.text(`Asistencia General - ${selectedSubject}`, 14, 15);
+        doc.text(`${selectedCareer} - ${selectedYear}`, 14, 22);
+        doc.text(`Fecha: ${today}`, 14, 29);
+        
+        doc.autoTable({
+            startY: 35,
+            head: [['Alumno', 'Estado']],
+            body: attendance.map(a => [a.name, a.status ? a.status.charAt(0).toUpperCase() + a.status.slice(1) : 'No cargado']),
+        });
+
+        doc.save(`Asistencia-${selectedSubject.replace(' ', '_')}-${today.replace(/\//g, '-')}.pdf`);
+    };
+
+    if (loading) return <FullPageLoader />;
+
+    return (
+        <>
+         <PageHeader title="Asistencia General" onBack={onBack}/>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label htmlFor="career-select" className="block text-sm font-medium text-text-primary">Carrera</label>
+                    <select id="career-select" value={selectedCareer} onChange={e => setSelectedCareer(e.target.value)} className="w-full p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                        {attendanceData?.careers.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                    </select>
+                </div>
+                 <div>
+                    <label htmlFor="year-select" className="block text-sm font-medium text-text-primary">Año</label>
+                    <select id="year-select" value={selectedYear} onChange={e => setSelectedYear(e.target.value)} disabled={availableYears.length === 0} className="w-full p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                       {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+                    </select>
+                </div>
+                 <div>
+                    <label htmlFor="subject-select" className="block text-sm font-medium text-text-primary">Materia</label>
+                    <select id="subject-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} disabled={availableSubjects.length === 0} className="w-full p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                        {availableSubjects.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                </div>
+            </div>
+         <Card>
+            {courseLoading ? <SkeletonLoader className="h-96" /> : attendance.length > 0 ? (
+                 <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                         <thead className="border-b border-app-border bg-bg-secondary">
+                            <tr>
+                                <th className="p-3 font-semibold">Alumno</th>
+                                <th className="p-3 font-semibold text-center">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {attendance.map(student => (
+                                <tr key={student.id} className="border-b border-app-border last:border-b-0">
+                                    <td className="p-3 font-medium">{student.name}</td>
+                                    <td className="p-2">
+                                        <div className="flex justify-center gap-x-2 sm:gap-x-4">
+                                            {(['presente', 'ausente', 'tarde'] as const).map(status => (
+                                                <label key={status} className="flex items-center gap-2 cursor-pointer text-sm">
+                                                    <input 
+                                                        type="radio"
+                                                        name={`attendance-${student.id}`}
+                                                        value={status}
+                                                        checked={student.status === status}
+                                                        onChange={() => handleStatusChange(student.id, status)}
+                                                        className="form-radio h-4 w-4 text-brand-primary focus:ring-brand-primary"
+                                                    />
+                                                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <p className="text-center text-text-secondary py-10">Seleccione una carrera, año y materia para ver los alumnos.</p>
+            )}
+             <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+                    <button onClick={handleSaveChanges} disabled={courseLoading || attendance.length === 0} className="px-6 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary disabled:bg-gray-400">
+                      Guardar Asistencia
+                    </button>
+                    {hasSaved && (
+                        <button onClick={handleDownloadPDF} disabled={courseLoading || attendance.length === 0} className="flex items-center justify-center gap-2 px-6 py-2 bg-bg-tertiary text-text-primary rounded-md hover:bg-app-border disabled:opacity-50 animate-fade-in">
+                            <ArrowDownTrayIcon className="w-5 h-5" />
+                            Descargar PDF
+                        </button>
+                    )}
+                </div>
+         </Card>
+        </>
+    );
+};
 
 const PreceptorDashboard: React.FC<{user: User, navigate: (page: Page) => void}> = ({user, navigate}) => {
     const [data, setData] = useState<{ pendingJustifications: PendingJustification[], underperformingStudents: UnderperformingStudent[], pendingProcedures: ProcedureRequest[] } | null>(null);
@@ -2274,6 +2448,26 @@ const PreceptorDashboard: React.FC<{user: User, navigate: (page: Page) => void}>
                 <h2 className="text-2xl font-bold">Bienvenido, {user.name}</h2>
                 <p className="text-text-secondary">Panel de gestión de Preceptoría.</p>
             </div>
+            <Card title="Acciones Rápidas">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
+                        <CheckBadgeIcon className="w-8 h-8 mb-2 text-brand-primary"/>
+                        <span className="text-sm font-semibold text-center">Asistencia General</span>
+                    </button>
+                    <button onClick={() => navigate('trámites')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
+                        <DocumentTextIcon className="w-8 h-8 mb-2 text-brand-primary"/>
+                        <span className="text-sm font-semibold text-center">Gestionar Trámites</span>
+                    </button>
+                    <button onClick={() => navigate('comunicados')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
+                        <MegaphoneIcon className="w-8 h-8 mb-2 text-brand-primary"/>
+                        <span className="text-sm font-semibold text-center">Enviar Comunicado</span>
+                    </button>
+                    <button onClick={() => navigate('foros')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
+                        <ChatBubbleLeftRightIcon className="w-8 h-8 mb-2 text-brand-primary"/>
+                        <span className="text-sm font-semibold text-center">Foros Preceptoría</span>
+                    </button>
+                </div>
+            </Card>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card title="Justificaciones Pendientes">
                     <ul className="space-y-3">
@@ -2306,26 +2500,6 @@ const PreceptorDashboard: React.FC<{user: User, navigate: (page: Page) => void}>
                     </ul>
                 </Card>
             </div>
-             <Card title="Acciones Rápidas">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button onClick={() => navigate('asistencia-general')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
-                        <CheckBadgeIcon className="w-8 h-8 mb-2 text-brand-primary"/>
-                        <span className="text-sm font-semibold text-center">Asistencia General</span>
-                    </button>
-                    <button onClick={() => navigate('trámites')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
-                        <DocumentTextIcon className="w-8 h-8 mb-2 text-brand-primary"/>
-                        <span className="text-sm font-semibold text-center">Gestionar Trámites</span>
-                    </button>
-                    <button onClick={() => navigate('comunicados')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
-                        <MegaphoneIcon className="w-8 h-8 mb-2 text-brand-primary"/>
-                        <span className="text-sm font-semibold text-center">Enviar Comunicado</span>
-                    </button>
-                    <button onClick={() => navigate('foros')} className="flex flex-col items-center p-4 bg-bg-secondary rounded-lg hover:bg-bg-tertiary">
-                        <ChatBubbleLeftRightIcon className="w-8 h-8 mb-2 text-brand-primary"/>
-                        <span className="text-sm font-semibold text-center">Foros Preceptoría</span>
-                    </button>
-                </div>
-            </Card>
         </div>
     );
 }
@@ -2661,6 +2835,9 @@ const App: React.FC = () => {
             case 'asistencia': 
                 if (user.role === 'alumno') return <AttendancePage />;
                  if (user.role === 'profesor') return <TeacherAttendancePage onBack={() => setPage('panel')} />;
+                return <p>Acceso denegado.</p>;
+            case 'asistencia-general':
+                if (user.role === 'preceptor') return <PreceptorGeneralAttendancePage onBack={() => setPage('panel')} />;
                 return <p>Acceso denegado.</p>;
             case 'agenda': return <CalendarPage user={user} onAddEventClick={() => setAddEventModalOpen(true)} />;
             case 'mensajes': return <MessagesPage currentUser={user} />;
