@@ -2429,6 +2429,180 @@ const PreceptorGeneralAttendancePage: React.FC<{onBack: () => void;}> = ({onBack
     );
 };
 
+const UploadProcedureModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    request: ProcedureRequest | null;
+    onUpload: (id: string) => void;
+}> = ({ isOpen, onClose, request, onUpload }) => {
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) {
+            setSelectedFile(null);
+            setIsUploading(false);
+        }
+    }, [isOpen]);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setSelectedFile(event.target.files[0]);
+        }
+    };
+
+    const handleConfirmUpload = () => {
+        if (!request) return;
+        setIsUploading(true);
+        // Simulate upload delay
+        setTimeout(() => {
+            onUpload(request.id);
+            onClose();
+        }, 1000);
+    };
+
+    if (!request) return null;
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} title={`Subir Documento para ${request.type}`}>
+            <div className="space-y-4">
+                <p>Subiendo documento para: <span className="font-semibold">{request.studentName}</span></p>
+                <div>
+                    <label htmlFor="file-upload" className="w-full flex flex-col items-center justify-center px-4 py-6 bg-bg-secondary text-text-secondary rounded-lg border-2 border-dashed border-app-border cursor-pointer hover:bg-bg-tertiary">
+                        <UploadIcon className="w-8 h-8 mb-2"/>
+                        <span className="text-sm font-medium">{selectedFile ? selectedFile.name : 'Seleccionar archivo PDF'}</span>
+                        <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept=".pdf" />
+                    </label>
+                </div>
+                <button
+                    onClick={handleConfirmUpload}
+                    disabled={!selectedFile || isUploading}
+                    className="w-full mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                    {isUploading ? 'Subiendo...' : 'Subir y Aprobar'}
+                </button>
+            </div>
+        </Modal>
+    );
+};
+
+
+const PreceptorProceduresPage: React.FC<{onBack: () => void;}> = ({onBack}) => {
+    const [requests, setRequests] = useState<ProcedureRequest[] | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [selectedRequestForUpload, setSelectedRequestForUpload] = useState<ProcedureRequest | null>(null);
+
+
+    const fetchRequests = useCallback(async () => {
+        try {
+            const data = await api.getProcedureRequests();
+            setRequests(data);
+        } catch (error) {
+            console.error("Failed to fetch procedures", error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchRequests();
+    }, [fetchRequests]);
+
+    const handleManageRequest = async (id: string, status: 'approved' | 'rejected') => {
+        setLoading(true);
+        try {
+            await api.manageProcedure(id, status);
+            await fetchRequests(); // Refetch to update the list
+        } catch (error) {
+             alert('Error al procesar la solicitud.');
+             setLoading(false);
+        }
+    };
+    
+    const handleOpenUploadModal = (request: ProcedureRequest) => {
+        setSelectedRequestForUpload(request);
+        setIsUploadModalOpen(true);
+    };
+
+    const handleConfirmUpload = (id: string) => {
+        handleManageRequest(id, 'approved');
+    };
+
+    const filteredRequests = useMemo(() => {
+        if (!requests) return [];
+        return requests.filter(req => req.status === activeTab);
+    }, [requests, activeTab]);
+
+    const ProcedureList = ({ list }: { list: ProcedureRequest[] }) => {
+        if (list.length === 0) {
+            return <p className="text-center text-text-secondary py-10">No hay trámites en esta categoría.</p>;
+        }
+        return (
+            <ul className="divide-y divide-app-border">
+                {list.map(req => (
+                    <li key={req.id} className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <p className="font-bold text-text-primary">{req.studentName}</p>
+                            <p className="text-sm text-text-secondary">{req.type}</p>
+                            <p className="text-xs text-text-secondary mt-1">Solicitado: {req.date}</p>
+                        </div>
+                        {activeTab === 'pending' && (
+                            <div className="flex gap-2 self-end sm:self-center flex-shrink-0">
+                                {req.type === 'Constancia de Aluno Regular' || req.type === 'Consulta de Legajo' ? (
+                                    <button onClick={() => handleOpenUploadModal(req)} className="flex items-center gap-2 px-3 py-1.5 bg-accent-blue text-white rounded-md text-sm hover:bg-blue-600">
+                                        <UploadIcon className="w-4 h-4" />
+                                        Subir PDF
+                                    </button>
+                                ) : (
+                                    <>
+                                        <button onClick={() => handleManageRequest(req.id, 'approved')} className="px-3 py-1.5 bg-accent-green text-white rounded-md text-sm hover:bg-green-600">
+                                            Aprobar
+                                        </button>
+                                        <button onClick={() => handleManageRequest(req.id, 'rejected')} className="px-3 py-1.5 bg-accent-red text-white rounded-md text-sm hover:bg-red-600">
+                                            Rechazar
+                                        </button>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        );
+    };
+
+    return (
+        <>
+            <PageHeader title="Gestionar Trámites" onBack={onBack} />
+            <Card>
+                <div className="border-b border-app-border">
+                    <nav className="flex space-x-2 -mb-px" aria-label="Tabs">
+                        <button onClick={() => setActiveTab('pending')} className={`px-4 py-3 font-medium text-sm border-b-2 ${activeTab === 'pending' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>
+                            Pendientes
+                        </button>
+                        <button onClick={() => setActiveTab('approved')} className={`px-4 py-3 font-medium text-sm border-b-2 ${activeTab === 'approved' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>
+                            Aprobadas
+                        </button>
+                         <button onClick={() => setActiveTab('rejected')} className={`px-4 py-3 font-medium text-sm border-b-2 ${activeTab === 'rejected' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>
+                            Rechazadas
+                        </button>
+                    </nav>
+                </div>
+                {loading && !requests ? <SkeletonLoader className="h-64 mt-4" /> : <ProcedureList list={filteredRequests} />}
+            </Card>
+             <UploadProcedureModal
+                isOpen={isUploadModalOpen}
+                onClose={() => setIsUploadModalOpen(false)}
+                request={selectedRequestForUpload}
+                onUpload={handleConfirmUpload}
+            />
+        </>
+    );
+};
+
+
 const PreceptorDashboard: React.FC<{user: User, navigate: (page: Page) => void}> = ({user, navigate}) => {
     const [data, setData] = useState<{ pendingJustifications: PendingJustification[], underperformingStudents: UnderperformingStudent[], pendingProcedures: ProcedureRequest[] } | null>(null);
     const [loading, setLoading] = useState(true);
@@ -2849,6 +3023,7 @@ const App: React.FC = () => {
                 return <p>Acceso denegado.</p>;
             case 'trámites':
                  if (user.role === 'alumno') return <ProceduresPage onRequest={handleProcedureRequest} navigate={navigate} />;
+                 if (user.role === 'preceptor') return <PreceptorProceduresPage onBack={() => setPage('panel')} />;
                 return <p>Acceso denegado.</p>;
             default: return <p>Página no encontrada.</p>;
         }
