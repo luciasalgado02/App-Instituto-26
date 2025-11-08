@@ -2550,21 +2550,13 @@ const PreceptorProceduresPage: React.FC<{onBack: () => void;}> = ({onBack}) => {
                         </div>
                         {activeTab === 'pending' && (
                             <div className="flex gap-2 self-end sm:self-center flex-shrink-0">
-                                {req.type === 'Constancia de Aluno Regular' || req.type === 'Consulta de Legajo' ? (
-                                    <button onClick={() => handleOpenUploadModal(req)} className="flex items-center gap-2 px-3 py-1.5 bg-accent-blue text-white rounded-md text-sm hover:bg-blue-600">
-                                        <UploadIcon className="w-4 h-4" />
-                                        Subir PDF
-                                    </button>
-                                ) : (
-                                    <>
-                                        <button onClick={() => handleManageRequest(req.id, 'approved')} className="px-3 py-1.5 bg-accent-green text-white rounded-md text-sm hover:bg-green-600">
-                                            Aprobar
-                                        </button>
-                                        <button onClick={() => handleManageRequest(req.id, 'rejected')} className="px-3 py-1.5 bg-accent-red text-white rounded-md text-sm hover:bg-red-600">
-                                            Rechazar
-                                        </button>
-                                    </>
-                                )}
+                                <button onClick={() => handleOpenUploadModal(req)} className="flex items-center gap-2 px-3 py-1.5 bg-accent-blue text-white rounded-md text-sm hover:bg-blue-600">
+                                    <UploadIcon className="w-4 h-4" />
+                                    Subir PDF
+                                </button>
+                                <button onClick={() => handleManageRequest(req.id, 'rejected')} className="px-3 py-1.5 bg-accent-red text-white rounded-md text-sm hover:bg-red-600">
+                                    Rechazar
+                                </button>
                             </div>
                         )}
                     </li>
