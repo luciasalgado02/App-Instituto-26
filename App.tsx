@@ -1,7 +1,10 @@
+
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import type { User, Role, Attendance, Grade, Conversation, ForumPost, CalendarEvent, Notification, ChatMessage, FinalExamSubject, NewsItem, ClassSchedule, TeacherSummary, PendingStudent, StudentGradeRecord, StudentAttendanceRecord, PendingJustification, UnderperformingStudent, Material, ProcedureRequest, AuxiliarTask, StudentCenterAnnouncement, StudentClaim, IncidentReport, ForumReply, Career } from './types';
 import * as api from './api';
 import { FullPageLoader, CardLoader, SkeletonLoader, ErrorMessage } from './components';
+
+declare var jspdf: any;
 
 // --- ICONS (as components for reusability) ---
 const ArrowLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -2007,11 +2010,14 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
     const [grades, setGrades] = useState<StudentGradeRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [courseLoading, setCourseLoading] = useState(false);
+    const [hasSaved, setHasSaved] = useState(false);
     
     useEffect(() => {
         api.getTeacherDashboardData().then(data => {
             setCourses(data.summary);
-            setSelectedCourse(data.summary[0] || null);
+            if (data.summary.length > 0) {
+              setSelectedCourse(data.summary[0]);
+            }
             setLoading(false);
         });
     }, []);
@@ -2019,6 +2025,7 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
     useEffect(() => {
         if (selectedCourse) {
             setCourseLoading(true);
+            setHasSaved(false); // Reset save status on course change
             api.getCourseGrades(selectedCourse.subject).then(data => {
                 setGrades(data);
                 setCourseLoading(false);
@@ -2037,6 +2044,7 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
         setCourseLoading(true);
         try {
             await api.saveCourseGrades(selectedCourse.subject, grades);
+            setHasSaved(true);
             alert("Notas guardadas exitosamente.");
         } catch(e) {
             alert("Error al guardar las notas.");
@@ -2045,6 +2053,23 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
         }
     };
 
+    const handleDownloadPDF = () => {
+        if (!selectedCourse || grades.length === 0) return;
+        const { jsPDF } = jspdf;
+        const doc = new jsPDF();
+        
+        doc.text(`Calificaciones - ${selectedCourse.subject} (${selectedCourse.commission})`, 14, 15);
+        
+        doc.autoTable({
+            startY: 20,
+            head: [['Alumno', '1er Cuatrimestre', '2do Cuatrimestre']],
+            body: grades.map(g => [g.name, g.semester1 ?? 'N/A', g.semester2 ?? 'N/A']),
+        });
+
+        doc.save(`Calificaciones-${selectedCourse.subject.replace(' ', '_')}.pdf`);
+    };
+
+
     if (loading) return <FullPageLoader />;
 
     return (
@@ -2052,7 +2077,7 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
             <PageHeader title="Cargar Calificaciones" onBack={onBack} />
             <div className="mb-6">
                 <label htmlFor="course-select-grades" className="block text-sm font-medium text-text-primary">Seleccionar Curso</label>
-                <select id="course-select-grades" onChange={e => setSelectedCourse(courses.find(c => c.id === e.target.value) || null)} className="w-full max-w-sm p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                <select id="course-select-grades" value={selectedCourse?.id || ''} onChange={e => setSelectedCourse(courses.find(c => c.id === e.target.value) || null)} className="w-full max-w-sm p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
                     {courses.map(c => <option key={c.id} value={c.id}>{c.subject} - {c.commission}</option>)}
                 </select>
             </div>
@@ -2085,8 +2110,14 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
                     </table>
                 </div>
                 )}
-                 <div className="mt-6 flex justify-end">
+                 <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
                     <button onClick={handleSaveChanges} disabled={courseLoading} className="px-6 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary disabled:bg-gray-400">Guardar Cambios</button>
+                    {hasSaved && (
+                        <button onClick={handleDownloadPDF} disabled={courseLoading || grades.length === 0} className="flex items-center justify-center gap-2 px-6 py-2 bg-bg-tertiary text-text-primary rounded-md hover:bg-app-border disabled:opacity-50 animate-fade-in">
+                            <ArrowDownTrayIcon className="w-5 h-5" />
+                            Descargar PDF
+                        </button>
+                    )}
                 </div>
             </Card>
         </>
@@ -2094,12 +2125,129 @@ const TeacherGradesPage: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
 };
 
 const TeacherAttendancePage: React.FC<{onBack: () => void;}> = ({onBack}) => {
-    // Similar implementation to TeacherGradesPage but for attendance
+    const [courses, setCourses] = useState<TeacherSummary[]>([]);
+    const [selectedCourse, setSelectedCourse] = useState<TeacherSummary | null>(null);
+    const [attendance, setAttendance] = useState<StudentAttendanceRecord[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [courseLoading, setCourseLoading] = useState(false);
+    const [hasSaved, setHasSaved] = useState(false);
+
+    useEffect(() => {
+        api.getTeacherDashboardData().then(data => {
+            setCourses(data.summary);
+            if (data.summary.length > 0) {
+              setSelectedCourse(data.summary[0]);
+            }
+            setLoading(false);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (selectedCourse) {
+            setCourseLoading(true);
+            setHasSaved(false); // Reset save status on course change
+            api.getCourseAttendance(selectedCourse.subject).then(data => {
+                setAttendance(data);
+                setCourseLoading(false);
+            });
+        }
+    }, [selectedCourse]);
+
+    const handleStatusChange = (studentId: string, status: StudentAttendanceRecord['status']) => {
+        setAttendance(prev => prev.map(s => s.id === studentId ? { ...s, status } : s));
+    };
+
+    const handleSaveChanges = async () => {
+        if (!selectedCourse) return;
+        setCourseLoading(true);
+        try {
+            await api.saveCourseAttendance(selectedCourse.subject, attendance);
+            setHasSaved(true);
+            alert("Asistencia guardada exitosamente.");
+        } catch(e) {
+            alert("Error al guardar la asistencia.");
+        } finally {
+            setCourseLoading(false);
+        }
+    };
+    
+    const handleDownloadPDF = () => {
+        if (!selectedCourse || attendance.length === 0) return;
+        const { jsPDF } = jspdf;
+        const doc = new jsPDF();
+        const today = new Date().toLocaleDateString('es-AR');
+        
+        doc.text(`Asistencia - ${selectedCourse.subject} (${selectedCourse.commission})`, 14, 15);
+        doc.text(`Fecha: ${today}`, 14, 22);
+        
+        doc.autoTable({
+            startY: 30,
+            head: [['Alumno', 'Estado']],
+            body: attendance.map(a => [a.name, a.status ? a.status.charAt(0).toUpperCase() + a.status.slice(1) : 'No cargado']),
+        });
+
+        doc.save(`Asistencia-${today.replace(/\//g, '-')}-${selectedCourse.subject.replace(' ', '_')}.pdf`);
+    };
+
+    if (loading) return <FullPageLoader />;
+    
     return (
         <>
          <PageHeader title="Tomar Asistencia" onBack={onBack}/>
+          <div className="mb-6">
+                <label htmlFor="course-select-attendance" className="block text-sm font-medium text-text-primary">Seleccionar Curso</label>
+                <select id="course-select-attendance" value={selectedCourse?.id || ''} onChange={e => setSelectedCourse(courses.find(c => c.id === e.target.value) || null)} className="w-full max-w-sm p-2 mt-1 bg-bg-secondary border border-app-border rounded-md focus:ring-brand-primary focus:border-brand-primary">
+                    {courses.map(c => <option key={c.id} value={c.id}>{c.subject} - {c.commission}</option>)}
+                </select>
+            </div>
          <Card>
-            <p className="text-text-secondary text-center">La funcionalidad de tomar asistencia aún no ha sido implementada.</p>
+            {courseLoading ? <SkeletonLoader className="h-96" /> : (
+                 <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                         <thead className="border-b border-app-border bg-bg-secondary">
+                            <tr>
+                                <th className="p-3 font-semibold">Alumno</th>
+                                <th className="p-3 font-semibold text-center">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {attendance.map(student => (
+                                <tr key={student.id} className="border-b border-app-border last:border-b-0">
+                                    <td className="p-3 font-medium">{student.name}</td>
+                                    <td className="p-2">
+                                        <div className="flex justify-center gap-x-2 sm:gap-x-4">
+                                            {(['presente', 'ausente', 'tarde'] as const).map(status => (
+                                                <label key={status} className="flex items-center gap-2 cursor-pointer text-sm">
+                                                    <input 
+                                                        type="radio"
+                                                        name={`attendance-${student.id}`}
+                                                        value={status}
+                                                        checked={student.status === status}
+                                                        onChange={() => handleStatusChange(student.id, status)}
+                                                        className="form-radio h-4 w-4 text-brand-primary focus:ring-brand-primary"
+                                                    />
+                                                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+             <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+                    <button onClick={handleSaveChanges} disabled={courseLoading} className="px-6 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-secondary disabled:bg-gray-400">
+                      Guardar Asistencia
+                    </button>
+                    {hasSaved && (
+                        <button onClick={handleDownloadPDF} disabled={courseLoading || attendance.length === 0} className="flex items-center justify-center gap-2 px-6 py-2 bg-bg-tertiary text-text-primary rounded-md hover:bg-app-border disabled:opacity-50 animate-fade-in">
+                            <ArrowDownTrayIcon className="w-5 h-5" />
+                            Descargar PDF
+                        </button>
+                    )}
+                </div>
          </Card>
         </>
     );
